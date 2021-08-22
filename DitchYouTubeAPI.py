@@ -29,7 +29,6 @@ class DYA:
 
 
     def livestream_urls(self):
-
         if self.is_live():
             VideoIDList = re.findall(r"watch\?v=(\S{11})", self.get_data_for_live())
             urls = [f'https://www.youtube.com/watch?v={ID}' for ID in VideoIDList]
@@ -39,7 +38,6 @@ class DYA:
 
 
     def latest_uploads(self, limit:int = None):
-
         if self.is_live():
             return None
         else:
