@@ -8,13 +8,13 @@ Currently is on development with limited usability! More methods will be added s
 
 GitHub Repo **[LINK](https://github.com/jnsougata/Ditch-YouTube-API)**
  - **Installation:**
-  `pip install dya`
+ - `pip install dya`
   
  - **Importing DIA:**
- `from DIA import *`
+ - `from DIA import *`
 
  - **Creating an instance of the YouTube Channel:**
-  `channel = DYA("YouTube_Channel_ID") `
+ - `channel = DYA("YouTube_Channel_ID") `
 
  - **Attributes:**
  -  1. `is_live()` 
