@@ -7,7 +7,7 @@
     
  - **Installation:**    
 - `pip install dya`    
- - **Importing DIA:**    
+ - **Importing DYA:**    
 - `from DIA import *`    
     
  - **Creating an instance of target YouTube Channel:**    
