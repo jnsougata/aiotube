@@ -8,7 +8,7 @@
  - **Installation:**    
 - `pip install dya`    
  - **Importing DYA:**    
-- `from DIA import *`    
+- `from DYA import *`    
     
  - **Creating an instance of target YouTube Channel:**    
 - `channel = DYA("YouTube_Channel_ID") `    
