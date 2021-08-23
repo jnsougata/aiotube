@@ -1,7 +1,7 @@
 
   
 # Ditch YouTube API    
- **DYA** (*Ditch YouTube API*) is a package created to get data of any YouTube Channel only by its Channel ID. ***No API Key is required.***    
+ **DYA** (*Ditch YouTube API*) is a package created to power the user with YouTube Data API functionality without any API Key.
  # How to use?    
  Currently, it is on development with limited usability! More methods will be added soon.    
     
