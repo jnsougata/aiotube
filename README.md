@@ -5,7 +5,6 @@
  # How to use?    
  Currently, it is on development with limited usability! More methods will be added soon.    
     
-GitHub Repo **[LINK](https://github.com/jnsougata/Ditch-YouTube-API)**    
  - **Installation:**    
 - `pip install dya`    
  - **Importing DIA:**    
