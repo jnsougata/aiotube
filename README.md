@@ -12,7 +12,7 @@ GitHub Repo **[LINK](https://github.com/jnsougata/Ditch-YouTube-API)**
  - **Creating an instance of target YouTube Channel:**
  - `channel = DYA("YouTube_Channel_ID") `   
 
-  - **Attributes:**      
+  - **Methods:**      
 - `is_live()` 
 > Returns ***True*** if channel is Live at that moment, Otherwise > returns ***False***      
       
@@ -30,7 +30,7 @@ GitHub Repo **[LINK](https://github.com/jnsougata/Ditch-YouTube-API)**
  - `playlists()`  
 > Returns a List containing Ordered Pair **[ Name, ID ]** of public Playlists' ***List***
 
-Or, you can use **independent attributes** to get channel info:
+Or, you can use **independent methods** to get channel info:
 
  - `name()` Returns **Name** of the channel or **None** if not found.
  - `subs()` Returns **Sub-Count** of the channel or **None** if not found.
