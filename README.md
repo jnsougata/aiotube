@@ -53,7 +53,7 @@ GitHub Repo **[LINK](https://github.com/jnsougata/Ditch-YouTube-API)**
 			 > Returns a **Video ID** according to queries.
 	
 	 - ***Getting channels by query:***
-		 - `results = query.get_channels(*limit :int[optional])`
+		 - `results = query.get_channels(*limit[optional])`
 			 > Returns a list of **Channel IDs** according to queries.
 			 
 	   - `result = query.get_channel`
@@ -73,5 +73,5 @@ GitHub Repo **[LINK](https://github.com/jnsougata/Ditch-YouTube-API)**
 	 - `duration` -- Returns **duration** of the video
 	 - `upload_date` -- Returns **date of upload** of the video
 	 - `description` -- Returns whole **description** of the video
-	 - `tags` -- *coming soon*
-	 - `thumbnails` -- *coming soon*
+	 - `tags` -- Returns **list of tags** of the video
+	 - `thumbnail` -- Returns **HQ Thumbnail** of the video
