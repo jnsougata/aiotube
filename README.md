@@ -3,8 +3,7 @@
  **DYA** ( *Ditch YouTube API* ) is a package created to power the user with YouTube Data API functionality **without any API Key**.       
    
   *Currently, on development! More methods will be added soon.*     
-    
- **GitHub [Repository](https://github.com/jnsougata/Ditch-YouTube-API)**               
+               
  # How to use?   
  - **Installation:** - `pip install dya`          
  - **Importing DYA:** - `from DYA import Search, Video, Channel`          
