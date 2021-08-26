@@ -1,9 +1,6 @@
-# Ditch YouTube API (BETA)            
- **DYA** ( *Ditch YouTube API* ) is a package created to power the user with YouTube Data API functionality **without any API Key**.         
-     
-  *Currently, on development! More methods will be added soon.*       
-      
- **GitHub [Repository](https://github.com/jnsougata/Ditch-YouTube-API)**                 
+# Ditch YouTube API (BETA)           
+ **DYA** ( *Ditch YouTube API* ) is a package created to power the user with YouTube Data API functionality **without any API Key**
+
  # How to use?     
  - **Installation:** 
    - `pip install dya`            
@@ -35,14 +32,14 @@
      - `banner_url` Returns the **Banner URL** of the channel or **None**  
  - **Creating an instance of YouTube Search:**      
      - `Query = Search(*keywords: str)`
-     - ***Getting videos by query:***   
+     - ***Getting Videos by YouTube Search:***   
          - `Result = Query.get_video`      
-         > Returns a **Video ID** according to queries.  
+         > Returns a **Video Object** according to queries.  
          - `Results = Query.get_videos(*limit: int[optional])`      
-         > Returns a list of **VideoIDs** according to queries.
-     - ***Getting channels by query:***      
+         > Returns a list of **Video IDs** according to queries.
+     - ***Getting Channels by YouTube Search:***      
          - `Result = Query.get_channel`      
-         > Returns a **Channel ID** according to queries.  
+         > Returns a **Channel Object** according to queries.  
          - `Results = Query.get_channels(*limit: int[optional])`      
          > Returns a list of **Channel IDs** according to queries.
  - **Creating an instance of Video Data:**
