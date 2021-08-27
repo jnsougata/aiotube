@@ -1,7 +1,8 @@
 # Ditch YouTube API (BETA)           
  **DYA** ( *Ditch YouTube API* ) is a package created to power the user with YouTube Data API functionality **without any API Key**
 
- # How to use?     
+ - **Got questions? Having issues? Join [Discord](https://discord.gg/YAFGAaMrTC)**
+ - # How to use?     
  - **Installation:** 
    - `pip install dya`            
  - **Importing DYA:** 
@@ -21,7 +22,8 @@
    - `playlists`   
     > Returns a List containing ordered paired **[ Name, ID ]** of public playlists' ***List***      
  - Or, you can use **independent attributes** to get channel info:
-     - `name` Returns **Name** of the channel or **None**       
+     - `name` Returns **Name** of the channel or **None**
+     - `id` Returns **ID** of the channel or **None**
      - `subs` Returns **Sub-count** of the channel or **None**    
      - `total_views` Returns total number of **Views** of the channel or **None**       
      - `joined_at` Returns channel **creation date** or **None**   
@@ -65,10 +67,11 @@
          - `extras = Extra()`
 		
          **Attributes:**
-       - `Trending` -- Returns **#1 Trending** video id [String]
-       - `Music` -- Returns fresh trending ***Music*** video ids [List]
-       - `Gaming` -- Returns fresh trending ***Gaming*** video ids [List]
-       - `News` -- Returns fresh trending ***News*** video ids [List]
-       - `Live` -- Returns fresh trending ***Live*** video ids [List]
-       - `Learning` -- Returns fresh trending ***Educational*** video ids [List]
-       - `Sports` -- Returns fresh trending ***Sports*** video ids [List]
+       - `Trending` - Returns **#1 Trending** Video Object
+       - `Music` - Returns fresh trending list of ***Music*** Video Objects [ Video Object ]
+       - `Gaming` - Returns fresh trending list of ***Gaming*** Video Objects [ Video Object ]
+       - `News` - Returns fresh trending list of ***News*** Video Objects [ Video Object ]
+       - `Live` - Returns fresh trending list of ***Live*** Video Objects [ Video Object ]
+       - `Learning` - Returns fresh trending list of ***Educational*** Video Objects [ Video Object ]
+       - `Sports` - Returns fresh trending list of ***Sports*** Video Objects [ Video Object ]
+
