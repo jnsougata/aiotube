@@ -38,12 +38,12 @@
          - `Result = Query.get_video`      
          > Returns a **Video Object** according to queries.  
          - `Results = Query.get_videos(*limit: int[optional])`      
-         > Returns a list of **Video IDs** according to queries.
+         > Returns a list of **Video Objects** according to queries.
      - ***Getting Channels by YouTube Search:***      
          - `Result = Query.get_channel`      
          > Returns a **Channel Object** according to queries.  
          - `Results = Query.get_channels(*limit: int[optional])`      
-         > Returns a list of **Channel IDs** according to queries.
+         > Returns a list of **Channel Objects** according to queries.
  - **Creating an instance of Video Data:**
    - `vid = Video("Video ID")`
  - **Attributes:** 
