@@ -16,7 +16,7 @@
    - `stream_link`   
     > Returns ***URL*** of Livestream if channel is Live at that moment, otherwise returns ***None***            
    - `latest_uploads(*limit)`   
-    > Returns ***List*** of Latest Uploaded **Video ID** if channel is not live at that moment, otherwise returns ***None***    
+    > Returns ***List*** of latest uploaded videos as **Video Object** if channel is not live at that moment, otherwise returns ***None***    
    - `info`
     > Returns a **Dict** of the **About** of the YouTube Channel. Dict contains channel ***Name***, ***Subscribers***, ***Description***, ***TotalViews***, ***JoiningDate***, ***Country***, ***CustomURL***  , ***Channel Avatar Banner***,  ***Channel Banner URL***
    - `playlists`   
