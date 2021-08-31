@@ -19,7 +19,7 @@
    - `latest_uploads(*limit)`   
     > Returns ***List*** of latest uploaded videos as **Video Object** if channel is not live at that moment, otherwise returns ***None***    
    - `info`
-    > Returns a **Dict** of the **About** of the YouTube Channel. Dict contains channel ***Name***, ***Subscribers***, ***Description***, ***Total Views***, ***Joining Date***, ***Country***, ***CustomURL***, ***Channel Avatar URL***,  ***Channel Banner URL***
+    > Returns a **Dict** of the **About** of the YouTube Channel. Dict contains channel ***Name***, ***Subscribers***, ***Description***, ***Total Views***, ***Joining Date***, ***Country***, ***Custom URL***, ***Channel Avatar URL***,  ***Channel Banner URL***
    - `playlists`   
     > Returns a List containing ordered paired **[ Name, ID ]** of public playlists' ***List***      
  - Or, you can use **independent attributes** to get channel info:
