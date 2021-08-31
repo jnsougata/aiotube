@@ -1,4 +1,4 @@
-# Ditch YouTube API (BETA)           
+# Ditch YouTubeAPI          
  **DYA** ( *Ditch YouTube API* ) is a package created to power the user with YouTube Data API functionality **without any API Key**
 
  - **Got questions? Having issues? Join [Discord](https://discord.gg/YAFGAaMrTC)**
