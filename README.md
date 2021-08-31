@@ -1,7 +1,8 @@
-# Ditch YouTubeAPI          
+# Ditch YouTube API (BETA)           
  **DYA** ( *Ditch YouTube API* ) is a package created to power the user with YouTube Data API functionality **without any API Key**
 
  - **Got questions? Having issues? Join [Discord](https://discord.gg/YAFGAaMrTC)**
+ 
  - # How to use?     
  - **Installation:** 
    - `pip install dya`            
@@ -18,7 +19,7 @@
    - `latest_uploads(*limit)`   
     > Returns ***List*** of latest uploaded videos as **Video Object** if channel is not live at that moment, otherwise returns ***None***    
    - `info`
-    > Returns a **Dict** of the **About** of the YouTube Channel. Dict contains channel ***Name***, ***Subscribers***, ***Description***, ***TotalViews***, ***JoiningDate***, ***Country***, ***CustomURL***  , ***Channel Avatar URL***,  ***Channel Banner URL***
+    > Returns a **Dict** of the **About** of the YouTube Channel. Dict contains channel ***Name***, ***Subscribers***, ***Description***, ***Total Views***, ***Joining Date***, ***Country***, ***CustomURL***  , ***Channel Avatar URL***,  ***Channel Banner URL***
    - `playlists`   
     > Returns a List containing ordered paired **[ Name, ID ]** of public playlists' ***List***      
  - Or, you can use **independent attributes** to get channel info:
@@ -74,4 +75,3 @@
        - `Live` - Returns fresh trending list of ***Live*** Video Objects [ Video Object ]
        - `Learning` - Returns fresh trending list of ***Educational*** Video Objects [ Video Object ]
        - `Sports` - Returns fresh trending list of ***Sports*** Video Objects [ Video Object ]
-
