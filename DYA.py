@@ -44,7 +44,6 @@ class Channel:
     def id(self):
         raw = urllib.request.urlopen(self.url).read().decode()
         idList = re.findall(r"channelId\":\"(.*?)\"",raw)
-
         return idList[0] if len(idList) != 0 else None
 
 
@@ -52,27 +51,22 @@ class Channel:
     def live(self):
         raw = urllib.request.urlopen(self.url).read().decode()
         isLive = re.findall(r"\"text\":\" (\S{8})", raw)
-
         return True if len(isLive) != 0 and isLive[0] == 'watching' else False
 
 
     @property
     def stream_link(self):
         raw = urllib.request.urlopen(self.url).read().decode()
-        if self.live:
-            VideoIDList = re.findall(r"watch\?v=(\S{11})", raw)
-            return f'https://www.youtube.com/watch?v={VideoIDList[0]}'
-        else:
-            return None
+        videoIdList = re.findall(r"watch\?v=(\S{11})", raw)
+        return f'https://www.youtube.com/watch?v={videoIdList[0]}' if self.live and len(videoIdList) != 0 else None
+
 
 
     def latest_uploads(self, limit:int = None):
         QUERY = f'{self.url}/videos'
         raw = urllib.request.urlopen(QUERY).read().decode()
-
         VideoIDList = re.findall(r"watch\?v=(\S{11})", raw)
         pureList = Purify(limit=limit, iterable=VideoIDList)
-
         return [Video(item) for item in pureList]
 
 
@@ -128,7 +122,6 @@ class Channel:
     def name(self):
         name_raw = urllib.request.urlopen(f'{self.url}/about').read().decode()
         titleList = re.findall(r"channelMetadataRenderer\":{\"title\":\"(.*?)\"", name_raw)
-
         return titleList[0] if len(titleList) != 0 else None
 
 
@@ -139,7 +132,6 @@ class Channel:
         subList = re.findall(
             r"\"subscriberCountText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?)\"",raw
         )
-
         return subList[0][:-12] if len(subList) != 0 else None
 
 
@@ -148,7 +140,6 @@ class Channel:
         QUERY = f'{self.url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
         totViewList = re.findall(r"\"viewCountText\":{\"simpleText\":\"(.*?)\"}", raw)
-
         return totViewList[0][:-6] if len(totViewList) != 0 else None
 
 
@@ -157,7 +148,6 @@ class Channel:
         QUERY = f'{self.url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
         joinList = re.findall(r"{\"text\":\"Joined \"},{\"text\":\"(.*?)\"}", raw)
-
         return joinList[0] if len(joinList) != 0 else None
 
 
@@ -166,7 +156,6 @@ class Channel:
         QUERY = f'{self.url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
         countryList = re.findall(r"\"country\":{\"simpleText\":\"(.*?)\"}", raw)
-
         return countryList[0] if len(countryList) != 0 else None
 
 
@@ -175,10 +164,8 @@ class Channel:
         QUERY = f'{self.url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
         customList = re.findall(r"\"canonicalChannelUrl\":\"(.*?)\"", raw)
-
         customURL = customList[0] if len(customList) != 0 else None
-
-        return customURL if '/channel/' not in customURL else None
+        return customURL if '/channel/' not in customURL and customURL is not None else None
 
 
     @property
@@ -186,7 +173,6 @@ class Channel:
         QUERY = f'{self.url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
         descList = re.findall(r"{\"description\":{\"simpleText\":\"(.*?)\"}", raw)
-
         return descList[0] if len(descList) != 0 else None
 
 
@@ -195,7 +181,6 @@ class Channel:
         QUERY = f'{self.url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
         data = re.findall("height\":88},{\"url\":\"(.*?)\"",raw)
-
         return data[0] if len(data) != 0 else None
 
 
@@ -204,7 +189,6 @@ class Channel:
         QUERY = f'{self.url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
         data = re.findall(r"width\":1280,\"height\":351},{\"url\":\"(.*?)\"",raw)
-
         return data[0] if len(data) != 0 else None
 
 
@@ -213,7 +197,6 @@ class Channel:
         url = f'{self.url}/playlists'
         raw = urllib.request.urlopen(url).read().decode()
         idList = re.findall(r"{\"url\":\"/playlist\?list=(.*?)\"", raw)
-
         return [Playlist(item) for item in list(set(idList))]
 
 
@@ -254,16 +237,13 @@ class Playlist:
     def name(self):
         url = f'https://www.youtube.com/playlist?list={self.id}'
         raw = urllib.request.urlopen(url).read().decode()
-
         name_data = re.findall(r"{\"title\":\"(.*?)\"", raw)
-
         return name_data[0] if len(name_data) != 0 else None
 
 
     @property
     def url(self):
         url = f'https://www.youtube.com/playlist?list={self.id}'
-
         return url
 
 
@@ -271,29 +251,22 @@ class Playlist:
     def video_count(self):
         url = f'https://www.youtube.com/playlist?list={self.id}'
         raw = urllib.request.urlopen(url).read().decode()
-
         video_count = re.findall(r"stats\":\[{\"runs\":\[{\"text\":\"(.*?)\"", raw)
-
         return video_count[0] if len(video_count) != 0 else None
 
 
     def videos(self, limit:int = None):
         url = f'https://www.youtube.com/playlist?list={self.id}'
         raw = urllib.request.urlopen(url).read().decode()
-
         videos = list(set(re.findall(r"videoId\":\"(.*?)\"", raw)))
-
         pure = Purify(limit=limit, iterable=videos)
-
         return [Video(item) for item in pure]
 
     @property
     def thumbnail(self):
         url = f'https://www.youtube.com/playlist?list={self.id}'
         raw = urllib.request.urlopen(url).read().decode()
-
         thumbnails = re.findall(r"og:image\" content=\"(.*?)\?", raw)
-
         return thumbnails[0] if len(thumbnails) != 0 else None
 
 
