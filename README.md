@@ -1,13 +1,17 @@
 # Ditch YouTube API (BETA)             
  **DYA** ( *Ditch YouTube API* ) is a package created to power the user with YouTube Data API functionality **without any API Key**  
   
+  
  - **Got questions? Having issues? Join [Discord](https://discord.gg/YAFGAaMrTC)**  
  - # How to use?       
  - **Installation:**   
-- `pip install dya`              
+   - `pip install dya`
+ 
+
  - **Importing DYA:**   
-- `from DYA import Search, Video, Channel`              
-              
+   - `from DYA import Search, Video, Channel`              
+
+             
  - **Create an instance of target YouTube Channel:**   
 	- `channel = Channel("Channel ID/ Custom ID/ URL/ CustomURL") `  
 	       
@@ -38,6 +42,7 @@
 		- `description` Returns the **Description** of the channel or **None**     
 		- `avatar_url` Returns the **Avatar URL** of the channel or **None**     
 		- `banner_url` Returns the **Banner URL** of the channel or **None**    
+
 	
  - **Create an instance of YouTube Search:**        
 	- `Query = Search(*keywords: str)`  
@@ -56,6 +61,7 @@
 	- ***Get Playlists by YouTube Search:***   
 		- `Result = Query.get_playlist`        
 			> Returns a **Playlist Object** according to queries. 
+
 			
  - **Create an instance of Video Data:**  
 	 - `vid = Video("Video ID")`  
@@ -75,8 +81,8 @@
 	   - `tags` -- Returns **list of tags** of the video        
 	   - `thumbnail` - Returns **HQ Thumbnail** of the video  
    
+
 - **Create an instance of Playlist Data:**
-	
 
     - `playlist = Playlist("playlist_id")`
     
@@ -90,8 +96,8 @@
 		- `video_count` - Returns the **video count** of the playlist or **None**
 		- `videos` - Returns the list of **Video Objects** of the videos in playlist or **None**
 		- `thumbnail` - Returns the **Thumbnail** of the playlist or **None**
+		
 
-  
  - **Create an instance of YouTube Extras:**  
 	 - `extras = Extra()`  
 	 
