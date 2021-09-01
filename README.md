@@ -9,32 +9,38 @@
 - `from DYA import Search, Video, Channel`              
               
  - **Create an instance of target YouTube Channel:**   
-- `channel = Channel("Channel ID/ Custom ID/ URL/ CustomURL") `         
- - **Attributes:**     
-- `live`    
-> Returns ***True*** if channel is Live at that moment, Otherwise returns ***False***              
- - `stream_link`     
-> Returns ***URL*** of Livestream if channel is Live at that moment, otherwise returns ***None***              
- - `latest_uploads(*limit)`     
-> Returns ***List*** of latest uploaded videos as **Video Object** if channel is not live at that moment, otherwise returns ***None***      
- - `info`  
- > Returns a **Dict** of the **About** of the YouTube Channel. Dict contains channel ***Name***, ***Subscribers***, ***Description***, ***Total Views***, ***Joining Date***, ***Country***, ***Custom URL***, ***Channel Avatar URL***,  ***Channel Banner URL***  
-  - `playlists`     
-> Returns a list of **Playlist Objects** of the channel's public playlists        
-- Or, you can use **independent attributes** to get channel info:  
-	 - `name` Returns **Name** of the channel or **None**  
-	 - `id` Returns **ID** of the channel or **None**  
-	 - `subs` Returns **Sub-count** of the channel or **None**      
-	- `total_views` Returns total number of **Views** of the channel or **None**         
-	- `joined_at` Returns channel **creation date** or **None**     
-	- `country` Returns the generic country of the channel or **None**    
-	- `custom_url` Returns the **Custom URL** of the channel or **None**     
-	- `description` Returns the **Description** of the channel or **None**     
-	- `avatar_url` Returns the **Avatar URL** of the channel or **None**     
-	- `banner_url` Returns the **Banner URL** of the channel or **None**    
+	- `channel = Channel("Channel ID/ Custom ID/ URL/ CustomURL") `  
+	       
+	 - **Attributes:**     
+		- `live`    
+			> Returns ***True*** if channel is Live at that moment, Otherwise returns ***False***  
+			            
+		 - `stream_link`     
+			> Returns ***URL*** of Livestream if channel is Live at that moment, otherwise returns ***None***  
+			            
+		 - `latest_uploads(*limit)`     
+			> Returns ***List*** of latest uploaded videos as **Video Object** if channel is not live at that moment, otherwise returns ***None***
+			      
+		 - `info`  
+			 > Returns a **Dict** of the **About** of the YouTube Channel. Dict contains channel ***Name***, ***Subscribers***, ***Description***, ***Total Views***, ***Joining Date***, ***Country***, ***Custom URL***, ***Channel Avatar URL***,  ***Channel Banner URL***  
+			 
+		  - `playlists`     
+			> Returns a list of **Playlist Objects** of the channel's public playlists  
+			      
+	- Or, you can use **independent attributes** to get channel info:  
+		 - `name` Returns **Name** of the channel or **None**  
+		 - `id` Returns **ID** of the channel or **None**  
+		 - `subs` Returns **Sub-count** of the channel or **None**      
+		- `total_views` Returns total number of **Views** of the channel or **None**         
+		- `joined_at` Returns channel **creation date** or **None**     
+		- `country` Returns the generic country of the channel or **None**    
+		- `custom_url` Returns the **Custom URL** of the channel or **None**     
+		- `description` Returns the **Description** of the channel or **None**     
+		- `avatar_url` Returns the **Avatar URL** of the channel or **None**     
+		- `banner_url` Returns the **Banner URL** of the channel or **None**    
 	
  - **Create an instance of YouTube Search:**        
-- `Query = Search(*keywords: str)`  
+	- `Query = Search(*keywords: str)`  
    - ***Get Videos by YouTube Search:***     
 		- `Result = Query.get_video`        
 			> Returns a **Video Object** according to queries.    
