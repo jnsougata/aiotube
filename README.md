@@ -99,7 +99,7 @@
 		
 
  - **Create an instance of YouTube Extras:**  
-	 - `extras = Extra()`  
+	 - `extras = Extras()`  
 	 
 	  **Attributes:**  
 	- `Trending` - Returns **#1 Trending** Video Object  
