@@ -1,8 +1,7 @@
 
 # Ditch YouTubeAPI (BETA)               
  **DYA** ( *Ditch YouTube API* ) is a package created to power the user with YouTube Data API functionality **without any API Key**    
-    
- - **GitHub [Repo](https://github.com/jnsougata/Ditch-YouTube-API)**    
+
     
  - **Got questions? Having issues? Join [Discord](https://discord.gg/YAFGAaMrTC)**    
  - # How to use?         
@@ -76,16 +75,16 @@
         > Returns a **Dict** of video information [ **title**, **views**, **likes**, **dislikes**, **channel_id, duration**, **upload_date**, **thumbnail**, **tags** ]      
       
     - Or, you can use **independent attributes** to get each info individually:          
-        - `title` - Returns **title** of the video          
-        - `views` - Returns **view count** of the video          
-        - `likes` - Returns total **likes** on the video          
-        - `dislikes` - Returns total **dislikes** on the video          
-        - `channel_id` - Returns **channel id** from which the video belong          
-        - `duration` - Returns **duration** of the video          
-        - `upload_date` - Returns **date of upload** of the video          
-        - `description` - Returns whole **description** of the video          
-        - `tags` - Returns **list of tags** of the video          
-        - `thumbnail` - Returns **HQ Thumbnail** of the video    
+        - `title`  Returns **title** of the video          
+        - `views`  Returns **view count** of the video          
+        - `likes`  Returns total **likes** on the video          
+        - `dislikes`  Returns total **dislikes** on the video          
+        - `channel_id`  Returns **channel id** from which the video belong          
+        - `duration`  Returns **duration** of the video          
+        - `upload_date`  Returns **date of upload** of the video          
+        - `description`  Returns whole **description** of the video          
+        - `tags`  Returns **list of tags** of the video          
+        - `thumbnail`  Returns **HQ Thumbnail** of the video    
      
   
 - **Create an instance of Playlist Data:**  
@@ -98,21 +97,21 @@
         > Returns a **dict** of info of the playlist containing playlist's ***name***, ***video count***, ***video ids***, ***thumbnail URL***, ***playlist URL***  
 			
      - Or, you can use **independent attributes** to get each info individually:  
-       - `name` - Returns the **name** of the playlist or **None**  
-       - `url` - Returns the **URL** of the playlist or **None**  
-       - `video_count` - Returns the **video count** of the playlist or **None**  
-       - `videos` - Returns the list of **Video Objects** of the videos in playlist or **None**  
-       - `videos_as_url` - Returns list of **Video URLs** of the playlist
-       - `thumbnail` - Returns the **Thumbnail** of the playlist or **None**  
+       - `name`  Returns the **name** of the playlist or **None**  
+       - `url`  Returns the **URL** of the playlist or **None**  
+       - `video_count`  Returns the **video count** of the playlist or **None**  
+       - `videos`  Returns the list of **Video Objects** of the videos in playlist or **None**  
+       - `videos_as_url`  Returns list of **Video URLs** of the playlist
+       - `thumbnail`  Returns the **Thumbnail** of the playlist or **None**  
     
 - **Create an instance of YouTube Extras:**    
    - `extras = Extras()`    
       
    - **Attributes:**    
-      - `Trending` - Returns **#1 Trending** Video Object    
-      - `Music` - Returns fresh trending list of ***Music*** Video Objects [ Video Object ]    
-      - `Gaming` - Returns fresh trending list of ***Gaming*** Video Objects [ Video Object ]    
-      - `News` - Returns fresh trending list of ***News*** Video Objects [ Video Object ]    
-      - `Live` - Returns fresh trending list of ***Live*** Video Objects [ Video Object ]    
-      - `Learning` - Returns fresh trending list of ***Educational*** Video Objects [ Video Object ]    
-      - `Sports` - Returns fresh trending list of ***Sports*** Video Objects [ Video Object ]
+      - `Trending`  Returns **#1 Trending** Video Object    
+      - `Music`  Returns fresh trending list of ***Music*** Video Objects [ Video Object ]    
+      - `Gaming`  Returns fresh trending list of ***Gaming*** Video Objects [ Video Object ]    
+      - `News`  Returns fresh trending list of ***News*** Video Objects [ Video Object ]    
+      - `Live`  Returns fresh trending list of ***Live*** Video Objects [ Video Object ]    
+      - `Learning`  Returns fresh trending list of ***Educational*** Video Objects [ Video Object ]    
+      - `Sports`  Returns fresh trending list of ***Sports*** Video Objects [ Video Object ]
