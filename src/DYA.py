@@ -29,16 +29,22 @@ import re
 import urllib.request
 
 
-def Purify(limit:int, iterable:list):
-    pure = list(set(iterable))
-    if limit is None:
-        return pure
-    else:
-        num = int(len(pure) - limit)
-        try:
-            return pure[:-num]
-        except IndexError:
-            return pure
+
+
+def _cap(limit:int, iterable:list):
+    """
+    Restricts element repetition in iterable
+
+    :param int limit: number of desired elements
+    :param iterable: list or tuple of elements
+    :return: modified list (consider limit)
+
+    """
+
+    converted = list(set(iterable))
+    num = int(len(converted) - limit) if limit is not None and limit < len(converted) else 0
+    return converted[:-num] if num > 0 else converted
+
 
 
 
@@ -123,7 +129,7 @@ class Channel:
         QUERY = f'{self.url}/videos'
         raw = urllib.request.urlopen(QUERY).read().decode()
         VideoIDList = re.findall(r"watch\?v=(\S{11})", raw)
-        pureList = Purify(limit=limit, iterable=VideoIDList)
+        pureList = _cap(limit=limit, iterable=VideoIDList)
         return [Video(item) for item in pureList]
 
 
@@ -446,7 +452,7 @@ class Playlist:
         url = f'https://www.youtube.com/playlist?list={self.id}'
         raw = urllib.request.urlopen(url).read().decode()
         videos = list(set(re.findall(r"videoId\":\"(.*?)\"", raw)))
-        pure = Purify(limit=limit, iterable=videos)
+        pure = _cap(limit=limit, iterable=videos)
         return [Video(item) for item in pure]
 
     def videos_as_url(self, limit:int = None):
@@ -457,7 +463,7 @@ class Playlist:
 
         """
 
-        playList = Purify(limit=limit, iterable = self.videos())
+        playList = _cap(limit=limit, iterable = self.videos())
         return [video.url for video in playList]
 
 
@@ -728,7 +734,7 @@ class Search:
         """
 
         query = keyword.replace(" ", '+')
-        self.parser = query
+        self._parser = query
 
 
     @property
@@ -739,7 +745,7 @@ class Search:
 
         """
 
-        url = f'https://www.youtube.com/results?search_query={self.parser}&sp=EgIQAQ%253D%253D'
+        url = f'https://www.youtube.com/results?search_query={self._parser}&sp=EgIQAQ%253D%253D'
         raw = urllib.request.urlopen(url).read().decode()
         video_ids = re.findall(r"\"videoId\":\"(.*?)\"", raw)
         return Video(video_ids[0]) if len(video_ids) != 0 else None
@@ -753,7 +759,7 @@ class Search:
 
         """
 
-        url = f'https://www.youtube.com/results?search_query={self.parser}&sp=EgIQAg%253D%253D'
+        url = f'https://www.youtube.com/results?search_query={self._parser}&sp=EgIQAg%253D%253D'
         raw = urllib.request.urlopen(url).read().decode()
         channel_ids = re.findall(r"{\"channelId\":\"(.*?)\"", raw)
         return Channel(channel_ids[0]) if len(channel_ids) != 0 else None
@@ -767,10 +773,10 @@ class Search:
 
         """
 
-        url = f'https://www.youtube.com/results?search_query={self.parser}&sp=EgIQAQ%253D%253D'
+        url = f'https://www.youtube.com/results?search_query={self._parser}&sp=EgIQAQ%253D%253D'
         raw = urllib.request.urlopen(url).read().decode()
         raw_ids = re.findall(r"\"videoId\":\"(.*?)\"", raw)
-        pureList = Purify(limit=limit, iterable=raw_ids)
+        pureList = _cap(limit=limit, iterable=raw_ids)
         return [Video(item) for item in pureList] if len(pureList) != 0 else None
 
 
@@ -782,10 +788,10 @@ class Search:
 
         """
 
-        url = f'https://www.youtube.com/results?search_query={self.parser}&sp=EgIQAg%253D%253D'
+        url = f'https://www.youtube.com/results?search_query={self._parser}&sp=EgIQAg%253D%253D'
         raw = urllib.request.urlopen(url).read().decode()
         raw_ids = re.findall(r"{\"channelId\":\"(.*?)\"", raw)
-        pureList = Purify(limit=limit, iterable=raw_ids)
+        pureList = _cap(limit=limit, iterable=raw_ids)
         return [Channel(item) for item in pureList] if len(pureList) != 0 else None
 
 
@@ -797,7 +803,7 @@ class Search:
 
         """
 
-        url = f'https://www.youtube.com/results?search_query={self.parser}&sp=EgIQAw%253D%253D'
+        url = f'https://www.youtube.com/results?search_query={self._parser}&sp=EgIQAw%253D%253D'
         raw = urllib.request.urlopen(url=url).read().decode()
         found = re.findall(r"playlistId\":\"(.*?)\"", raw)
         return Playlist(found[0]) if len(found) != 0 else None
@@ -811,10 +817,10 @@ class Search:
 
         """
 
-        url = f'https://www.youtube.com/results?search_query={self.parser}&sp=EgIQAw%253D%253D'
+        url = f'https://www.youtube.com/results?search_query={self._parser}&sp=EgIQAw%253D%253D'
         raw = urllib.request.urlopen(url=url).read().decode()
         found = re.findall(r"playlistId\":\"(.*?)\"", raw)
-        pure = Purify(limit = limit, iterable = found)
+        pure = _cap(limit = limit, iterable = found)
         return [Playlist(item) for item in pure] if len(pure) != 0 else None
 
 
