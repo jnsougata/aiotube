@@ -18,6 +18,11 @@ def Purify(limit:int, iterable:list):
 class Channel:
 
     def __init__(self,ChanneLid:str):
+        """
+
+        :param str ChanneLid: any of channel id, url , custom url
+
+        """
 
         if len(ChanneLid) < 30:
             try:
@@ -42,6 +47,12 @@ class Channel:
 
     @property
     def id(self):
+        """
+
+        :return: the ID of the channel
+
+        """
+
         raw = urllib.request.urlopen(self.url).read().decode()
         idList = re.findall(r"channelId\":\"(.*?)\"",raw)
         return idList[0] if len(idList) != 0 else None
@@ -49,6 +60,12 @@ class Channel:
 
     @property
     def live(self):
+        """
+
+        :return: Bool of channel is Live Status
+
+        """
+
         raw = urllib.request.urlopen(self.url).read().decode()
         isLive = re.findall(r"\"text\":\" (\S{8})", raw)
         return True if len(isLive) != 0 and isLive[0] == 'watching' else False
@@ -56,6 +73,12 @@ class Channel:
 
     @property
     def stream_link(self):
+        """
+
+        :return: channel's ongoing  livestream url
+
+        """
+
         raw = urllib.request.urlopen(self.url).read().decode()
         videoIdList = re.findall(r"watch\?v=(\S{11})", raw)
         return f'https://www.youtube.com/watch?v={videoIdList[0]}' if self.live and len(videoIdList) != 0 else None
@@ -63,6 +86,13 @@ class Channel:
 
 
     def latest_uploads(self, limit:int = None):
+        """
+
+        :param int limit: number of videos user wants from channel's latest upload
+        :return: a list of < video objects > for each latest uploaded video (consider limit)
+
+        """
+
         QUERY = f'{self.url}/videos'
         raw = urllib.request.urlopen(QUERY).read().decode()
         VideoIDList = re.findall(r"watch\?v=(\S{11})", raw)
@@ -72,6 +102,25 @@ class Channel:
 
     @property
     def info(self):
+        """
+
+        :return: a dict containing channel info
+
+        dict = {
+            'name':name,
+            'id':id,
+            'subscribers':subs,
+            'total_views': totalView,
+            'joined_at':joinDate,
+            'country':country,
+            'url':self.url,
+            'custom_url':customURl,
+            'avatar_url':avatar,
+            'banner_url':banner
+            }
+
+        """
+
         QUERY = f'{self.url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
 
@@ -120,6 +169,12 @@ class Channel:
 
     @property
     def name(self):
+        """
+
+        :return: name of the channel or None
+
+        """
+
         name_raw = urllib.request.urlopen(f'{self.url}/about').read().decode()
         titleList = re.findall(r"channelMetadataRenderer\":{\"title\":\"(.*?)\"", name_raw)
         return titleList[0] if len(titleList) != 0 else None
@@ -127,6 +182,12 @@ class Channel:
 
     @property
     def subs(self):
+        """
+
+        :return: total number of subscribers the channel has or None
+
+        """
+
         QUERY = f'{self.url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
         subList = re.findall(
@@ -137,6 +198,12 @@ class Channel:
 
     @property
     def total_views(self):
+        """
+
+        :return: total number of views the channel got or None
+
+        """
+
         QUERY = f'{self.url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
         totViewList = re.findall(r"\"viewCountText\":{\"simpleText\":\"(.*?)\"}", raw)
@@ -145,6 +212,12 @@ class Channel:
 
     @property
     def joined_at(self):
+        """
+
+        :return: the channel creation date or None
+
+        """
+
         QUERY = f'{self.url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
         joinList = re.findall(r"{\"text\":\"Joined \"},{\"text\":\"(.*?)\"}", raw)
@@ -153,6 +226,12 @@ class Channel:
 
     @property
     def country(self):
+        """
+
+        :return: the name of the country from where the channel is or None
+
+        """
+
         QUERY = f'{self.url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
         countryList = re.findall(r"\"country\":{\"simpleText\":\"(.*?)\"}", raw)
@@ -161,6 +240,12 @@ class Channel:
 
     @property
     def custom_url(self):
+        """
+
+        :return: the custom url of the channel or None
+
+        """
+
         QUERY = f'{self.url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
         customList = re.findall(r"\"canonicalChannelUrl\":\"(.*?)\"", raw)
@@ -170,6 +255,12 @@ class Channel:
 
     @property
     def description(self):
+        """
+
+        :return: the existing description of the channel
+
+        """
+
         QUERY = f'{self.url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
         descList = re.findall(r"{\"description\":{\"simpleText\":\"(.*?)\"}", raw)
@@ -178,6 +269,12 @@ class Channel:
 
     @property
     def avatar_url(self):
+        """
+
+        :return: logo url of the channel
+
+        """
+
         QUERY = f'{self.url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
         data = re.findall("height\":88},{\"url\":\"(.*?)\"",raw)
@@ -186,6 +283,12 @@ class Channel:
 
     @property
     def banner_url(self):
+        """
+
+        :return: banner url of the channel
+
+        """
+
         QUERY = f'{self.url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
         data = re.findall(r"width\":1280,\"height\":351},{\"url\":\"(.*?)\"",raw)
@@ -194,6 +297,12 @@ class Channel:
 
     @property
     def playlists(self):
+        """
+
+        :return: a list if < playlist object > for each public playlist the channel has
+
+        """
+
         url = f'{self.url}/playlists'
         raw = urllib.request.urlopen(url).read().decode()
         idList = re.findall(r"{\"url\":\"/playlist\?list=(.*?)\"", raw)
@@ -203,28 +312,54 @@ class Channel:
 
 class Playlist:
     def __init__(self, playlist_id:str):
-        self.id = playlist_id
+        """
+
+        :param str playlist_id: the id of the playlist
+
+        """
+
+        if 'youtube.com' in playlist_id:
+            self.id = re.findall(r'=(.*)',playlist_id)[0]
+        else:
+            self.id = playlist_id
 
     @property
     def info(self):
+        """
+
+        :return: a dict containing playlist info
+
+        dict = {
+                'name': name,
+                'url': url,
+                'video_count':video_count,
+                'videos': videos,
+                'thumbnail':thumb,
+            }
+
+        """
+
         try:
             url = f'https://www.youtube.com/playlist?list={self.id}'
             raw = urllib.request.urlopen(url).read().decode()
 
             name_data = re.findall(r"{\"title\":\"(.*?)\"",raw)
+            name = name_data[0] if len(name_data) != 0 else None
 
-            video_count = re.findall(r"stats\":\[{\"runs\":\[{\"text\":\"(.*?)\"",raw)
+            video_count_data = re.findall(r"stats\":\[{\"runs\":\[{\"text\":\"(.*?)\"",raw)
+            video_count = video_count_data[0] if len(video_count_data) != 0 else None
 
             thumbnails = re.findall(r"og:image\" content=\"(.*?)\?", raw)
+            thumb = thumbnails[0] if len(thumbnails) != 0 else None
 
             videos = list(set(re.findall(r"videoId\":\"(.*?)\"", raw)))
 
             data_dict = {
-                'name': name_data[0] if len(name_data) != 0 else None,
+                'name': name,
                 'url': url,
-                'video_count':video_count[0] if len(video_count) != 0 else None,
+                'video_count':video_count,
                 'videos': videos,
-                'thumbnail':thumbnails[0] if len(thumbnails) != 0 else None,
+                'thumbnail':thumb,
             }
 
             return data_dict
@@ -235,6 +370,12 @@ class Playlist:
 
     @property
     def name(self):
+        """
+
+        :return: the name of the playlist
+
+        """
+
         url = f'https://www.youtube.com/playlist?list={self.id}'
         raw = urllib.request.urlopen(url).read().decode()
         name_data = re.findall(r"{\"title\":\"(.*?)\"", raw)
@@ -243,12 +384,24 @@ class Playlist:
 
     @property
     def url(self):
+        """
+
+        :return: url of the playlist
+
+        """
+
         url = f'https://www.youtube.com/playlist?list={self.id}'
         return url
 
 
     @property
     def video_count(self):
+        """
+
+        :return: total number of videos in that playlist
+
+        """
+
         url = f'https://www.youtube.com/playlist?list={self.id}'
         raw = urllib.request.urlopen(url).read().decode()
         video_count = re.findall(r"stats\":\[{\"runs\":\[{\"text\":\"(.*?)\"", raw)
@@ -256,6 +409,13 @@ class Playlist:
 
 
     def videos(self, limit:int = None):
+        """
+
+        :param int limit: number of videos the user want from the playlist
+        :return: list of < video objects > for each video in the playlist (consider limit)
+
+        """
+
         url = f'https://www.youtube.com/playlist?list={self.id}'
         raw = urllib.request.urlopen(url).read().decode()
         videos = list(set(re.findall(r"videoId\":\"(.*?)\"", raw)))
@@ -263,12 +423,25 @@ class Playlist:
         return [Video(item) for item in pure]
 
     def videos_as_url(self, limit:int = None):
+        """
+
+        :param int limit: number of video urls the user want from the playlist
+        :return: list of urls for each video in the playlist (consider limit)
+
+        """
+
         playList = Purify(limit=limit, iterable = self.videos())
         return [video.url for video in playList]
 
 
     @property
     def thumbnail(self):
+        """
+
+        :return: url of the thumbnail of the playlist
+
+        """
+
         url = f'https://www.youtube.com/playlist?list={self.id}'
         raw = urllib.request.urlopen(url).read().decode()
         thumbnails = re.findall(r"og:image\" content=\"(.*?)\?", raw)
@@ -279,6 +452,12 @@ class Playlist:
 class Video:
 
     def __init__(self, videoId:str):
+        """
+
+        :param videoId: video id or the url of the video
+
+        """
+
         if len(videoId) > 15:
 
             if 'watch?v=' in videoId:
@@ -296,6 +475,12 @@ class Video:
 
     @property
     def title(self):
+        """
+
+        :return: the title of the video
+
+        """
+
         raw = urllib.request.urlopen(self.url).read().decode()
         data = re.findall(r"\"title\":\"(.*?)\"", raw)
         return data[0] if len(data) != 0 else None
@@ -303,6 +488,12 @@ class Video:
 
     @property
     def views(self):
+        """
+
+        :return: total views the video got so far
+
+        """
+
         raw = urllib.request.urlopen(self.url).read().decode()
         data = re.findall(
             r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"", raw
@@ -312,6 +503,12 @@ class Video:
 
     @property
     def likes(self):
+        """
+
+        :return: total likes the video got so far
+
+        """
+
         raw = urllib.request.urlopen(self.url).read().decode()
         data = re.findall(r"\"label\":\"(.*?) likes\"", raw)
         return data[0] if len(data) != 0 else None
@@ -319,6 +516,12 @@ class Video:
 
     @property
     def dislikes(self):
+        """
+
+        :return: total dislikes the video got so far
+
+        """
+
         raw = urllib.request.urlopen(self.url).read().decode()
         data = re.findall(
             r"DISLIKE\"},\"defaultText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) dislikes\"",
@@ -329,6 +532,12 @@ class Video:
 
     @property
     def duration(self):
+        """
+
+        :return: total duration of  the video in milliseconds
+
+        """
+
         raw = urllib.request.urlopen(self.url).read().decode()
         data = re.findall(r"approxDurationMs\":\"(.*?)\"",raw)
         return f'{data[0]}ms' if len(data) != 0 else None
@@ -336,6 +545,12 @@ class Video:
 
     @property
     def upload_date(self):
+        """
+
+        :return: the date on which the video has been uploaded
+
+        """
+
         raw = urllib.request.urlopen(self.url).read().decode()
         data = re.findall(r"uploadDate\":\"(.*?)\"",raw)
         return data[0] if len(data) != 0 else None
@@ -343,6 +558,12 @@ class Video:
 
     @property
     def channel_id(self):
+        """
+
+        :return: the id of the channel from which the video belongs
+
+        """
+
         raw = urllib.request.urlopen(self.url).read().decode()
         data = re.findall(r"channelIds\":\[\"(.*?)\"",raw)
         return data[0] if len(data) != 0 else None
@@ -350,6 +571,12 @@ class Video:
 
     @property
     def description(self):
+        """
+
+        :return: description provided with the video
+
+        """
+
         raw = urllib.request.urlopen(self.url).read().decode()
         data = re.findall(r"shortDescription\":\"(.*)\",\"isCrawlable",raw)
         return data[0] if len(data) != 0 else None
@@ -357,6 +584,12 @@ class Video:
 
     @property
     def thumbnail(self):
+        """
+
+        :return: url of the thumbnail of the video
+
+        """
+
         raw = urllib.request.urlopen(self.url).read().decode()
         data = re.findall(
             r"playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\"",
@@ -367,6 +600,12 @@ class Video:
 
     @property
     def tags(self):
+        """
+
+        :return: list of tags used in video meta-data
+
+        """
+
         raw = urllib.request.urlopen(self.url).read().decode()
         data = re.findall(r"<meta name=\"keywords\" content=\"(.*?)\">",raw)
         return data[0].split(',') if len(data) != 0 else None
@@ -374,6 +613,27 @@ class Video:
 
     @property
     def info(self):
+        """
+
+        :return: dict containing the the whole info of the video
+
+        dict = {
+
+            'title':title_data,
+            'id':self.id,
+            'views':views_data,
+            'likes':likes_data,
+            'dislikes':dislikes_data,
+            'channel_id':id_data,
+            'duration':duration_data,
+            'upload_date':date_data,
+            'thumbnail':thumb_data,
+            'tags':tags,
+            'url':self.url,
+            'description': desc_data
+        }
+        """
+
         raw = urllib.request.urlopen(self.url).read().decode()
 
         title_data = re.findall(r"\"title\":\"(.*?)\"", raw)
@@ -434,12 +694,24 @@ class Video:
 class Search:
 
     def __init__(self,keyword:str):
+        """
+
+        :param str keyword: the keyword to be searched
+
+        """
+
         query = keyword.replace(" ", '+')
         self.parser = query
 
 
     @property
     def get_video(self):
+        """
+
+        :return: < video object > regarding the query
+
+        """
+
         url = f'https://www.youtube.com/results?search_query={self.parser}&sp=EgIQAQ%253D%253D'
         raw = urllib.request.urlopen(url).read().decode()
         video_ids = re.findall(r"\"videoId\":\"(.*?)\"", raw)
@@ -448,6 +720,12 @@ class Search:
 
     @property
     def get_channel(self):
+        """
+
+        :return: < channel object > regarding the query
+
+        """
+
         url = f'https://www.youtube.com/results?search_query={self.parser}&sp=EgIQAg%253D%253D'
         raw = urllib.request.urlopen(url).read().decode()
         channel_ids = re.findall(r"{\"channelId\":\"(.*?)\"", raw)
@@ -455,6 +733,13 @@ class Search:
 
 
     def get_videos(self, limit: int = None):
+        """
+
+        :param int limit: total number of videos to be searched
+        :return: list of < video object > of each video regarding the query (consider limit)
+
+        """
+
         url = f'https://www.youtube.com/results?search_query={self.parser}&sp=EgIQAQ%253D%253D'
         raw = urllib.request.urlopen(url).read().decode()
         raw_ids = re.findall(r"\"videoId\":\"(.*?)\"", raw)
@@ -463,6 +748,13 @@ class Search:
 
 
     def get_channels(self,limit:int = None):
+        """
+
+        :param int limit: total number of channels to be searched
+        :return: list of < channel object > of each video regarding the query (consider limit)
+
+        """
+
         url = f'https://www.youtube.com/results?search_query={self.parser}&sp=EgIQAg%253D%253D'
         raw = urllib.request.urlopen(url).read().decode()
         raw_ids = re.findall(r"{\"channelId\":\"(.*?)\"", raw)
@@ -472,6 +764,12 @@ class Search:
 
     @property
     def get_playlist(self):
+        """
+
+        :return: < playlist object > regarding the query
+
+        """
+
         url = f'https://www.youtube.com/results?search_query={self.parser}&sp=EgIQAw%253D%253D'
         raw = urllib.request.urlopen(url=url).read().decode()
         found = re.findall(r"playlistId\":\"(.*?)\"", raw)
@@ -479,6 +777,13 @@ class Search:
 
 
     def get_playlists(self, limit:int = None):
+        """
+
+        :param int limit: total playlists be searched
+        :return: list of < playlist object > of each playlist regarding the query (consider limit)
+
+        """
+
         url = f'https://www.youtube.com/results?search_query={self.parser}&sp=EgIQAw%253D%253D'
         raw = urllib.request.urlopen(url=url).read().decode()
         found = re.findall(r"playlistId\":\"(.*?)\"", raw)
@@ -494,6 +799,12 @@ class Extras:
 
     @property
     def Trending(self):
+        """
+
+        :return: < video object > of #1 on trending video
+
+        """
+
         url = f'https://www.youtube.com/feed/trending'
         raw = urllib.request.urlopen(url).read().decode()
         data = re.findall(r"videoId\":\"(.*?)\"", raw)
@@ -502,6 +813,12 @@ class Extras:
 
     @property
     def Music(self):
+        """
+
+        :return: list of < video object > of trending music videos
+
+        """
+
         url = f'https://www.youtube.com/feed/music'
         raw = urllib.request.urlopen(url).read().decode()
         data = re.findall(r"videoId\":\"(.*?)\"", raw)
@@ -510,6 +827,12 @@ class Extras:
 
     @property
     def Gaming(self):
+        """
+
+        :return: list of < video object > of trending gaming videos
+
+        """
+
         url = f'https://www.youtube.com/gaming'
         raw = urllib.request.urlopen(url).read().decode()
         data = re.findall(r"videoId\":\"(.*?)\"", raw)
@@ -517,6 +840,12 @@ class Extras:
 
     @property
     def News(self):
+        """
+
+        :return: list of < video object > of trending news videos
+
+        """
+
         url = f'https://www.youtube.com/news'
         raw = urllib.request.urlopen(url).read().decode()
         data = re.findall(r"videoId\":\"(.*?)\"", raw)
@@ -524,6 +853,12 @@ class Extras:
 
     @property
     def Live(self):
+        """
+
+        :return: list of < video object > of trending livestreams
+
+        """
+
         url = f'https://www.youtube.com/live'
         raw = urllib.request.urlopen(url).read().decode()
         data = re.findall(r"videoId\":\"(.*?)\"", raw)
@@ -531,6 +866,12 @@ class Extras:
 
     @property
     def Learning(self):
+        """
+
+        :return: list of < video object > of trending educational videos
+
+        """
+
         url = f'https://www.youtube.com/learning'
         raw = urllib.request.urlopen(url).read().decode()
         data = re.findall(r"videoId\":\"(.*?)\"", raw)
@@ -539,6 +880,11 @@ class Extras:
 
     @property
     def Sports(self):
+        """
+
+        :return: list of < video object > of trending sports videos
+
+        """
         url = f'https://www.youtube.com/sports'
         raw = urllib.request.urlopen(url).read().decode()
         data = re.findall(r"videoId\":\"(.*?)\"", raw)
