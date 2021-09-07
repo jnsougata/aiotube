@@ -27,11 +27,12 @@ SOFTWARE.
 
 import re
 import urllib.request
+from collections import OrderedDict
 
 
 
 
-def _cap(limit:int, iterable:list):
+def _filter(iterable:list, limit:int = None):
     """
     Restricts element repetition in iterable
 
@@ -41,7 +42,7 @@ def _cap(limit:int, iterable:list):
 
     """
 
-    converted = list(set(iterable))
+    converted = list(OrderedDict.fromkeys(iterable))
     num = int(len(converted) - limit) if limit is not None and limit < len(converted) else 0
     return converted[:-num] if num > 0 else converted
 
@@ -129,7 +130,7 @@ class Channel:
         QUERY = f'{self.url}/videos'
         raw = urllib.request.urlopen(QUERY).read().decode()
         VideoIDList = re.findall(r"watch\?v=(\S{11})", raw)
-        pureList = _cap(limit=limit, iterable=VideoIDList)
+        pureList = _filter(limit=limit, iterable=VideoIDList)
         return [Video(item) for item in pureList]
 
 
@@ -339,7 +340,7 @@ class Channel:
         url = f'{self.url}/playlists'
         raw = urllib.request.urlopen(url).read().decode()
         idList = re.findall(r"{\"url\":\"/playlist\?list=(.*?)\"", raw)
-        return [Playlist(item) for item in list(set(idList))]
+        return [Playlist(item) for item in _filter(idList)]
 
 
 
@@ -355,6 +356,7 @@ class Playlist:
             self.id = re.findall(r'=(.*)',playlist_id)[0]
         else:
             self.id = playlist_id
+
 
     @property
     def info(self):
@@ -372,33 +374,30 @@ class Playlist:
 
         """
 
-        try:
-            url = f'https://www.youtube.com/playlist?list={self.id}'
-            raw = urllib.request.urlopen(url).read().decode()
 
-            name_data = re.findall(r"{\"title\":\"(.*?)\"",raw)
-            name = name_data[0] if len(name_data) != 0 else None
+        url = f'https://www.youtube.com/playlist?list={self.id}'
+        raw = urllib.request.urlopen(url).read().decode()
 
-            video_count_data = re.findall(r"stats\":\[{\"runs\":\[{\"text\":\"(.*?)\"",raw)
-            video_count = video_count_data[0] if len(video_count_data) != 0 else None
+        name_data = re.findall(r"{\"title\":\"(.*?)\"",raw)
+        name = name_data[0] if len(name_data) != 0 else None
 
-            thumbnails = re.findall(r"og:image\" content=\"(.*?)\?", raw)
-            thumb = thumbnails[0] if len(thumbnails) != 0 else None
+        video_count_data = re.findall(r"stats\":\[{\"runs\":\[{\"text\":\"(.*?)\"",raw)
+        video_count = video_count_data[0] if len(video_count_data) != 0 else None
 
-            videos = list(set(re.findall(r"videoId\":\"(.*?)\"", raw)))
+        thumbnails = re.findall(r"og:image\" content=\"(.*?)\?", raw)
+        thumb = thumbnails[0] if len(thumbnails) != 0 else None
 
-            data_dict = {
-                'name': name,
-                'url': url,
-                'video_count':video_count,
-                'videos': videos,
-                'thumbnail':thumb,
-            }
+        videos = _filter(re.findall(r"videoId\":\"(.*?)\"", raw))
 
-            return data_dict
+        data_dict = {
+            'name': name,
+            'url': url,
+            'video_count':video_count,
+            'videos': videos,
+            'thumbnail':thumb,
+        }
 
-        except:
-            return None
+        return data_dict
 
 
     @property
@@ -451,20 +450,9 @@ class Playlist:
 
         url = f'https://www.youtube.com/playlist?list={self.id}'
         raw = urllib.request.urlopen(url).read().decode()
-        videos = list(set(re.findall(r"videoId\":\"(.*?)\"", raw)))
-        pure = _cap(limit=limit, iterable=videos)
+        videos = re.findall(r"videoId\":\"(.*?)\"", raw)
+        pure = _filter(limit=limit, iterable=videos)
         return [Video(item) for item in pure]
-
-    def videos_as_url(self, limit:int = None):
-        """
-
-        :param int limit: number of video urls the user want from the playlist
-        :return: list of urls for each video in the playlist (consider limit)
-
-        """
-
-        playList = _cap(limit=limit, iterable = self.videos())
-        return [video.url for video in playList]
 
 
     @property
@@ -670,6 +658,7 @@ class Video:
         raw = urllib.request.urlopen(self.url).read().decode()
 
         title_data = re.findall(r"\"title\":\"(.*?)\"", raw)
+        title = title_data[0] if len(title_data) != 0 else None
 
         v_data = re.findall(
             r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"", raw
@@ -707,7 +696,7 @@ class Video:
         tags = tags_data_list[0].split(',') if len(tags_data_list) != 0 else None
 
         infoDict = {
-            'title':title_data,
+            'title':title,
             'id':self.id,
             'views':views_data,
             'likes':likes_data,
@@ -776,7 +765,7 @@ class Search:
         url = f'https://www.youtube.com/results?search_query={self._parser}&sp=EgIQAQ%253D%253D'
         raw = urllib.request.urlopen(url).read().decode()
         raw_ids = re.findall(r"\"videoId\":\"(.*?)\"", raw)
-        pureList = _cap(limit=limit, iterable=raw_ids)
+        pureList = _filter(limit=limit, iterable=raw_ids)
         return [Video(item) for item in pureList] if len(pureList) != 0 else None
 
 
@@ -791,7 +780,7 @@ class Search:
         url = f'https://www.youtube.com/results?search_query={self._parser}&sp=EgIQAg%253D%253D'
         raw = urllib.request.urlopen(url).read().decode()
         raw_ids = re.findall(r"{\"channelId\":\"(.*?)\"", raw)
-        pureList = _cap(limit=limit, iterable=raw_ids)
+        pureList = _filter(limit=limit, iterable=raw_ids)
         return [Channel(item) for item in pureList] if len(pureList) != 0 else None
 
 
@@ -820,7 +809,7 @@ class Search:
         url = f'https://www.youtube.com/results?search_query={self._parser}&sp=EgIQAw%253D%253D'
         raw = urllib.request.urlopen(url=url).read().decode()
         found = re.findall(r"playlistId\":\"(.*?)\"", raw)
-        pure = _cap(limit = limit, iterable = found)
+        pure = _filter(limit = limit, iterable = found)
         return [Playlist(item) for item in pure] if len(pure) != 0 else None
 
 
@@ -855,7 +844,7 @@ class Extras:
         url = f'https://www.youtube.com/feed/music'
         raw = urllib.request.urlopen(url).read().decode()
         data = re.findall(r"videoId\":\"(.*?)\"", raw)
-        return [Video(item) for item in list(set(data))] if len(data) != 0 else None
+        return [Video(item) for item in _filter(data)] if len(data) != 0 else None
 
 
     @property
@@ -869,7 +858,7 @@ class Extras:
         url = f'https://www.youtube.com/gaming'
         raw = urllib.request.urlopen(url).read().decode()
         data = re.findall(r"videoId\":\"(.*?)\"", raw)
-        return [Video(item) for item in list(set(data))] if len(data) != 0 else None
+        return [Video(item) for item in _filter(data)] if len(data) != 0 else None
 
     @property
     def News(self):
@@ -882,7 +871,7 @@ class Extras:
         url = f'https://www.youtube.com/news'
         raw = urllib.request.urlopen(url).read().decode()
         data = re.findall(r"videoId\":\"(.*?)\"", raw)
-        return [Video(item) for item in list(set(data))] if len(data) != 0 else None
+        return [Video(item) for item in _filter(data)] if len(data) != 0 else None
 
     @property
     def Live(self):
@@ -895,7 +884,7 @@ class Extras:
         url = f'https://www.youtube.com/live'
         raw = urllib.request.urlopen(url).read().decode()
         data = re.findall(r"videoId\":\"(.*?)\"", raw)
-        return [Video(item) for item in list(set(data))] if len(data) != 0 else None
+        return [Video(item) for item in _filter(data)] if len(data) != 0 else None
 
     @property
     def Learning(self):
@@ -908,7 +897,7 @@ class Extras:
         url = f'https://www.youtube.com/learning'
         raw = urllib.request.urlopen(url).read().decode()
         data = re.findall(r"videoId\":\"(.*?)\"", raw)
-        return [Video(item) for item in list(set(data))] if len(data) != 0 else None
+        return [Video(item) for item in _filter(data)] if len(data) != 0 else None
 
 
     @property
@@ -921,4 +910,4 @@ class Extras:
         url = f'https://www.youtube.com/sports'
         raw = urllib.request.urlopen(url).read().decode()
         data = re.findall(r"videoId\":\"(.*?)\"", raw)
-        return [Video(item) for item in list(set(data))] if len(data) != 0 else None
+        return [Video(item) for item in _filter(data)] if len(data) != 0 else None
