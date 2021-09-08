@@ -4,7 +4,11 @@
 
     
  - **Got questions? Having issues? Join [Discord](https://discord.gg/YAFGAaMrTC)**    
- - # How to use?         
+ - # How to use?
+ - [**Detailed Documents**](https://verified.gitbook.io/dya-py/)
+
+	OR
+          
  - **Installation:**     
     - `pip install dya`  
     
