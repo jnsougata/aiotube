@@ -21,10 +21,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-
-
-
-
 import re
 import urllib.request
 from collections import OrderedDict
@@ -41,12 +37,23 @@ def _filter(iterable:list, limit:int = None):
     :return: modified list (consider limit)
 
     """
-
+    lim = limit if limit is not None else 0
     converted = list(OrderedDict.fromkeys(iterable))
-    num = int(len(converted) - limit) if limit is not None and limit < len(converted) else 0
-    return converted[:-num] if num > 0 else converted
+    return converted[:-len(converted) + lim] if len(converted) > len(converted) - lim > 0 else converted
 
 
+def _duration(seconds: int):
+
+    """
+    :param seconds: duration to be converted
+    :return: a duration string with 00h 00m 00s format
+
+    """
+
+    dur_hour = int(seconds // 3600)
+    dur_min = int((seconds % 3600) // 60)
+    dur_sec = int(seconds - (3600 * dur_hour) - (60 * dur_min))
+    return f'{dur_hour}h {dur_min}m {dur_sec}s'
 
 
 class Channel:
@@ -561,7 +568,8 @@ class Video:
 
         raw = urllib.request.urlopen(self.url).read().decode()
         data = re.findall(r"approxDurationMs\":\"(.*?)\"",raw)
-        return f'{data[0]}ms' if len(data) != 0 else None
+
+        return _duration(int(int(data[0])/1000)) if len(data) != 0 else None
 
 
     @property
@@ -675,7 +683,7 @@ class Video:
         dislikes_data = dislikes_data_list[0] if len(dislikes_data_list) != 0 else None
 
         duration_data_list = re.findall(r"approxDurationMs\":\"(.*?)\"", raw)
-        duration_data = duration_data_list[0] if len(duration_data_list) != 0 else None
+        duration_data = _duration(int(int(duration_data_list[0])/1000)) if len(duration_data_list) != 0 else None
 
         date_data_list = re.findall(r"uploadDate\":\"(.*?)\"", raw)
         date_data = date_data_list[0] if len(date_data_list) != 0 else None
@@ -769,7 +777,7 @@ class Search:
         return [Video(item) for item in pureList] if len(pureList) != 0 else None
 
 
-    def get_channels(self,limit:int = None):
+    def get_channels(self, limit:int = None):
         """
 
         :param int limit: total number of channels to be searched
