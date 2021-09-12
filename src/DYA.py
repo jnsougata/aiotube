@@ -28,6 +28,7 @@ from collections import OrderedDict
 
 
 
+
 def _filter(iterable:list, limit:int = None):
     """
     Restricts element repetition in iterable
@@ -54,6 +55,14 @@ def _duration(seconds: int):
     dur_min = int((seconds % 3600) // 60)
     dur_sec = int(seconds - (3600 * dur_hour) - (60 * dur_min))
     return f'{dur_hour}h {dur_min}m {dur_sec}s'
+
+
+def _parser(kw:str):
+    query = kw.replace(" ", '+')
+    return query
+
+
+
 
 
 class Channel:
@@ -586,7 +595,7 @@ class Video:
 
 
     @property
-    def channel_id(self):
+    def parent(self):
         """
 
         :return: the id of the channel from which the video belongs
@@ -653,168 +662,163 @@ class Video:
             'views':views_data,
             'likes':likes_data,
             'dislikes':dislikes_data,
-            'channel_id':id_data,
             'duration':duration_data,
-            'upload_date':date_data,
+            'parent':id_data,
+            'uploaded':date_data,
+            'url':self.url,
             'thumbnail':thumb_data,
             'tags':tags,
-            'url':self.url,
             'description': desc_data
         }
         """
 
         raw = urllib.request.urlopen(self.url).read().decode()
 
-        title_data = re.findall(r"\"title\":\"(.*?)\"", raw)
-        title = title_data[0] if len(title_data) != 0 else None
 
+        title_data = re.findall(r"\"title\":\"(.*?)\"", raw)
+        
+        
         v_data = re.findall(
             r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"", raw
         )
-        views_data = v_data[0] if len(v_data) != 0 else None
 
         likes_data_list = re.findall(r"\"label\":\"(.*?) likes\"", raw)
-        likes_data = likes_data_list[0] if len(likes_data_list) != 0 else None
+        
 
         dislikes_data_list = re.findall(
             r"DISLIKE\"},\"defaultText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) dislikes\"",
             raw
         )
-        dislikes_data = dislikes_data_list[0] if len(dislikes_data_list) != 0 else None
+        
 
         duration_data_list = re.findall(r"approxDurationMs\":\"(.*?)\"", raw)
-        duration_data = _duration(int(int(duration_data_list[0])/1000)) if len(duration_data_list) != 0 else None
 
-        date_data_list = re.findall(r"uploadDate\":\"(.*?)\"", raw)
-        date_data = date_data_list[0] if len(date_data_list) != 0 else None
 
         id_data_list = re.findall(r"channelIds\":\[\"(.*?)\"", raw)
-        id_data = id_data_list[0] if len(id_data_list) != 0 else None
 
-        desc_data_list = re.findall(r"shortDescription\":\"(.*)\",\"isCrawlable", raw)
-        desc_data = desc_data_list[0] if len(desc_data_list) != 0 else None
+
+        date_data_list = re.findall(r"uploadDate\":\"(.*?)\"", raw)
+
 
         thumb_data_list = re.findall(
             r"playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\"",
             raw
         )
-        thumb_data = thumb_data_list[0] if len(thumb_data_list) != 0 else None
 
         tags_data_list = re.findall(r"<meta name=\"keywords\" content=\"(.*?)\">", raw)
-        tags = tags_data_list[0].split(',') if len(tags_data_list) != 0 else None
+    
+
+        desc_data_list = re.findall(r"shortDescription\":\"(.*)\",\"isCrawlable", raw)
 
         infoDict = {
-            'title':title,
-            'id':self.id,
-            'views':views_data,
-            'likes':likes_data,
-            'dislikes':dislikes_data,
-            'channel_id':id_data,
-            'duration':duration_data,
-            'upload_date':date_data,
-            'thumbnail':thumb_data,
-            'tags':tags,
+            'title': title_data[0] if len(title_data) != 0 else None,
+            'id': self.id,
+            'views': v_data[0] if len(v_data) != 0 else None,
+            'likes': likes_data_list[0] if len(likes_data_list) != 0 else None,
+            'dislikes': dislikes_data_list[0] if len(dislikes_data_list) != 0 else None,
+            'duration': _duration(int(int(duration_data_list[0])/1000)) if len(duration_data_list) != 0 else None,
+            'parent': id_data_list[0] if len(id_data_list) != 0 else None,
+            'uploaded': date_data_list[0] if len(date_data_list) != 0 else None,
             'url':self.url,
-            'description': desc_data
+            'thumbnail': thumb_data_list[0] if len(thumb_data_list) != 0 else None,
+            'tags':tags_data_list[0].split(',') if len(tags_data_list) != 0 else None,
+            'description': desc_data_list[0] if len(desc_data_list) != 0 else None
         }
+
         return infoDict
 
-    
+
 
 class Search:
 
-    def __init__(self,keyword:str):
-        """
-
-        :param str keyword: the keyword to be searched
-
-        """
-
-        query = keyword.replace(" ", '+')
-        self._parser = query
+    def __init__(self):
+        pass
 
 
-    @property
-    def get_video(self):
+    @classmethod
+    def video(cls, keywords:str):
         """
 
         :return: < video object > regarding the query
 
         """
 
-        url = f'https://www.youtube.com/results?search_query={self._parser}&sp=EgIQAQ%253D%253D'
+        url = f'https://www.youtube.com/results?search_query={_parser(keywords)}&sp=EgIQAQ%253D%253D'
         raw = urllib.request.urlopen(url).read().decode()
         video_ids = re.findall(r"\"videoId\":\"(.*?)\"", raw)
         return Video(video_ids[0]) if len(video_ids) != 0 else None
 
 
-    @property
-    def get_channel(self):
+    @classmethod
+    def channel(cls, keywords:str):
         """
 
         :return: < channel object > regarding the query
 
         """
 
-        url = f'https://www.youtube.com/results?search_query={self._parser}&sp=EgIQAg%253D%253D'
+        url = f'https://www.youtube.com/results?search_query={_parser(keywords)}&sp=EgIQAg%253D%253D'
         raw = urllib.request.urlopen(url).read().decode()
         channel_ids = re.findall(r"{\"channelId\":\"(.*?)\"", raw)
         return Channel(channel_ids[0]) if len(channel_ids) != 0 else None
 
 
-    def get_videos(self, limit: int = None):
+    @classmethod
+    def videos(cls, keywords:str, limit: int = None):
         """
-
+        :param str keywords: query to be searched on YouTube
         :param int limit: total number of videos to be searched
         :return: list of < video object > of each video regarding the query (consider limit)
 
         """
 
-        url = f'https://www.youtube.com/results?search_query={self._parser}&sp=EgIQAQ%253D%253D'
+        url = f'https://www.youtube.com/results?search_query={_parser(keywords)}&sp=EgIQAQ%253D%253D'
         raw = urllib.request.urlopen(url).read().decode()
         raw_ids = re.findall(r"\"videoId\":\"(.*?)\"", raw)
         pureList = _filter(limit=limit, iterable=raw_ids)
         return [Video(item) for item in pureList] if len(pureList) != 0 else None
 
 
-    def get_channels(self, limit:int = None):
+    @classmethod
+    def channels(cls, keywords:str, limit: int = None):
         """
-
+        :param str keywords: query to be searched on YouTube
         :param int limit: total number of channels to be searched
         :return: list of < channel object > of each video regarding the query (consider limit)
 
         """
 
-        url = f'https://www.youtube.com/results?search_query={self._parser}&sp=EgIQAg%253D%253D'
+        url = f'https://www.youtube.com/results?search_query={_parser(keywords)}&sp=EgIQAg%253D%253D'
         raw = urllib.request.urlopen(url).read().decode()
         raw_ids = re.findall(r"{\"channelId\":\"(.*?)\"", raw)
         pureList = _filter(limit=limit, iterable=raw_ids)
         return [Channel(item) for item in pureList] if len(pureList) != 0 else None
 
 
-    @property
-    def get_playlist(self):
+    @classmethod
+    def playlist(cls, keywords:str):
         """
 
         :return: < playlist object > regarding the query
 
         """
 
-        url = f'https://www.youtube.com/results?search_query={self._parser}&sp=EgIQAw%253D%253D'
+        url = f'https://www.youtube.com/results?search_query={_parser(keywords)}&sp=EgIQAw%253D%253D'
         raw = urllib.request.urlopen(url=url).read().decode()
         found = re.findall(r"playlistId\":\"(.*?)\"", raw)
         return Playlist(found[0]) if len(found) != 0 else None
 
 
-    def get_playlists(self, limit:int = None):
+    @classmethod
+    def playlists(cls, keywords:str, limit: int = None):
         """
-
+        :param str keywords: query to be searched on YouTube
         :param int limit: total playlists be searched
         :return: list of < playlist object > of each playlist regarding the query (consider limit)
 
         """
 
-        url = f'https://www.youtube.com/results?search_query={self._parser}&sp=EgIQAw%253D%253D'
+        url = f'https://www.youtube.com/results?search_query={_parser(keywords)}&sp=EgIQAw%253D%253D'
         raw = urllib.request.urlopen(url=url).read().decode()
         found = re.findall(r"playlistId\":\"(.*?)\"", raw)
         pure = _filter(limit = limit, iterable = found)
@@ -919,3 +923,4 @@ class Extras:
         raw = urllib.request.urlopen(url).read().decode()
         data = re.findall(r"videoId\":\"(.*?)\"", raw)
         return [Video(item) for item in _filter(data)] if len(data) != 0 else None
+
