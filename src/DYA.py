@@ -21,11 +21,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+
 import re
 import urllib.request
 from collections import OrderedDict
-
-
 
 
 
@@ -64,10 +63,10 @@ def _parser(kw:str):
 
 
 
-
 class Channel:
 
     def __init__(self,ChanneLid:str):
+
         """
 
         :param str ChanneLid: any of channel id, url , custom url
@@ -97,6 +96,7 @@ class Channel:
 
     @property
     def id(self):
+
         """
 
         :return: the ID of the channel
@@ -110,6 +110,7 @@ class Channel:
 
     @property
     def live(self):
+
         """
 
         :return: Bool of channel is Live Status
@@ -123,6 +124,7 @@ class Channel:
 
     @property
     def stream_link(self):
+
         """
 
         :return: channel's ongoing  livestream url
@@ -136,6 +138,7 @@ class Channel:
 
 
     def latest_uploads(self, limit:int = None):
+
         """
 
         :param int limit: number of videos user wants from channel's latest upload
@@ -152,6 +155,7 @@ class Channel:
 
     @property
     def info(self):
+
         """
 
         :return: a dict containing channel info
@@ -203,22 +207,25 @@ class Channel:
         id = channelIds[0] if len(channelIds) != 0 else None
 
         aboutDict = {
+
             'name':name,
             'id':id,
             'subscribers':subs,
             'total_views': totalView,
-            'joined_at':joinDate,
+            'joined':joinDate,
             'country':country,
             'url':self.url,
             'custom_url':customURl,
             'avatar_url':avatar,
-            'banner_url':banner}
+            'banner_url':banner
+        }
 
         return aboutDict
 
 
     @property
     def name(self):
+
         """
 
         :return: name of the channel or None
@@ -231,7 +238,8 @@ class Channel:
 
 
     @property
-    def subs(self):
+    def subscribers(self):
+
         """
 
         :return: total number of subscribers the channel has or None
@@ -248,6 +256,7 @@ class Channel:
 
     @property
     def total_views(self):
+
         """
 
         :return: total number of views the channel got or None
@@ -261,7 +270,8 @@ class Channel:
 
 
     @property
-    def joined_at(self):
+    def joined(self):
+
         """
 
         :return: the channel creation date or None
@@ -276,6 +286,7 @@ class Channel:
 
     @property
     def country(self):
+
         """
 
         :return: the name of the country from where the channel is or None
@@ -290,6 +301,7 @@ class Channel:
 
     @property
     def custom_url(self):
+
         """
 
         :return: the custom url of the channel or None
@@ -305,6 +317,7 @@ class Channel:
 
     @property
     def description(self):
+
         """
 
         :return: the existing description of the channel
@@ -319,6 +332,7 @@ class Channel:
 
     @property
     def avatar_url(self):
+
         """
 
         :return: logo url of the channel
@@ -333,6 +347,7 @@ class Channel:
 
     @property
     def banner_url(self):
+
         """
 
         :return: banner url of the channel
@@ -347,6 +362,7 @@ class Channel:
 
     @property
     def playlists(self):
+
         """
 
         :return: a list if < playlist object > for each public playlist the channel has
@@ -362,6 +378,7 @@ class Channel:
 
 class Playlist:
     def __init__(self, playlist_id:str):
+
         """
 
         :param str playlist_id: the id of the playlist
@@ -374,8 +391,10 @@ class Playlist:
             self.id = playlist_id
 
 
+
     @property
     def info(self):
+
         """
 
         :return: a dict containing playlist info
@@ -390,27 +409,23 @@ class Playlist:
 
         """
 
-
-        url = f'https://www.youtube.com/playlist?list={self.id}'
         raw = urllib.request.urlopen(url).read().decode()
 
         name_data = re.findall(r"{\"title\":\"(.*?)\"",raw)
-        name = name_data[0] if len(name_data) != 0 else None
+        
 
         video_count_data = re.findall(r"stats\":\[{\"runs\":\[{\"text\":\"(.*?)\"",raw)
-        video_count = video_count_data[0] if len(video_count_data) != 0 else None
-
+  
         thumbnails = re.findall(r"og:image\" content=\"(.*?)\?", raw)
-        thumb = thumbnails[0] if len(thumbnails) != 0 else None
-
-        videos = _filter(re.findall(r"videoId\":\"(.*?)\"", raw))
+       
 
         data_dict = {
-            'name': name,
-            'url': url,
-            'video_count':video_count,
-            'videos': videos,
-            'thumbnail':thumb,
+
+            'name': name_data[0] if len(name_data) != 0 else None,
+            'url': f'https://www.youtube.com/playlist?list={self.id}',
+            'video_count': video_count_data[0] if len(video_count_data) != 0 else None,
+            'videos':  _filter(re.findall(r"videoId\":\"(.*?)\"", raw)),
+            'thumbnail': thumbnails[0] if len(thumbnails) != 0 else None,
         }
 
         return data_dict
@@ -418,6 +433,7 @@ class Playlist:
 
     @property
     def name(self):
+
         """
 
         :return: the name of the playlist
@@ -432,6 +448,7 @@ class Playlist:
 
     @property
     def url(self):
+
         """
 
         :return: url of the playlist
@@ -444,6 +461,7 @@ class Playlist:
 
     @property
     def video_count(self):
+
         """
 
         :return: total number of videos in that playlist
@@ -457,6 +475,7 @@ class Playlist:
 
 
     def videos(self, limit:int = None):
+
         """
 
         :param int limit: number of videos the user want from the playlist
@@ -473,6 +492,7 @@ class Playlist:
 
     @property
     def thumbnail(self):
+
         """
 
         :return: url of the thumbnail of the playlist
@@ -489,6 +509,7 @@ class Playlist:
 class Video:
 
     def __init__(self, videoId:str):
+
         """
 
         :param videoId: video id or the url of the video
@@ -510,8 +531,10 @@ class Video:
             self.id = videoId
 
 
+
     @property
     def title(self):
+
         """
 
         :return: the title of the video
@@ -525,6 +548,7 @@ class Video:
 
     @property
     def views(self):
+
         """
 
         :return: total views the video got so far
@@ -540,6 +564,7 @@ class Video:
 
     @property
     def likes(self):
+
         """
 
         :return: total likes the video got so far
@@ -553,6 +578,7 @@ class Video:
 
     @property
     def dislikes(self):
+
         """
 
         :return: total dislikes the video got so far
@@ -569,6 +595,7 @@ class Video:
 
     @property
     def duration(self):
+
         """
 
         :return: total duration of  the video in milliseconds
@@ -583,6 +610,7 @@ class Video:
 
     @property
     def upload_date(self):
+
         """
 
         :return: the date on which the video has been uploaded
@@ -596,6 +624,7 @@ class Video:
 
     @property
     def parent(self):
+
         """
 
         :return: the id of the channel from which the video belongs
@@ -609,6 +638,7 @@ class Video:
 
     @property
     def description(self):
+
         """
 
         :return: description provided with the video
@@ -622,6 +652,7 @@ class Video:
 
     @property
     def thumbnail(self):
+
         """
 
         :return: url of the thumbnail of the video
@@ -638,6 +669,7 @@ class Video:
 
     @property
     def tags(self):
+
         """
 
         :return: list of tags used in video meta-data
@@ -651,6 +683,7 @@ class Video:
 
     @property
     def info(self):
+
         """
 
         :return: dict containing the the whole info of the video
@@ -668,15 +701,13 @@ class Video:
             'url':self.url,
             'thumbnail':thumb_data,
             'tags':tags,
-            'description': desc_data
         }
+        
         """
 
         raw = urllib.request.urlopen(self.url).read().decode()
 
-
         title_data = re.findall(r"\"title\":\"(.*?)\"", raw)
-        
         
         v_data = re.findall(
             r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"", raw
@@ -684,31 +715,23 @@ class Video:
 
         likes_data_list = re.findall(r"\"label\":\"(.*?) likes\"", raw)
         
-
         dislikes_data_list = re.findall(
             r"DISLIKE\"},\"defaultText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) dislikes\"",
             raw
         )
         
-
         duration_data_list = re.findall(r"approxDurationMs\":\"(.*?)\"", raw)
-
 
         id_data_list = re.findall(r"channelIds\":\[\"(.*?)\"", raw)
 
-
         date_data_list = re.findall(r"uploadDate\":\"(.*?)\"", raw)
-
 
         thumb_data_list = re.findall(
             r"playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\"",
             raw
         )
-
         tags_data_list = re.findall(r"<meta name=\"keywords\" content=\"(.*?)\">", raw)
     
-
-        desc_data_list = re.findall(r"shortDescription\":\"(.*)\",\"isCrawlable", raw)
 
         infoDict = {
             'title': title_data[0] if len(title_data) != 0 else None,
@@ -716,13 +739,12 @@ class Video:
             'views': v_data[0] if len(v_data) != 0 else None,
             'likes': likes_data_list[0] if len(likes_data_list) != 0 else None,
             'dislikes': dislikes_data_list[0] if len(dislikes_data_list) != 0 else None,
-            'duration': _duration(int(int(duration_data_list[0])/1000)) if len(duration_data_list) != 0 else None,
             'parent': id_data_list[0] if len(id_data_list) != 0 else None,
+            'duration': _duration(int(int(duration_data_list[0])/1000)) if len(duration_data_list) != 0 else None,
             'uploaded': date_data_list[0] if len(date_data_list) != 0 else None,
             'url':self.url,
             'thumbnail': thumb_data_list[0] if len(thumb_data_list) != 0 else None,
             'tags':tags_data_list[0].split(',') if len(tags_data_list) != 0 else None,
-            'description': desc_data_list[0] if len(desc_data_list) != 0 else None
         }
 
         return infoDict
@@ -735,8 +757,10 @@ class Search:
         pass
 
 
+
     @classmethod
     def video(cls, keywords:str):
+
         """
 
         :return: < video object > regarding the query
@@ -751,6 +775,7 @@ class Search:
 
     @classmethod
     def channel(cls, keywords:str):
+
         """
 
         :return: < channel object > regarding the query
@@ -765,6 +790,7 @@ class Search:
 
     @classmethod
     def videos(cls, keywords:str, limit: int = None):
+
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total number of videos to be searched
@@ -781,6 +807,7 @@ class Search:
 
     @classmethod
     def channels(cls, keywords:str, limit: int = None):
+
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total number of channels to be searched
@@ -797,6 +824,7 @@ class Search:
 
     @classmethod
     def playlist(cls, keywords:str):
+
         """
 
         :return: < playlist object > regarding the query
@@ -811,6 +839,7 @@ class Search:
 
     @classmethod
     def playlists(cls, keywords:str, limit: int = None):
+
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total playlists be searched
@@ -831,8 +860,11 @@ class Extras:
     def __init__(self):
         pass
 
+
+
     @property
     def Trending(self):
+
         """
 
         :return: < video object > of #1 on trending video
@@ -847,6 +879,7 @@ class Extras:
 
     @property
     def Music(self):
+
         """
 
         :return: list of < video object > of trending music videos
@@ -861,6 +894,7 @@ class Extras:
 
     @property
     def Gaming(self):
+
         """
 
         :return: list of < video object > of trending gaming videos
@@ -874,6 +908,7 @@ class Extras:
 
     @property
     def News(self):
+
         """
 
         :return: list of < video object > of trending news videos
@@ -887,6 +922,7 @@ class Extras:
 
     @property
     def Live(self):
+
         """
 
         :return: list of < video object > of trending livestreams
@@ -900,6 +936,7 @@ class Extras:
 
     @property
     def Learning(self):
+
         """
 
         :return: list of < video object > of trending educational videos
@@ -914,6 +951,7 @@ class Extras:
 
     @property
     def Sports(self):
+        
         """
 
         :return: list of < video object > of trending sports videos
@@ -923,4 +961,3 @@ class Extras:
         raw = urllib.request.urlopen(url).read().decode()
         data = re.findall(r"videoId\":\"(.*?)\"", raw)
         return [Video(item) for item in _filter(data)] if len(data) != 0 else None
-
