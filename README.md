@@ -1,14 +1,10 @@
-
 # Ditch YouTubeAPI (BETA)               
- **DYA** ( *Ditch YouTube API* ) is a package created to power the user with YouTube Public Data API functionality without **YouTube Data API v3**    
-
+ **DYA** ( *Ditch YouTube API* ) is a package created to power the user with YouTube Data API functionality **without any API Key**    
+    
+ - [**Detailed Documents**](https://verified.gitbook.io/dya-py/)  
     
  - **Got questions? Having issues? Join [Discord](https://discord.gg/YAFGAaMrTC)**    
- - # How to use?
- - [**Detailed Documents**](https://verified.gitbook.io/dya-py/)
-
-	OR
-          
+ - # How to use?         
  - **Installation:**     
     - `pip install dya`  
     
@@ -28,7 +24,7 @@
       - `latest_uploads(*limit:int [optional])`       
            > Returns ***List*** of latest uploaded videos as **Video Object** if channel is not live at that moment, otherwise returns ***None***  
        - `info`    
-          > Returns a **Dict** of the **About** of the YouTube Channel. Dict contains channel ***Name***, ***Subscribers***, ***Description***, ***Total Views***, ***Joining Date***, ***Country***, ***Custom URL***, ***Channel Avatar URL***,  ***Channel Banner URL***    
+          > Returns a **Dict** of the **About** of the YouTube Channel. Dict contains channel ***Name, Subscribers, Description, Total Views, Joining Date, Country, Custom URL, Channel Avatar URL,  Channel Banner URL***    
             
        - `playlists`       
            > Returns a list of **Playlist Objects** of the channel's public playlists    
@@ -38,59 +34,57 @@
           - `id` Returns **ID** of the channel or **None**    
           - `subs` Returns **Sub-count** of the channel or **None**        
           - `total_views` Returns total number of **Views** of the channel or **None**           
-          - `joined_at` Returns channel **creation date** or **None**       
+          - `joined` Returns channel **creation date** or **None**       
           - `country` Returns the generic country of the channel or **None**      
           - `custom_url` Returns the **Custom URL** of the channel or **None**       
           - `description` Returns the **Description** of the channel or **None**       
           - `avatar_url` Returns the **Avatar URL** of the channel or **None**       
           - `banner_url` Returns the **Banner URL** of the channel or **None**   
  - **Create an instance of YouTube Search:**          
-   - `Query = Search(*keywords: str)`    
+   - `query = Search()`    
 	
     - ***Get Videos by YouTube Search:***       
-       - `Result = Query.get_video`   
+       - `Result = query.video(*keywords: str)`   
 		       
            > Returns a **Video Object** according to queries. 
 			     
-        - `Results = Query.get_videos(*limit:int [optional])`   
+        - `Results = query.videos(*keywords: str, *limit:int [optional])`   
 		        
            > Returns a list of **Video Objects** according to queries.    
            
     - ***Get Channels by YouTube Search:***    
        
-       - `Result = Query.get_channel`          
+       - `Result = query.channel(*keywords: str)`          
             > Returns a **Channel Object** according to queries.     
 		  
-        - `Results = Query.get_channels(*limit:int [optional])`          
+        - `Results = query.channels(*keywords: str, *limit:int [optional])`          
 	 
            > Returns a list of **Channel Objects** according to queries.    
            
     - ***Get Playlists by YouTube Search:***     
-       - `Result = Query.get_playlist`          
+       - `Result = query.playlist(*keywords: str)`          
             > Returns a **Playlist Object** according to queries. 
 		 
-       - `Result = Query.get_playlists(*limit:int [optional])`
+       - `Result = query.playlists(*keywords: str, *limit:int [optional])`
            > Returns a list of **Playlist Objects** according to queries. 
 		 
  - **Create an instance of Video Data:**    
    - `vid = Video("Video ID")`    
     - **Attributes:**     
        - `info`     
-        > Returns a **Dict** of video information [ **title**, **views**, **likes**, **dislikes**, **channel_id, duration**, **upload_date**, **thumbnail**, **tags** ]      
+        > Returns a **Dict** of video information **{ title, views, likes, dislikes, parent, duration, upload_date, thumbnail, tags }** etc.      
       
     - Or, you can use **independent attributes** to get each info individually:          
         - `title`  Returns **title** of the video          
         - `views`  Returns **view count** of the video          
         - `likes`  Returns total **likes** on the video          
         - `dislikes`  Returns total **dislikes** on the video          
-        - `channel_id`  Returns **channel id** from which the video belong          
+        - `parent`  Returns **channel id** from which the video belong          
         - `duration`  Returns **duration** of the video          
-        - `upload_date`  Returns **date of upload** of the video          
-        - `description`  Returns whole **description** of the video          
-        - `tags`  Returns **list of tags** of the video          
-        - `thumbnail`  Returns **HQ Thumbnail** of the video    
-     
-  
+        - `uploaded`  Returns **date of upload** of the video                   
+        - `url` Returns **url** of the video    
+        - `thumbnail`  Returns **HQ Thumbnail** of the video  
+        - `tags`  Returns **list of tags** of the video       
 - **Create an instance of Playlist Data:**  
   
   - `playlist = Playlist("playlist_id")`
@@ -102,10 +96,9 @@
 			
      - Or, you can use **independent attributes** to get each info individually:  
        - `name`  Returns the **name** of the playlist or **None**  
-       - `url`  Returns the **URL** of the playlist or **None**  
+       - `url`  Returns the **URL** of the playlist or **None**
+       - `videos`  Returns the list of **Video Objects** of the videos in playlist or **None**
        - `video_count`  Returns the **video count** of the playlist or **None**  
-       - `videos`  Returns the list of **Video Objects** of the videos in playlist or **None**  
-       - `videos_as_url`  Returns list of **Video URLs** of the playlist
        - `thumbnail`  Returns the **Thumbnail** of the playlist or **None**  
     
 - **Create an instance of YouTube Extras:**    
