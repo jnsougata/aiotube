@@ -62,7 +62,6 @@ def _parser(kw:str):
 
 
 
-
 class Channel:
 
     def __init__(self,ChanneLid:str):
@@ -408,6 +407,8 @@ class Playlist:
             }
 
         """
+
+        url = f'https://www.youtube.com/playlist?list={self.id}'
 
         raw = urllib.request.urlopen(url).read().decode()
 
