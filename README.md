@@ -9,7 +9,7 @@
     - `pip install dya`  
     
  - **Importing DYA:**     
-    - `from DYA import *`   
+    - `from dya import *`   
    
  - **Create an instance of target YouTube Channel:**     
    - `channel = Channel("Channel ID/ Custom ID/ URL/ CustomURL") `    
