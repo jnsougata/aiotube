@@ -5,7 +5,6 @@ import concurrent.futures
 from .__proc__ import _duration
 
 
-
 class Video:
 
     def __init__(self, videoId: str):
@@ -29,8 +28,6 @@ class Video:
         else:
             self.url = f'https://www.youtube.com/watch?v={videoId}'
             self.id = videoId
-
-
 
     @property
     def title(self):
@@ -244,7 +241,7 @@ class Video:
         return infoDict
 
     @classmethod
-    def bulk_title(cls, ObjectList:list):
+    def bulk_title(cls, ObjectList: list):
 
         async def _main():
             with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
@@ -280,7 +277,8 @@ class Video:
                 data = []
                 for response in await asyncio.gather(*futures):
                     pattern = r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\""
-                    data.append(re.findall(pattern, response.read().decode())[0][:-6])
+                    views = re.findall(pattern, response.read().decode())
+                    data.append(views[0][:-6] if len(views) > 0 else None)
             return data
 
         return asyncio.run(_main())
@@ -300,8 +298,9 @@ class Video:
                 ]
                 data = []
                 for response in await asyncio.gather(*futures):
-                    pattern = r"\"label\":\"(.*?) likes\""
-                    data.append(re.findall(pattern, response.read().decode())[0])
+                    pattern = r"label\":\"(.*?) likes\""
+                    likes = re.findall(pattern, response.read().decode())
+                    data.append(likes[0] if len(likes) > 0 else None)
             return data
 
         return asyncio.run(_main())
@@ -322,7 +321,8 @@ class Video:
                 data = []
                 for response in await asyncio.gather(*futures):
                     pattern = r"DISLIKE\"},\"defaultText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) dislikes\""
-                    data.append(re.findall(pattern, response.read().decode())[0])
+                    dislikes = re.findall(pattern, response.read().decode())
+                    data.append(dislikes[0] if len(dislikes) > 0 else None)
             return data
 
         return asyncio.run(_main())
@@ -343,7 +343,7 @@ class Video:
                 data = []
                 for response in await asyncio.gather(*futures):
                     pattern = r"approxDurationMs\":\"(.*?)\""
-                    data.append(_duration(int(int(re.findall(pattern, response.read().decode())[0])/1000)))
+                    data.append(_duration(int(int(re.findall(pattern, response.read().decode())[0]) / 1000)))
             return data
 
         return asyncio.run(_main())
@@ -406,7 +406,8 @@ class Video:
                 data = []
                 for response in await asyncio.gather(*futures):
                     pattern = r"shortDescription\":\"(.*)\",\"isCrawlable"
-                    data.append(re.findall(pattern, response.read().decode())[0])
+                    desc = re.findall(pattern, response.read().decode())
+                    data.append(desc[0] if len(desc) > 0 else None)
             return data
 
         return asyncio.run(_main())
@@ -448,7 +449,8 @@ class Video:
                 data = []
                 for response in await asyncio.gather(*futures):
                     pattern = r"<meta name=\"keywords\" content=\"(.*?)\">"
-                    data.append(re.findall(pattern, response.read().decode())[0].split(','))
+                    tags = re.findall(pattern, response.read().decode())
+                    data.append(tags[0].split(',') if len(tags) > 0 else None)
             return data
 
         return asyncio.run(_main())
