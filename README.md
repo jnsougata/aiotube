@@ -9,7 +9,7 @@
     - `pip install dya`  
     
  - **Importing DYA:**     
-    - `from dya import *`   
+    - `from DYA import *`   
    
  - **Create an instance of target YouTube Channel:**     
    - `channel = Channel("Channel ID/ Custom ID/ URL/ CustomURL") `    
@@ -23,23 +23,24 @@
                        
       - `latest_uploads(*limit:int [optional])`       
            > Returns ***List*** of latest uploaded videos as **Video Object** if channel is not live at that moment, otherwise returns ***None***  
-       - `info`    
-          > Returns a **Dict** of the **About** of the YouTube Channel. Dict contains channel ***Name, Subscribers, Description, Total Views, Joining Date, Country, Custom URL, Channel Avatar URL,  Channel Banner URL***    
+      - `info`    
+         > Returns a **Dict** of the **About** of the YouTube Channel. Dict contains channel ***Name, Subscribers, Description, Total Views, Joining Date, Country, Custom URL, Channel Avatar URL,  Channel Banner URL***    
             
-       - `playlists`       
-           > Returns a list of **Playlist Objects** of the channel's public playlists    
+      - `playlists`       
+          > Returns a list of **Playlist Objects** of the channel's public playlists    
                  
-       - Or, you can use **independent attributes** to get channel info:    
-            - `name` Returns **Name** of the channel or **None**    
-          - `id` Returns **ID** of the channel or **None**    
-          - `subs` Returns **Sub-count** of the channel or **None**        
-          - `total_views` Returns total number of **Views** of the channel or **None**           
-          - `joined` Returns channel **creation date** or **None**       
-          - `country` Returns the generic country of the channel or **None**      
-          - `custom_url` Returns the **Custom URL** of the channel or **None**       
-          - `description` Returns the **Description** of the channel or **None**       
-          - `avatar_url` Returns the **Avatar URL** of the channel or **None**       
-          - `banner_url` Returns the **Banner URL** of the channel or **None**   
+      - Or, you can use **independent attributes** to get channel info:    
+         - `name` Returns **Name** of the channel or **None**
+         - `verified` Returns **True** if the channel is **Verified**
+         - `id` Returns **ID** of the channel or **None**    
+         - `subs` Returns **Sub-count** of the channel or **None**        
+         - `total_views` Returns total number of **Views** of the channel or **None**           
+         - `joined` Returns channel **creation date** or **None**       
+         - `country` Returns the generic country of the channel or **None**      
+         - `custom_url` Returns the **Custom URL** of the channel or **None**       
+         - `description` Returns the **Description** of the channel or **None**       
+         - `avatar_url` Returns the **Avatar URL** of the channel or **None**       
+         - `banner_url` Returns the **Banner URL** of the channel or **None**   
  - **Create an instance of YouTube Search:**          
    - `query = Search()`    
 	
@@ -50,7 +51,7 @@
 			     
         - `Results = query.videos(*keywords: str, *limit:int [optional])`   
 		        
-           > Returns a list of **Video Objects** according to queries.    
+           > Returns a list of **Bulk Video Objects** according to queries.    
            
     - ***Get Channels by YouTube Search:***    
        
@@ -59,14 +60,14 @@
 		  
         - `Results = query.channels(*keywords: str, *limit:int [optional])`          
 	 
-           > Returns a list of **Channel Objects** according to queries.    
+           > Returns a list of **Bulk Channel Objects** according to queries.    
            
     - ***Get Playlists by YouTube Search:***     
        - `Result = query.playlist(*keywords: str)`          
             > Returns a **Playlist Object** according to queries. 
 		 
        - `Result = query.playlists(*keywords: str, *limit:int [optional])`
-           > Returns a list of **Playlist Objects** according to queries. 
+           > Returns a list of **Bulk Playlist Objects** according to queries. 
 		 
  - **Create an instance of Video Data:**    
    - `vid = Video("Video ID")`    
