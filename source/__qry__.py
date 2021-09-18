@@ -3,7 +3,10 @@ import urllib.request
 from .__vid__ import Video
 from .__ch__ import Channel
 from .__plls__ import Playlist
+from .__vidbulk__ import _VideoBulk
+from .__chbulk__ import _ChannelBulk
 from .__proc__ import _parser, _filter
+from .__pllsbulk__ import _PlaylistBulk
 
 
 class Search:
@@ -57,7 +60,7 @@ class Search:
         raw = urllib.request.urlopen(url).read().decode()
         raw_ids = re.findall(r"\"videoId\":\"(.*?)\"", raw)
         pureList = _filter(limit=limit, iterable=raw_ids)
-        return [Video(item) for item in pureList] if len(pureList) != 0 else None
+        return _VideoBulk(pureList) if len(pureList) != 0 else None
 
 
     @classmethod
@@ -74,7 +77,7 @@ class Search:
         raw = urllib.request.urlopen(url).read().decode()
         raw_ids = re.findall(r"{\"channelId\":\"(.*?)\"", raw)
         pureList = _filter(limit=limit, iterable=raw_ids)
-        return [Channel(item) for item in pureList] if len(pureList) != 0 else None
+        return _ChannelBulk(pureList) if len(pureList) != 0 else None
 
 
     @classmethod
@@ -106,4 +109,4 @@ class Search:
         raw = urllib.request.urlopen(url=url).read().decode()
         found = re.findall(r"playlistId\":\"(.*?)\"", raw)
         pure = _filter(limit = limit, iterable = found)
-        return [Playlist(item) for item in pure] if len(pure) != 0 else None
+        return _PlaylistBulk(pure) if len(pure) != 0 else None
