@@ -1,8 +1,12 @@
 import re
+import asyncio
 import urllib.request
 from .__vid__ import Video
-from .__plls__ import Playlist
 from .__proc__ import _filter
+from .__plls__ import Playlist
+from .__hyp__ import _HyperThread
+
+
 
 class Channel:
 
@@ -44,9 +48,16 @@ class Channel:
 
         """
 
+        raw = urllib.request.urlopen(f'{self.url}/about').read().decode()
+        Id = re.search(r"\"channelId\":\"(.*?)\"", raw)
+        return Id.group().replace('"','').replace('channelId:','') if Id else None
+
+
+    @property
+    def verified(self):
         raw = urllib.request.urlopen(self.url).read().decode()
-        idList = re.findall(r"channelId\":\"(.*?)\"",raw)
-        return idList[0] if len(idList) != 0 else None
+        isVerified = re.search(r'label":"Verified', raw)
+        return True if isVerified else False
 
 
     @property
@@ -59,8 +70,8 @@ class Channel:
         """
 
         raw = urllib.request.urlopen(self.url).read().decode()
-        isLive = re.findall(r"\"text\":\" (\S{8})", raw)
-        return True if len(isLive) != 0 and isLive[0] == 'watching' else False
+        isLive = re.search(r'{"text":" watching"}', raw)
+        return True if isLive else False
 
 
     @property
@@ -71,10 +82,12 @@ class Channel:
         :return: channel's ongoing  livestream url
 
         """
-
-        raw = urllib.request.urlopen(self.url).read().decode()
-        videoIdList = re.findall(r"watch\?v=(\S{11})", raw)
-        return f'https://www.youtube.com/watch?v={videoIdList[0]}' if self.live and len(videoIdList) != 0 else None
+        if self.live:
+            raw = urllib.request.urlopen(self.url).read().decode()
+            Id = re.search(r"watch\?v=(.*?)\"", raw).group().replace('watch?v=','').replace('"','')
+            return f'https://www.youtube.com/watch?v={Id}'
+        else:
+            return None
 
 
 
@@ -119,49 +132,40 @@ class Channel:
         QUERY = f'{self.url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
 
-        titleList = re.findall(r"channelMetadataRenderer\":{\"title\":\"(.*?)\"", raw)
-        name = titleList[0] if len(titleList) != 0 else None
+        def _get_data(pattern):
+            data = re.findall(pattern, raw)
+            return data[0] if len(data) > 0 else None
 
-        subList = re.findall(r"\"subscriberCountText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?)\"",raw)
-        subs = subList[0][:-12] if len(subList) != 0 else None
+        patterns = [
 
-        totViewList = re.findall(r"\"viewCountText\":{\"simpleText\":\"(.*?)\"}", raw)
-        totalView = totViewList[0][:-6] if len(totViewList) != 0 else None
+            r"channelMetadataRenderer\":{\"title\":\"(.*?)\"",
+            r"\"subscriberCountText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?)\"",
+            r"\"viewCountText\":{\"simpleText\":\"(.*?)\"}",
+            r"{\"text\":\"Joined \"},{\"text\":\"(.*?)\"}",
+            r"\"country\":{\"simpleText\":\"(.*?)\"}",
+            r"\"canonicalChannelUrl\":\"(.*?)\"",
+            "height\":88},{\"url\":\"(.*?)\"",
+            r"width\":1280,\"height\":351},{\"url\":\"(.*?)\"",
+            r"channelId\":\"(.*?)\""
 
-        joinList = re.findall(r"{\"text\":\"Joined \"},{\"text\":\"(.*?)\"}", raw)
-        joinDate = joinList[0] if len(joinList) != 0 else None
+        ]
 
-        countryList = re.findall(r"\"country\":{\"simpleText\":\"(.*?)\"}", raw)
-        country = countryList[0] if len(countryList) != 0 else None
+        ls = _HyperThread.run(_get_data, patterns)
 
-        customList = re.findall(r"\"canonicalChannelUrl\":\"(.*?)\"", raw)
-        is_customURL = customList[0] if len(customList) != 0 else None
-        customURl = is_customURL if is_customURL is not None and '/channel/' not in is_customURL else None
-
-        avatar_data = re.findall("height\":88},{\"url\":\"(.*?)\"", raw)
-        avatar = avatar_data[0] if len(avatar_data) != 0 else None
-
-        banner_data = re.findall(r"width\":1280,\"height\":351},{\"url\":\"(.*?)\"", raw)
-        banner = banner_data[0] if len(banner_data) != 0 else None
-
-        channelIds = re.findall(r"channelId\":\"(.*?)\"",raw)
-        id = channelIds[0] if len(channelIds) != 0 else None
-
-        aboutDict = {
-
-            'name':name,
-            'id':id,
-            'subscribers':subs,
-            'total_views': totalView,
-            'joined':joinDate,
-            'country':country,
-            'url':self.url,
-            'custom_url':customURl,
-            'avatar_url':avatar,
-            'banner_url':banner
+        infoDict = {
+            'name': ls[0],
+            'id': ls[8],
+            'subscribers': ls[1][:-12],
+            'total_views': ls[2][:-6],
+            'joined_at': ls[3],
+            'country': ls[4],
+            'url': self.url,
+            'custom_url': ls[5],
+            'avatar_url': ls[6],
+            'banner_url': ls[7]
         }
 
-        return aboutDict
+        return infoDict
 
 
     @property
@@ -175,7 +179,7 @@ class Channel:
 
         name_raw = urllib.request.urlopen(f'{self.url}/about').read().decode()
         titleList = re.findall(r"channelMetadataRenderer\":{\"title\":\"(.*?)\"", name_raw)
-        return titleList[0] if len(titleList) != 0 else None
+        return titleList[0] if len(titleList) > 0 else None
 
 
     @property
