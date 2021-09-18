@@ -261,7 +261,8 @@ class Video:
         def _get_data(url: str):
             raw = urllib.request.urlopen(url).read().decode()
             pattern = r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\""
-            return re.findall(pattern, raw)[0]
+            views = re.findall(pattern, raw)
+            return views[0][:-6] if len(views) > 0 else None
 
         return _HyperThread.run(_get_data, [item.url for item in ObjectList])
 
