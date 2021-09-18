@@ -24,7 +24,6 @@ SOFTWARE.
 
 
 
-from .__proc__ import *
 from .__vid__ import Video
 from .__ch__ import Channel
 from .__ext__ import Extras
