@@ -1,4 +1,3 @@
-
 import time
 import asyncio
 import concurrent.futures
@@ -32,3 +31,4 @@ class _HyperThread:
                 return data
 
             return asyncio.run(_main())
+        
