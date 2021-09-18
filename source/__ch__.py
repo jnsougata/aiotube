@@ -1,5 +1,4 @@
 import re
-import asyncio
 import urllib.request
 from .__vid__ import Video
 from .__proc__ import _filter
@@ -82,8 +81,11 @@ class Channel:
         :return: channel's ongoing  livestream url
 
         """
-        if self.live:
-            raw = urllib.request.urlopen(self.url).read().decode()
+        raw = urllib.request.urlopen(self.url).read().decode()
+
+        isLive = re.search(r'{"text":" watching"}', raw)
+
+        if isLive:
             Id = re.search(r"watch\?v=(.*?)\"", raw).group().replace('watch?v=','').replace('"','')
             return f'https://www.youtube.com/watch?v={Id}'
         else:
@@ -318,3 +320,4 @@ class Channel:
         raw = urllib.request.urlopen(url).read().decode()
         idList = re.findall(r"{\"url\":\"/playlist\?list=(.*?)\"", raw)
         return [Playlist(item) for item in _filter(idList)]
+    
