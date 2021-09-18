@@ -1,8 +1,7 @@
 import re
-import asyncio
 import urllib.request
-import concurrent.futures
 from .__proc__ import _duration
+from .__hyp__ import _HyperThread
 
 
 class Video:
@@ -29,6 +28,7 @@ class Video:
             self.url = f'https://www.youtube.com/watch?v={videoId}'
             self.id = videoId
 
+
     @property
     def title(self):
 
@@ -41,6 +41,7 @@ class Video:
         raw = urllib.request.urlopen(self.url).read().decode()
         data = re.findall(r"\"title\":\"(.*?)\"", raw)
         return data[0] if len(data) != 0 else None
+
 
     @property
     def views(self):
@@ -57,6 +58,7 @@ class Video:
         )
         return data[0][:-6] if len(data) != 0 else None
 
+
     @property
     def likes(self):
 
@@ -67,8 +69,9 @@ class Video:
         """
 
         raw = urllib.request.urlopen(self.url).read().decode()
-        data = re.findall(r"\"label\":\"(.*?) likes\"", raw)
+        data = re.findall(r"toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) ", raw)
         return data[0] if len(data) != 0 else None
+
 
     @property
     def dislikes(self):
@@ -86,6 +89,7 @@ class Video:
         )
         return data[0] if len(data) != 0 else None
 
+
     @property
     def duration(self):
 
@@ -100,6 +104,7 @@ class Video:
 
         return _duration(int(int(data[0]) / 1000)) if len(data) != 0 else None
 
+
     @property
     def upload_date(self):
 
@@ -112,6 +117,7 @@ class Video:
         raw = urllib.request.urlopen(self.url).read().decode()
         data = re.findall(r"uploadDate\":\"(.*?)\"", raw)
         return data[0] if len(data) != 0 else None
+
 
     @property
     def parent(self):
@@ -126,6 +132,7 @@ class Video:
         data = re.findall(r"channelIds\":\[\"(.*?)\"", raw)
         return data[0] if len(data) != 0 else None
 
+
     @property
     def description(self):
 
@@ -138,6 +145,7 @@ class Video:
         raw = urllib.request.urlopen(self.url).read().decode()
         data = re.findall(r"shortDescription\":\"(.*)\",\"isCrawlable", raw)
         return data[0] if len(data) != 0 else None
+
 
     @property
     def thumbnail(self):
@@ -155,6 +163,7 @@ class Video:
         )
         return data[0] if len(data) != 0 else None
 
+
     @property
     def tags(self):
 
@@ -167,6 +176,7 @@ class Video:
         raw = urllib.request.urlopen(self.url).read().decode()
         data = re.findall(r"<meta name=\"keywords\" content=\"(.*?)\">", raw)
         return data[0].split(',') if len(data) != 0 else None
+
 
     @property
     def info(self):
@@ -194,15 +204,15 @@ class Video:
 
         raw = urllib.request.urlopen(self.url).read().decode()
 
-        async def _get_data(response, pattern):
-            data = re.findall(pattern, response)
+        def _get_data(pattern):
+            data = re.findall(pattern, raw)
             return data[0] if len(data) > 0 else None
 
         patterns = [
 
             r"\"title\":\"(.*?)\"",
             r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"",
-            r"\"label\":\"(.*?) likes\"",
+            r"toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) ",
             r"DISLIKE\"},\"defaultText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) dislikes\"",
             r"approxDurationMs\":\"(.*?)\"",
             r"channelIds\":\[\"(.*?)\"",
@@ -212,15 +222,8 @@ class Video:
 
         ]
 
-        async def _main():
-            tasks = []
-            for pattern in patterns:
-                task = asyncio.ensure_future(_get_data(raw, pattern))
-                tasks.append(task)
+        ls = _HyperThread.run(_get_data, patterns)
 
-            return await asyncio.gather(*tasks)
-
-        ls = asyncio.run(_main())
 
         infoDict = {
 
@@ -240,224 +243,123 @@ class Video:
 
         return infoDict
 
+
     @classmethod
     def bulk_title(cls, ObjectList: list):
 
-        async def _main():
-            with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-                ls = asyncio.get_event_loop()
-                futures = [
-                    ls.run_in_executor(
-                        executor,
-                        urllib.request.urlopen,
-                        i.url
-                    ) for i in ObjectList
-                ]
-                data = []
-                for response in await asyncio.gather(*futures):
-                    pattern = r"\"title\":\"(.*?)\""
-                    data.append(re.findall(pattern, response.read().decode())[0])
-            return data
+        def _get_data(url: str):
+            raw = urllib.request.urlopen(url).read().decode()
+            pattern = r"\"title\":\"(.*?)\""
+            return re.findall(pattern,raw)[0]
 
-        return asyncio.run(_main())
-
+        return _HyperThread.run(_get_data, [item.url for item in ObjectList])
+    
+    
     @classmethod
     def bulk_views(cls, ObjectList: list):
 
-        async def _main():
-            with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-                ls = asyncio.get_event_loop()
-                futures = [
-                    ls.run_in_executor(
-                        executor,
-                        urllib.request.urlopen,
-                        i.url
-                    ) for i in ObjectList
-                ]
-                data = []
-                for response in await asyncio.gather(*futures):
-                    pattern = r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\""
-                    views = re.findall(pattern, response.read().decode())
-                    data.append(views[0][:-6] if len(views) > 0 else None)
-            return data
+        def _get_data(url: str):
+            raw = urllib.request.urlopen(url).read().decode()
+            pattern = r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\""
+            return re.findall(pattern, raw)[0]
 
-        return asyncio.run(_main())
+        return _HyperThread.run(_get_data, [item.url for item in ObjectList])
 
+    
     @classmethod
     def bulk_likes(cls, ObjectList: list):
+        
+        def _get_data(url: str):
+            raw = urllib.request.urlopen(url).read().decode()
+            pattern = r"toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) "
+            likes = re.findall(pattern, raw)
+            return likes[0] if len(likes) > 0 else None
 
-        async def _main():
-            with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-                ls = asyncio.get_event_loop()
-                futures = [
-                    ls.run_in_executor(
-                        executor,
-                        urllib.request.urlopen,
-                        i.url
-                    ) for i in ObjectList
-                ]
-                data = []
-                for response in await asyncio.gather(*futures):
-                    pattern = r"label\":\"(.*?) likes\""
-                    likes = re.findall(pattern, response.read().decode())
-                    data.append(likes[0] if len(likes) > 0 else None)
-            return data
+        return _HyperThread.run(_get_data, [item.url for item in ObjectList])
 
-        return asyncio.run(_main())
 
     @classmethod
     def bulk_dislikes(cls, ObjectList: list):
+        
+        def _get_data(url: str):
+            raw = urllib.request.urlopen(url).read().decode()
+            pattern = r"DISLIKE\"},\"defaultText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) dislikes\""
+            dislikes = re.findall(pattern, raw)
+            return dislikes[0] if len(dislikes) > 0 else None
 
-        async def _main():
-            with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-                ls = asyncio.get_event_loop()
-                futures = [
-                    ls.run_in_executor(
-                        executor,
-                        urllib.request.urlopen,
-                        i.url
-                    ) for i in ObjectList
-                ]
-                data = []
-                for response in await asyncio.gather(*futures):
-                    pattern = r"DISLIKE\"},\"defaultText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) dislikes\""
-                    dislikes = re.findall(pattern, response.read().decode())
-                    data.append(dislikes[0] if len(dislikes) > 0 else None)
-            return data
+        return _HyperThread.run(_get_data, [item.url for item in ObjectList])
 
-        return asyncio.run(_main())
 
     @classmethod
     def bulk_duration(cls, ObjectList: list):
+        
+        def _get_data(url: str):
+            raw = urllib.request.urlopen(url).read().decode()
+            pattern = r"approxDurationMs\":\"(.*?)\""
+            duration = re.findall(pattern, raw)
+            return _duration(int(int(duration[0]) / 1000))
 
-        async def _main():
-            with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-                ls = asyncio.get_event_loop()
-                futures = [
-                    ls.run_in_executor(
-                        executor,
-                        urllib.request.urlopen,
-                        i.url
-                    ) for i in ObjectList
-                ]
-                data = []
-                for response in await asyncio.gather(*futures):
-                    pattern = r"approxDurationMs\":\"(.*?)\""
-                    data.append(_duration(int(int(re.findall(pattern, response.read().decode())[0]) / 1000)))
-            return data
+        return _HyperThread.run(_get_data, [item.url for item in ObjectList])
 
-        return asyncio.run(_main())
 
     @classmethod
     def bulk_upload_date(cls, ObjectList: list):
+        
+        def _get_data(url: str):
+            raw = urllib.request.urlopen(url).read().decode()
+            pattern = r"uploadDate\":\"(.*?)\""
+            return re.findall(pattern, raw)[0]
 
-        async def _main():
-            with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-                ls = asyncio.get_event_loop()
-                futures = [
-                    ls.run_in_executor(
-                        executor,
-                        urllib.request.urlopen,
-                        i.url
-                    ) for i in ObjectList
-                ]
-                data = []
-                for response in await asyncio.gather(*futures):
-                    pattern = r"uploadDate\":\"(.*?)\""
-                    data.append(re.findall(pattern, response.read().decode())[0])
-            return data
-
-        return asyncio.run(_main())
-
+        
     @classmethod
     def bulk_parent(cls, ObjectList: list):
+        
+        def _get_data(url: str):
+            raw = urllib.request.urlopen(url).read().decode()
+            pattern = r"channelIds\":\[\"(.*?)\""
+            return re.findall(pattern, raw)[0]
 
-        async def _main():
-            with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-                ls = asyncio.get_event_loop()
-                futures = [
-                    ls.run_in_executor(
-                        executor,
-                        urllib.request.urlopen,
-                        i.url
-                    ) for i in ObjectList
-                ]
-                data = []
-                for response in await asyncio.gather(*futures):
-                    pattern = r"channelIds\":\[\"(.*?)\""
-                    data.append(re.findall(pattern, response.read().decode())[0])
-            return data
+        return _HyperThread.run(_get_data, [item.url for item in ObjectList])
 
-        return asyncio.run(_main())
 
     @classmethod
     def bulk_description(cls, ObjectList: list):
+        
+        def _get_data(url: str):
+            raw = urllib.request.urlopen(url).read().decode()
+            pattern = r"shortDescription\":\"(.*)\",\"isCrawlable"
+            return re.findall(pattern, raw)[0]
 
-        async def _main():
-            with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-                ls = asyncio.get_event_loop()
-                futures = [
-                    ls.run_in_executor(
-                        executor,
-                        urllib.request.urlopen,
-                        i.url
-                    ) for i in ObjectList
-                ]
-                data = []
-                for response in await asyncio.gather(*futures):
-                    pattern = r"shortDescription\":\"(.*)\",\"isCrawlable"
-                    desc = re.findall(pattern, response.read().decode())
-                    data.append(desc[0] if len(desc) > 0 else None)
-            return data
+        return _HyperThread.run(_get_data, [item.url for item in ObjectList])
 
-        return asyncio.run(_main())
 
     @classmethod
     def bulk_thumbnail(cls, ObjectList: list):
+        
+        def _get_data(url: str):
+            raw = urllib.request.urlopen(url).read().decode()
+            pattern = r"playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\""
+            return re.findall(pattern, raw)[0]
 
-        async def _main():
-            with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-                ls = asyncio.get_event_loop()
-                futures = [
-                    ls.run_in_executor(
-                        executor,
-                        urllib.request.urlopen,
-                        i.url
-                    ) for i in ObjectList
-                ]
-                data = []
-                for response in await asyncio.gather(*futures):
-                    pattern = r"playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\""
-                    data.append(re.findall(pattern, response.read().decode())[0])
-            return data
+        return _HyperThread.run(_get_data, [item.url for item in ObjectList])
 
-        return asyncio.run(_main())
 
     @classmethod
     def bulk_tag(cls, ObjectList: list):
+        
+        def _get_data(url: str):
+            raw = urllib.request.urlopen(url).read().decode()
+            pattern = r"<meta name=\"keywords\" content=\"(.*?)\">"
+            tags = re.findall(pattern, raw)
+            return tags[0].split(',') if len(tags) > 0 else None
 
-        async def _main():
-            with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-                ls = asyncio.get_event_loop()
-                futures = [
-                    ls.run_in_executor(
-                        executor,
-                        urllib.request.urlopen,
-                        i.url
-                    ) for i in ObjectList
-                ]
-                data = []
-                for response in await asyncio.gather(*futures):
-                    pattern = r"<meta name=\"keywords\" content=\"(.*?)\">"
-                    tags = re.findall(pattern, response.read().decode())
-                    data.append(tags[0].split(',') if len(tags) > 0 else None)
-            return data
+        return _HyperThread.run(_get_data, [item.url for item in ObjectList])
 
-        return asyncio.run(_main())
 
     @classmethod
     def bulk_url(cls, ObjectList: list):
         return [i.url for i in ObjectList]
+
 
     @classmethod
     def bulk_id(cls, ObjectList: list):
