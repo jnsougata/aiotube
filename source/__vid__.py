@@ -253,8 +253,8 @@ class Video:
             return re.findall(pattern,raw)[0]
 
         return _HyperThread.run(_get_data, [item.url for item in ObjectList])
-    
-    
+
+
     @classmethod
     def bulk_views(cls, ObjectList: list):
 
@@ -265,10 +265,10 @@ class Video:
 
         return _HyperThread.run(_get_data, [item.url for item in ObjectList])
 
-    
+
     @classmethod
     def bulk_likes(cls, ObjectList: list):
-        
+
         def _get_data(url: str):
             raw = urllib.request.urlopen(url).read().decode()
             pattern = r"toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) "
@@ -280,7 +280,7 @@ class Video:
 
     @classmethod
     def bulk_dislikes(cls, ObjectList: list):
-        
+
         def _get_data(url: str):
             raw = urllib.request.urlopen(url).read().decode()
             pattern = r"DISLIKE\"},\"defaultText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) dislikes\""
@@ -292,7 +292,7 @@ class Video:
 
     @classmethod
     def bulk_duration(cls, ObjectList: list):
-        
+
         def _get_data(url: str):
             raw = urllib.request.urlopen(url).read().decode()
             pattern = r"approxDurationMs\":\"(.*?)\""
@@ -304,16 +304,18 @@ class Video:
 
     @classmethod
     def bulk_upload_date(cls, ObjectList: list):
-        
+
         def _get_data(url: str):
             raw = urllib.request.urlopen(url).read().decode()
             pattern = r"uploadDate\":\"(.*?)\""
             return re.findall(pattern, raw)[0]
 
-        
+        return _HyperThread.run(_get_data, [item.url for item in ObjectList])
+
+
     @classmethod
     def bulk_parent(cls, ObjectList: list):
-        
+
         def _get_data(url: str):
             raw = urllib.request.urlopen(url).read().decode()
             pattern = r"channelIds\":\[\"(.*?)\""
@@ -324,7 +326,7 @@ class Video:
 
     @classmethod
     def bulk_description(cls, ObjectList: list):
-        
+
         def _get_data(url: str):
             raw = urllib.request.urlopen(url).read().decode()
             pattern = r"shortDescription\":\"(.*)\",\"isCrawlable"
@@ -335,7 +337,7 @@ class Video:
 
     @classmethod
     def bulk_thumbnail(cls, ObjectList: list):
-        
+
         def _get_data(url: str):
             raw = urllib.request.urlopen(url).read().decode()
             pattern = r"playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\""
@@ -346,7 +348,7 @@ class Video:
 
     @classmethod
     def bulk_tag(cls, ObjectList: list):
-        
+
         def _get_data(url: str):
             raw = urllib.request.urlopen(url).read().decode()
             pattern = r"<meta name=\"keywords\" content=\"(.*?)\">"
