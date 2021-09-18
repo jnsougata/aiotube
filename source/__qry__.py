@@ -110,3 +110,5 @@ class Search:
         found = re.findall(r"playlistId\":\"(.*?)\"", raw)
         pure = _filter(limit = limit, iterable = found)
         return _PlaylistBulk(pure) if len(pure) != 0 else None
+
+    
