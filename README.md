@@ -16,7 +16,9 @@
             
    - **Attributes:**       
       - `live`      
-           > Returns ***True*** if channel is Live at that moment, Otherwise returns ***False***    
+           > Returns ***True*** if channel is Live at that moment, Otherwise returns ***False***
+      - `verified`
+      	   > Returns ***True*** if channel is Verified, Otherwise returns ***False*** 
                        
       - `stream_link`       
            > Returns ***URL*** of Livestream if channel is Live at that moment, otherwise returns ***None***    
