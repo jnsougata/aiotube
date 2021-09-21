@@ -8,18 +8,18 @@ def readme():
 
 setup(
     name = 'dya',
-    version = '3.4.5',
-    description = 'Get Unlimited YouTube Public Data without YouTubeData API',
+    version = '3.6.2',
+    description = 'Get Unlimited YouTube Public Data without YouTubeAPI',
     long_description = readme(),
     long_description_content_type="text/markdown",
-    py_modules = ["DYA"],
-    package_dir = {'': 'src'},
+    package_dir={'dya': 'source'},
+    packages=['dya'],
     install_requires = [
         'urllib3'
     ],
     url = 'https://github.com/jnsougata/Ditch-YouTubeAPI/blob/main/README.md',
     project_urls={
-        "Bug Tracker": "https://github.com/jnsougata/Ditch-YouTube-API/issues"
+        "Bug Tracker": "https://github.com/jnsougata/Ditch-YouTubeAPI/issues"
     },
     author = 'Sougata Jana',
     author_email = 'jnsougata@gmail.com',
