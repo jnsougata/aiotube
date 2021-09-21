@@ -1,6 +1,5 @@
 ![alt text](https://raw.githubusercontent.com/jnsougata/Ditch-YouTubeAPI/main/additional/dya.jpg)
 # Ditch YouTubeAPI             
- **DYA** is a package created to power the user with YouTube Data API functionality **without any API Key**    
     
  - [**Detailed Docs**](https://verified.gitbook.io/dya-py/) | **[Join Discord](https://discord.gg/YAFGAaMrTC)**
     
