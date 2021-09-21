@@ -4,7 +4,7 @@
     
  - [**Detailed Docs**](https://verified.gitbook.io/dya-py/) | **[Join Discord](https://discord.gg/YAFGAaMrTC)**
     
- - # How to use?         
+# How to use?         
  - **Installation:**     
     - `pip install dya`  
     
@@ -86,30 +86,30 @@
         - `url` Returns **url** of the video    
         - `thumbnail`  Returns **HQ Thumbnail** of the video  
         - `tags`  Returns **list of tags** of the video       
-- **Create an instance of Playlist Data:**  
+ - **Create an instance of Playlist Data:**  
   
-  - `playlist = Playlist("playlist_id")`
+   - `playlist = Playlist("playlist_id")`
   
-  - **Attributes:**
+   - **Attributes:**
    
-     - `info`   
-        > Returns a **dict** of info of the playlist containing playlist's ***name***, ***video count***, ***video ids***, ***thumbnail URL***, ***playlist URL***  
+      - `info`   
+         > Returns a **dict** of info of the playlist containing playlist's ***name***, ***video count***, ***video ids***, ***thumbnail URL***, ***playlist URL***  
 			
-     - Or, you can use **independent attributes** to get each info individually:  
-       - `name`  Returns the **name** of the playlist or **None**  
-       - `url`  Returns the **URL** of the playlist or **None**
-       - `videos`  Returns the list of **Video Objects** of the videos in playlist or **None**
-       - `video_count`  Returns the **video count** of the playlist or **None**  
-       - `thumbnail`  Returns the **Thumbnail** of the playlist or **None**  
+      - Or, you can use **independent attributes** to get each info individually:  
+        - `name`  Returns the **name** of the playlist or **None**  
+        - `url`  Returns the **URL** of the playlist or **None**
+        - `videos`  Returns the list of **Video Objects** of the videos in playlist or **None**
+        - `video_count`  Returns the **video count** of the playlist or **None**  
+        - `thumbnail`  Returns the **Thumbnail** of the playlist or **None**  
     
-- **Create an instance of YouTube Extras:**    
-   - `extras = Extras()`    
+ - **Create an instance of YouTube Extras:**    
+    - `extras = Extras()`    
       
-   - **Attributes:**    
-      - `Trending`  Returns **#1 Trending** Video Object    
-      - `Music`  Returns fresh trending list of ***Music*** Video Objects [ Video Object ]    
-      - `Gaming`  Returns fresh trending list of ***Gaming*** Video Objects [ Video Object ]    
-      - `News`  Returns fresh trending list of ***News*** Video Objects [ Video Object ]    
-      - `Live`  Returns fresh trending list of ***Live*** Video Objects [ Video Object ]    
-      - `Learning`  Returns fresh trending list of ***Educational*** Video Objects [ Video Object ]    
-      - `Sports`  Returns fresh trending list of ***Sports*** Video Objects [ Video Object ]
+    - **Attributes:**    
+       - `Trending`  Returns **#1 Trending** Video Object    
+       - `Music`  Returns fresh trending list of ***Music*** Video Objects [ Video Object ]    
+       - `Gaming`  Returns fresh trending list of ***Gaming*** Video Objects [ Video Object ]    
+       - `News`  Returns fresh trending list of ***News*** Video Objects [ Video Object ]    
+       - `Live`  Returns fresh trending list of ***Live*** Video Objects [ Video Object ]    
+       - `Learning`  Returns fresh trending list of ***Educational*** Video Objects [ Video Object ]    
+       - `Sports`  Returns fresh trending list of ***Sports*** Video Objects [ Video Object ]
