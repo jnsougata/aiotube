@@ -12,9 +12,7 @@ class Channel:
     def __init__(self,ChanneLid:str):
 
         """
-
         :param str ChanneLid: any of channel id, url , custom url
-
         """
 
         if len(ChanneLid) < 30:
@@ -42,9 +40,7 @@ class Channel:
     def id(self):
 
         """
-
         :return: the ID of the channel
-
         """
 
         raw = urllib.request.urlopen(f'{self.url}/about').read().decode()
@@ -63,9 +59,7 @@ class Channel:
     def live(self):
 
         """
-
         :return: Bool of channel is Live Status
-
         """
 
         raw = urllib.request.urlopen(self.url).read().decode()
@@ -77,10 +71,9 @@ class Channel:
     def stream_link(self):
 
         """
-
         :return: channel's ongoing  livestream url
-
         """
+
         raw = urllib.request.urlopen(self.url).read().decode()
 
         isLive = re.search(r'{"text":" watching"}', raw)
@@ -92,28 +85,35 @@ class Channel:
             return None
 
 
-
     def latest_uploads(self, limit:int = None):
 
         """
-
         :param int limit: number of videos user wants from channel's latest upload
         :return: a list of < video objects > for each latest uploaded video (consider limit)
-
         """
 
-        QUERY = f'{self.url}/videos'
+        QUERY = f'{self.url}/videos?view=0&sort=dd&flow=grid'
         raw = urllib.request.urlopen(QUERY).read().decode()
-        VideoIDList = re.findall(r"watch\?v=(\S{11})", raw)
-        pureList = _filter(limit=limit, iterable=VideoIDList)
-        return [Video(item) for item in pureList]
+        videos = re.findall(r"\"gridVideoRenderer\":{\"videoId\":\"(.*?)\"", raw)
+        limited = videos[:(limit - len(videos))] if limit is not None and limit < 30 else videos
+        return [Video(item) for item in limited] if len(limited) > 0 else None
+
+
+    @property
+    def latest(self):
+        """
+        :return: Channel's latest uploaded video in Video Object form
+        """
+        QUERY = f'{self.url}/videos?view=0&sort=dd&flow=grid'
+        raw = urllib.request.urlopen(QUERY).read().decode()
+        videos = re.findall(r"\[{\"gridVideoRenderer\":{\"videoId\":\"(.*?)\"", raw)
+        return Video(videos[0]) if len(videos) > 0 else None
 
 
     @property
     def info(self):
 
         """
-
         :return: a dict containing channel info
 
         dict = {
@@ -174,9 +174,7 @@ class Channel:
     def name(self):
 
         """
-
         :return: name of the channel or None
-
         """
 
         name_raw = urllib.request.urlopen(f'{self.url}/about').read().decode()
@@ -188,9 +186,7 @@ class Channel:
     def subscribers(self):
 
         """
-
         :return: total number of subscribers the channel has or None
-
         """
 
         QUERY = f'{self.url}/about'
@@ -205,9 +201,7 @@ class Channel:
     def total_views(self):
 
         """
-
         :return: total number of views the channel got or None
-
         """
 
         QUERY = f'{self.url}/about'
@@ -220,9 +214,7 @@ class Channel:
     def joined(self):
 
         """
-
         :return: the channel creation date or None
-
         """
 
         QUERY = f'{self.url}/about'
@@ -235,9 +227,7 @@ class Channel:
     def country(self):
 
         """
-
         :return: the name of the country from where the channel is or None
-
         """
 
         QUERY = f'{self.url}/about'
@@ -250,9 +240,7 @@ class Channel:
     def custom_url(self):
 
         """
-
         :return: the custom url of the channel or None
-
         """
 
         QUERY = f'{self.url}/about'
@@ -266,9 +254,7 @@ class Channel:
     def description(self):
 
         """
-
         :return: the existing description of the channel
-
         """
 
         QUERY = f'{self.url}/about'
@@ -281,9 +267,7 @@ class Channel:
     def avatar_url(self):
 
         """
-
         :return: logo url of the channel
-
         """
 
         QUERY = f'{self.url}/about'
@@ -296,9 +280,7 @@ class Channel:
     def banner_url(self):
 
         """
-
         :return: banner url of the channel
-
         """
 
         QUERY = f'{self.url}/about'
@@ -311,9 +293,7 @@ class Channel:
     def playlists(self):
 
         """
-
         :return: a list if < playlist object > for each public playlist the channel has
-
         """
 
         url = f'{self.url}/playlists'
