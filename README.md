@@ -1,4 +1,4 @@
-![alt text]()
+![alt text](https://raw.githubusercontent.com/jnsougata/Ditch-YouTubeAPI/main/additional/DYA%20(1).jpg)
 # Ditch YouTubeAPI             
     
  - [**Detailed Docs**](https://verified.gitbook.io/dya-py/) | **[Join Discord](https://discord.gg/YAFGAaMrTC)**
