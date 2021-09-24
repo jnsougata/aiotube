@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name = 'dya',
-    version = '3.6.2',
+    version = '3.6.5',
     description = 'Get Unlimited YouTube Public Data without YouTubeAPI',
     long_description = readme(),
     long_description_content_type="text/markdown",
