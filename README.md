@@ -1,4 +1,4 @@
-![alt text](https://raw.githubusercontent.com/jnsougata/Ditch-YouTubeAPI/main/additional/dya.jpg)
+![alt text]()
 # Ditch YouTubeAPI             
     
  - [**Detailed Docs**](https://verified.gitbook.io/dya-py/) | **[Join Discord](https://discord.gg/YAFGAaMrTC)**
@@ -13,35 +13,26 @@
  - **Create an instance of target YouTube Channel:**     
    - `channel = Channel("Channel ID/ Custom ID/ URL/ CustomURL") `    
             
-   - **Attributes:**       
-      - `live`      
-           > Returns ***True*** if channel is Live at that moment, Otherwise returns ***False***
-      - `verified`
-      	   > Returns ***True*** if channel is Verified, Otherwise returns ***False*** 
-                       
-      - `stream_link`       
-           > Returns ***URL*** of Livestream if channel is Live at that moment, otherwise returns ***None***    
-                       
+   - **Methods:**
       - `latest_uploads(*limit:int [optional])`       
-           > Returns ***List*** of latest uploaded videos as **Video Object** if channel is not live at that moment, otherwise returns ***None***  
-      - `info`    
-         > Returns a **Dict** of the **About** of the YouTube Channel. Dict contains channel ***Name, Subscribers, Description, Total Views, Joining Date, Country, Custom URL, Channel Avatar URL,  Channel Banner URL***    
-            
-      - `playlists`       
-          > Returns a list of **Playlist Objects** of the channel's public playlists    
-                 
-      - Or, you can use **independent attributes** to get channel info:    
-         - `name` Returns **Name** of the channel or **None**
-         - `verified` Returns **True** if the channel is **Verified**
-         - `id` Returns **ID** of the channel or **None**    
-         - `subs` Returns **Sub-count** of the channel or **None**        
-         - `total_views` Returns total number of **Views** of the channel or **None**           
-         - `joined` Returns channel **creation date** or **None**       
-         - `country` Returns the generic country of the channel or **None**      
-         - `custom_url` Returns the **Custom URL** of the channel or **None**       
-         - `description` Returns the **Description** of the channel or **None**       
-         - `avatar_url` Returns the **Avatar URL** of the channel or **None**       
-         - `banner_url` Returns the **Banner URL** of the channel or **None**   
+           > Returns ***List*** of latest uploaded videos as **Video Object** if channel is not live at that moment, otherwise returns ***None***
+   - **Attributes:** 
+     - `id` Returns **ID** of the channel or **None**
+     - `info` Returns a **Dict** of channel's information
+     - `name` Returns **Name** of the channel or **None**
+     - `live` Returns **True** if the channel is **Live**
+     - `verified` Returns **True** if the channel is **Verified**
+     - `stream_link` Returns **URL** of livestream if channel is live or **None** 
+     - `latest` Returns **The Latest Video (Obj)** of the channel or **None**
+     - `playlists` Returns a list of channel's public **Playlist (Obj)**
+     - `subscribers` Returns **Sub-count** of the channel or **None**        
+     - `total_views` Returns total number of **Views** of the channel or **None**           
+     - `joined` Returns channel **creation date** or **None**       
+     - `country` Returns the generic country of the channel or **None**      
+     - `custom_url` Returns the **Custom URL** of the channel or **None**
+     - `avatar_url` Returns the **Avatar URL** of the channel or **None**       
+     - `banner_url` Returns the **Banner URL** of the channel or **None**  
+     - `description` Returns channel's short **Description** or **None**
  - **Create an instance of YouTube Search:**          
    - `query = Search()`    
 	
@@ -76,7 +67,7 @@
        - `info`     
         > Returns a **Dict** of video information **{ title, views, likes, dislikes, parent, duration, upload_date, thumbnail, tags }** etc.      
       
-    - Or, you can use **independent attributes** to get each info individually:          
+    - **More Independent Attributes:**          
         - `title`  Returns **title** of the video          
         - `views`  Returns **view count** of the video          
         - `likes`  Returns total **likes** on the video          
@@ -89,14 +80,14 @@
         - `tags`  Returns **list of tags** of the video       
  - **Create an instance of Playlist Data:**  
   
-   - `playlist = Playlist("playlist_id")`
+   - `playlist = Playlist("playlist id")`
   
-   - **Attributes:**
+   - **Attribute:**
    
       - `info`   
          > Returns a **dict** of info of the playlist containing playlist's ***name***, ***video count***, ***video ids***, ***thumbnail URL***, ***playlist URL***  
 			
-      - Or, you can use **independent attributes** to get each info individually:  
+      - **More Independent Attributes:**
         - `name`  Returns the **name** of the playlist or **None**  
         - `url`  Returns the **URL** of the playlist or **None**
         - `videos`  Returns the list of **Video Objects** of the videos in playlist or **None**
