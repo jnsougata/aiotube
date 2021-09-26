@@ -278,7 +278,7 @@ class Channel:
         QUERY = f'{self._url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
         descList = re.findall(r"{\"description\":{\"simpleText\":\"(.*?)\"}", raw)
-        return descList[0].replace('\n', '') if len(descList) > 0 else None
+        return descList[0].replace('\\n', '') if len(descList) > 0 else None
 
 
     @property
