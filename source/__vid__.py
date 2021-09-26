@@ -9,7 +9,7 @@ class Video:
     def __init__(self, videoId: str):
 
         """
-        :param videoId: video _id or the _url of the video
+        :param videoId: video id or the url of the video
         """
 
         if 'watch?v=' in videoId:
@@ -44,7 +44,7 @@ class Video:
 
         raw = urllib.request.urlopen(self._url).read().decode()
         data = re.findall(r"\"title\":\"(.*?)\"", raw)
-        return data[0] if len(data) != 0 else None
+        return data[0] if len(data) > 0 else None
 
 
     @property
@@ -58,7 +58,7 @@ class Video:
         data = re.findall(
             r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"", raw
         )
-        return data[0][:-6] if len(data) != 0 else None
+        return data[0][:-6] if len(data) > 0 else None
 
 
     @property
@@ -70,7 +70,7 @@ class Video:
 
         raw = urllib.request.urlopen(self._url).read().decode()
         data = re.findall(r"toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) ", raw)
-        return data[0] if len(data) != 0 else None
+        return data[0] if len(data) > 0 else None
 
 
     @property
@@ -85,20 +85,20 @@ class Video:
             r"DISLIKE\"},\"defaultText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) dislikes\"",
             raw
         )
-        return data[0] if len(data) != 0 else None
+        return data[0] if len(data) > 0 else None
 
 
     @property
     def duration(self):
 
         """
-        :return: total duration of  the video in milliseconds
+        :return: total duration of  the video in 00h 00m 00s
         """
 
         raw = urllib.request.urlopen(self._url).read().decode()
         data = re.findall(r"approxDurationMs\":\"(.*?)\"", raw)
 
-        return _duration(int(int(data[0]) / 1000)) if len(data) != 0 else None
+        return _duration(int(int(data[0]) / 1000)) if len(data) > 0 else None
 
 
     @property
@@ -110,19 +110,19 @@ class Video:
 
         raw = urllib.request.urlopen(self._url).read().decode()
         data = re.findall(r"uploadDate\":\"(.*?)\"", raw)
-        return data[0] if len(data) != 0 else None
+        return data[0] if len(data) > 0 else None
 
 
     @property
     def parent(self):
 
         """
-        :return: the _id of the channel from which the video belongs
+        :return: the id of the channel from which the video belongs
         """
 
         raw = urllib.request.urlopen(self._url).read().decode()
         data = re.findall(r"channelIds\":\[\"(.*?)\"", raw)
-        return data[0] if len(data) != 0 else None
+        return data[0] if len(data) > 0 else None
 
 
     @property
@@ -134,7 +134,7 @@ class Video:
 
         raw = urllib.request.urlopen(self._url).read().decode()
         data = re.findall(r"shortDescription\":\"(.*)\",\"isCrawlable", raw)
-        return data[0].replace('\n', '') if len(data) > 0 else None
+        return data[0].replace('\\n', '') if len(data) > 0 else None
 
 
     @property
@@ -149,7 +149,7 @@ class Video:
             r"playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\"",
             raw
         )
-        return data[0] if len(data) != 0 else None
+        return data[0] if len(data) > 0 else None
 
 
     @property
@@ -161,7 +161,7 @@ class Video:
 
         raw = urllib.request.urlopen(self._url).read().decode()
         data = re.findall(r"<meta name=\"keywords\" content=\"(.*?)\">", raw)
-        return data[0].split(',') if len(data) != 0 else None
+        return data[0].split(',') if len(data) > 0 else None
 
 
     @property
