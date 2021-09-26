@@ -2,7 +2,7 @@
 # Ditch YouTubeAPI             
  **DYA** is a package created to power the user with YouTube Data API functionality **without API Key**    
     
- - **[Detailed Docs](https://verified.gitbook.io/dya-py/)** | **[Join Discord](https://discord.gg/YAFGAaMrTC)** 
+ - **[GitHub](https://github.com/jnsougata/Ditch-YouTubeAPI)** | **[Detailed Docs](https://verified.gitbook.io/dya-py/)** | **[Join Discord](https://discord.gg/YAFGAaMrTC)** 
 # How to use?         
  - **Installation:**     
     - `pip install dya`  
@@ -37,28 +37,28 @@
  - **Get YouTube Search Results:**
    - 
      - **Get Videos by YouTube Search:**     
-        - `Result = query.video(*keywords: str)`   
+        - `Result = Search.video(*keywords: str)`   
 		       
             > Returns a **Video Object** according to queries. 
 			     
-        - `Results = query.videos(*keywords: str, *limit:int [optional])`   
+        - `Results = Search.videos(*keywords: str, *limit:int [optional])`   
 		        
            > Returns a list of **Bulk Video Objects** according to queries.    
            
      - **Get Channels by YouTube Search:**    
        
-        - `Result = query.channel(*keywords: str)`          
+        - `Result = Search.channel(*keywords: str)`          
              > Returns a **Channel Object** according to queries.     
 		  
-        - `Results = query.channels(*keywords: str, *limit:int [optional])`          
+        - `Results = Search.channels(*keywords: str, *limit:int [optional])`          
 	 
            > Returns a list of **Bulk Channel Objects** according to queries.    
            
      - **Get Playlists by YouTube Search:**    
-        - `Result = query.playlist(*keywords: str)`          
+        - `Result = Search.playlist(*keywords: str)`          
              > Returns a **Playlist Object** according to queries. 
 		 
-        - `Results = query.playlists(*keywords: str, *limit:int [optional])`
+        - `Results = Search.playlists(*keywords: str, *limit:int [optional])`
             > Returns a list of **Bulk Playlist Objects** according to queries. 
 		 
  - **Create an instance of Video Data:**
