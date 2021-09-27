@@ -66,6 +66,11 @@ class Channel:
 
     @property
     def verified(self):
+
+        """
+        :return: bool i.e. True if channel is verified else False
+        """
+
         raw = urllib.request.urlopen(self._url).read().decode()
         isVerified = re.search(r'label":"Verified', raw)
         return True if isVerified else False
@@ -78,27 +83,40 @@ class Channel:
         :return: Bool of channel is Live Status
         """
 
-        raw = urllib.request.urlopen(self._url).read().decode()
-        isLive = re.search(r'{"text":" watching"}', raw)
-        return True if isLive else False
+        raw = urllib.request.urlopen(f'{self._url}/videos').read().decode()
+        return '{"text":" watching"}' in raw
+
 
 
     @property
-    def stream_link(self):
+    def streaming(self):
 
         """
-        :return: channel's ongoing  livestream _url
+        :return: channel's ongoing  livestream url
         """
 
-        raw = urllib.request.urlopen(self._url).read().decode()
+        raw = urllib.request.urlopen(f'{self._url}/videos?view=2&live_view=501').read().decode()
 
-        isLive = re.search(r'{"text":" watching"}', raw)
-
-        if isLive:
-            Id = re.search(r"watch\?v=(.*?)\"", raw).group().replace('watch?v=','').replace('"','')
+        if self.live:
+            Id = _filter(re.findall(r"\"videoId\":\"(.*?)\"", raw))[0]
             return f'https://www.youtube.com/watch?v={Id}'
-        else:
-            return None
+
+
+
+    @property
+    def streaming_all(self):
+
+        """
+        :return: channel's ongoing  livestream urls
+        """
+        raw = urllib.request.urlopen(
+            f'{self._url}/videos?view=2&live_view=501'
+        ).read().decode()
+
+        if self.live:
+            Ids = _filter(re.findall(r"\"videoId\":\"(.*?)\"", raw))
+            return [f'https://www.youtube.com/watch?v={Id}' for Id in Ids]
+
 
 
     def uploads(self, limit:int = None):
@@ -117,9 +135,11 @@ class Channel:
 
     @property
     def latest(self):
+
         """
         :return: Channel's latest uploaded video in Video Object form
         """
+
         QUERY = f'{self._url}/videos?view=0&sort=dd&flow=grid'
         raw = urllib.request.urlopen(QUERY).read().decode()
         videos = re.findall(r"\[{\"gridVideoRenderer\":{\"videoId\":\"(.*?)\"", raw)
@@ -278,7 +298,7 @@ class Channel:
         QUERY = f'{self._url}/about'
         raw = urllib.request.urlopen(QUERY).read().decode()
         descList = re.findall(r"{\"description\":{\"simpleText\":\"(.*?)\"}", raw)
-        return descList[0].replace('\\n', '') if len(descList) > 0 else None
+        return descList[0].replace('\\n', '  ') if len(descList) > 0 else None
 
 
     @property
@@ -318,3 +338,4 @@ class Channel:
         raw = urllib.request.urlopen(url).read().decode()
         idList = re.findall(r"{\"url\":\"/playlist\?list=(.*?)\"", raw)
         return _PlaylistBulk(_filter(idList)) if len(idList) > 0 else None
+    
