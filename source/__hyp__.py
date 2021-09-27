@@ -21,3 +21,5 @@ class _HyperThread:
             with concurrent.futures.ThreadPoolExecutor(max_workers=num) as exec:
                 res = list(exec.map(function, args))
             return res
+
+        
