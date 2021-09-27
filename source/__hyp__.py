@@ -1,4 +1,3 @@
-import time
 import concurrent.futures
 
 
@@ -19,9 +18,6 @@ class _HyperThread:
 
         num = len(args) if len(args) > 0 else 1
         if len(args) > 0:
-            start = time.time()
             with concurrent.futures.ThreadPoolExecutor(max_workers=num) as exec:
                 res = list(exec.map(function, args))
-            end = time.time()
-            print(f'Executed in {round(end - start, 3)}s')
             return res
