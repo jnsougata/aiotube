@@ -211,26 +211,38 @@ class Channel:
 
         patterns = [
 
-            r"channelMetadataRenderer\":{\"title\":\"(.*?)\"",
-            r"\"subscriberCountText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?)\"",
-            r"\"viewCountText\":{\"simpleText\":\"(.*?)\"}",
-            r"{\"text\":\"Joined \"},{\"text\":\"(.*?)\"}",
-            r"\"country\":{\"simpleText\":\"(.*?)\"}",
-            r"\"canonicalChannelUrl\":\"(.*?)\"",
+            "channelMetadataRenderer\":{\"title\":\"(.*?)\"",
+            "subscriberCountText\":(.*?)B",
+            "\"viewCountText\":{\"simpleText\":\"(.*?)\"}",
+            "{\"text\":\"Joined \"},{\"text\":\"(.*?)\"}",
+            "\"country\":{\"simpleText\":\"(.*?)\"}",
+            "\"canonicalChannelUrl\":\"(.*?)\"",
             "height\":88},{\"url\":\"(.*?)\"",
-            r"width\":1280,\"height\":351},{\"url\":\"(.*?)\"",
-            r"channelId\":\"(.*?)\""
+            "width\":1280,\"height\":351},{\"url\":\"(.*?)\"",
+            "channelId\":\"(.*?)\""
 
         ]
 
         ls = _HyperThread.run(get_data, patterns)
+        
+        if len(ls[1]) > 0:
+            strJSON = ls[1][0].replace(',"tv', '')
+            dct = json.loads(strJSON)
+            sub = dct['simpleText'].split(' ')[0]
+        else:
+            sub = None
+            
+        if len(ls[2]) > 0:
+            views = ls[2].split(' ')[0]
+        else:
+            views = None
 
         infoDict = {
             'name': ls[0],
             'id': ls[8],
-            'subscribers': ls[1].split(' ')[0] if ls[1] is not None else None,
+            'subscribers': sub,
             'verified':self.verified,
-            'total_views': ls[2].split(' ')[0] if ls[2] is not None else None,
+            'total_views': views,
             'joined_at': ls[3],
             'country': ls[4],
             'url': self._url,
