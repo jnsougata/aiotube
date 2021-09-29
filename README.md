@@ -12,7 +12,7 @@
    
  - **Create an instance of YouTube Channel:** 
    - 
-     - `channel = Channel("channel Id / custom Id / url / custom url") `    
+     - `channel = Channel("channel Id / url / custom url") `    
             
      - **Method:**
         - `uploads(*limit:int [optional])`       
