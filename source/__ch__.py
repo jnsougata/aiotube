@@ -26,25 +26,26 @@ class Channel:
         elif '/user/' in channelId:
             self._url = channelId
         else:
-            def check(part: str) -> str or None:
-                url = f'{part}{channelId}'
-                try:
-                    urllib.request.urlopen(url)
-                    return url
-                except HTTPError:
-                    return None
+            self._url = f'https://www.youtube.com/channel/{channelId}'
 
-            ls = _HyperThread.run(
-                check,
-                [
-                    'https://youtube.com/channel/',
-                    'https://youtube.com/c/'
-                ]
 
-            )
-            ls.remove(None)
 
-            self._url = ls[0] if len(ls) > 0 else None
+    def __repr__(self):
+        _name = self.name
+        return _name if _name is not None else 'invalid'
+
+
+    @property
+    def valid(self):
+        _url = self._url
+        try:
+            urllib.request.urlopen(_url)
+            return True
+        except HTTPError as e:
+            if e.code == 404:
+                return False
+            elif e.code == 429:
+                return None
 
 
     @property
@@ -64,6 +65,7 @@ class Channel:
         return Id.group().replace('"','').replace('channelId:','') if Id else None
 
 
+
     @property
     def verified(self):
 
@@ -71,7 +73,7 @@ class Channel:
         :return: bool i.e. True if channel is verified else False
         """
 
-        raw = urllib.request.urlopen(self._url).read().decode()
+        raw = urllib.request.urlopen(f'{self._url}/about').read().decode()
         isVerified = re.search(r'label":"Verified', raw)
         return True if isVerified else False
 
@@ -80,16 +82,16 @@ class Channel:
     def live(self):
 
         """
-        :return: Bool of channel is Live Status
+        :return: Bool of channel's Live Status
         """
 
-        raw = urllib.request.urlopen(f'{self._url}/videos').read().decode()
+        raw = urllib.request.urlopen(f'{self._url}/videos?view=2&live_view=501').read().decode()
         return '{"text":" watching"}' in raw
 
 
 
     @property
-    def streaming(self):
+    def streaming_now(self):
 
         """
         :return: channel's ongoing  livestream url
@@ -97,25 +99,43 @@ class Channel:
 
         raw = urllib.request.urlopen(f'{self._url}/videos?view=2&live_view=501').read().decode()
 
-        if self.live:
+        if '{"text":" watching"}' in raw:
             Id = _filter(re.findall(r"\"videoId\":\"(.*?)\"", raw))[0]
             return f'https://www.youtube.com/watch?v={Id}'
 
 
 
     @property
-    def streaming_all(self):
+    def streaming_all_now(self):
 
         """
         :return: channel's ongoing  livestream urls
         """
+
         raw = urllib.request.urlopen(
             f'{self._url}/videos?view=2&live_view=501'
         ).read().decode()
 
-        if self.live:
+        if '{"text":" watching"}' in raw:
             Ids = _filter(re.findall(r"\"videoId\":\"(.*?)\"", raw))
             return [f'https://www.youtube.com/watch?v={Id}' for Id in Ids]
+
+
+
+    @property
+    def past_streams(self):
+
+        """
+        :return: channel's old livestream urls
+        """
+
+        raw = urllib.request.urlopen(
+            f'{self._url}/videos?view=2&live_view=503'
+        ).read().decode()
+
+        Ids = _filter(re.findall(r"\"videoId\":\"(.*?)\"", raw))
+        urls = [f'https://www.youtube.com/watch?v={Id}' for Id in Ids]
+        return urls if len(urls) > 0 else None
 
 
 
@@ -126,11 +146,12 @@ class Channel:
         :return: a < bulk video obj > of latest uploaded videos (consider limit)
         """
 
-        QUERY = f'{self._url}/videos?view=0&sort=dd&flow=grid'
-        raw = urllib.request.urlopen(QUERY).read().decode()
+        query = f'{self._url}/videos?view=0&sort=dd&flow=grid'
+        raw = urllib.request.urlopen(query).read().decode()
         videos = re.findall(r"\"gridVideoRenderer\":{\"videoId\":\"(.*?)\"", raw)
         limited = videos[:(limit - len(videos))] if limit is not None and limit < 30 else videos
         return _VideoBulk(limited) if len(limited) > 0 else None
+
 
 
     @property
@@ -139,11 +160,23 @@ class Channel:
         """
         :return: Channel's latest uploaded video in Video Object form
         """
+        def check(Id):
+            if 'live' not in Video(Id).thumbnail:
+                return Id
+            else:
+                return None
 
-        QUERY = f'{self._url}/videos?view=0&sort=dd&flow=grid'
-        raw = urllib.request.urlopen(QUERY).read().decode()
-        videos = re.findall(r"\[{\"gridVideoRenderer\":{\"videoId\":\"(.*?)\"", raw)
-        return Video(videos[0]) if len(videos) > 0 else None
+        query = f'{self._url}/videos?view=0&sort=dd&flow=grid'
+        raw = urllib.request.urlopen(query).read().decode()
+        videos = re.findall(r"gridVideoRenderer\":{\"videoId\":\"(.*?)\"", raw)
+        if len(videos) > 0:
+            if '_live' not in raw:
+                return Video(videos[0])
+            else:
+                ls = _HyperThread.run(check,videos)
+                true_type = [Id for Id in ls if Id is not None]
+                return Video(true_type[0]) if len(true_type) > 0 else None
+
 
 
     @property
@@ -167,45 +200,45 @@ class Channel:
             }
 
         """
+        if self.valid is True:
+            query = f'{self._url}/about'
+            raw = urllib.request.urlopen(query).read().decode()
 
-        QUERY = f'{self._url}/about'
-        raw = urllib.request.urlopen(QUERY).read().decode()
+            def get_data(pattern):
+                data = re.findall(pattern, raw)
+                return data[0] if len(data) > 0 else None
 
-        def get_data(pattern):
-            data = re.findall(pattern, raw)
-            return data[0] if len(data) > 0 else None
+            patterns = [
 
-        patterns = [
+                r"channelMetadataRenderer\":{\"title\":\"(.*?)\"",
+                r"\"subscriberCountText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?)\"",
+                r"\"viewCountText\":{\"simpleText\":\"(.*?)\"}",
+                r"{\"text\":\"Joined \"},{\"text\":\"(.*?)\"}",
+                r"\"country\":{\"simpleText\":\"(.*?)\"}",
+                r"\"canonicalChannelUrl\":\"(.*?)\"",
+                "height\":88},{\"url\":\"(.*?)\"",
+                r"width\":1280,\"height\":351},{\"url\":\"(.*?)\"",
+                r"channelId\":\"(.*?)\""
 
-            r"channelMetadataRenderer\":{\"title\":\"(.*?)\"",
-            r"\"subscriberCountText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?)\"",
-            r"\"viewCountText\":{\"simpleText\":\"(.*?)\"}",
-            r"{\"text\":\"Joined \"},{\"text\":\"(.*?)\"}",
-            r"\"country\":{\"simpleText\":\"(.*?)\"}",
-            r"\"canonicalChannelUrl\":\"(.*?)\"",
-            "height\":88},{\"url\":\"(.*?)\"",
-            r"width\":1280,\"height\":351},{\"url\":\"(.*?)\"",
-            r"channelId\":\"(.*?)\""
+            ]
 
-        ]
+            ls = _HyperThread.run(get_data, patterns)
 
-        ls = _HyperThread.run(get_data, patterns)
+            infoDict = {
+                'name': ls[0],
+                'id': ls[8],
+                'subscribers': ls[1][:-12] if ls[1] is not None else None,
+                'verified':self.verified,
+                'total_views': ls[2][:-6] if ls[2] is not None else None,
+                'joined_at': ls[3],
+                'country': ls[4],
+                'url': self._url,
+                'custom_url': ls[5],
+                'avatar_url': ls[6],
+                'banner_url': ls[7]
+            }
 
-        infoDict = {
-            'name': ls[0],
-            'id': ls[8],
-            'subscribers': ls[1][:-12],
-            'verified':self.verified,
-            'total_views': ls[2][:-6],
-            'joined_at': ls[3],
-            'country': ls[4],
-            'url': self._url,
-            'custom_url': ls[5],
-            'avatar_url': ls[6],
-            'banner_url': ls[7]
-        }
-
-        return infoDict
+            return infoDict
 
 
     @property
@@ -338,4 +371,3 @@ class Channel:
         raw = urllib.request.urlopen(url).read().decode()
         idList = re.findall(r"{\"url\":\"/playlist\?list=(.*?)\"", raw)
         return _PlaylistBulk(_filter(idList)) if len(idList) > 0 else None
-    
