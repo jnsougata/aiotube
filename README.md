@@ -2,7 +2,7 @@
 # Ditch YouTubeAPI             
  **DYA** is a package created to power the user with YouTube Data API functionality **without API Key**    
     
- - **[Detailed Docs](https://verified.gitbook.io/dya-py/)** | **[Join Discord](https://discord.gg/YAFGAaMrTC)** 
+ -**[Detailed Docs](https://verified.gitbook.io/dya-py/)** | **[Join Discord](https://discord.gg/YAFGAaMrTC)** 
 # How to use?         
  - **Installation:**     
     - `pip install dya`  
@@ -20,11 +20,13 @@
      - **Attributes:** 
        - `id` Returns **id** of the channel or **None**
        - `info` Returns a **dict** of channel's information
+       - `valid` Returns **True** if channel is valid else **False**
        - `name` Returns **name** of the channel or **None**
        - `live` Returns **True** if the channel is **Live**
        - `verified` Returns **True** if the channel is **Verified**
-       - `streaming` Returns single **url** of newest occurring live stream or **None**
-       - `streaming_all` Returns list of **urls** of all occurring live streams or **None**
+       - `streaming_now` Returns single **url** of newest occurring live stream or **None**
+       - `streaming_all_now` Returns list of **urls** of all occurring live streams or **None**
+       - `past_streams` Returns list of **urls** of old live streams or **None**
        - `latest` Returns **the latest Video (obj)** of the channel or **None**
        - `playlists` Returns **bulk playlist (obj)** of channel's public playlists
        - `subscribers` Returns **sub-count** of the channel or **None**        
