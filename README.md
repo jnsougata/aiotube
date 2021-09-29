@@ -1,4 +1,4 @@
-![alt text](https://raw.githubusercontent.com/jnsougata/Ditch-YouTubeAPI/main/additional/DYA%20(1).jpg)
+![alt text](https://raw.githubusercontent.com/jnsougata/Ditch-YouTubeAPI/main/add/dya_banner.jpg)
 # Ditch YouTubeAPI             
  **DYA** is a package created to power the user with YouTube Data API functionality **without API Key**    
     
