@@ -1,4 +1,5 @@
 import re
+import json
 import urllib.request
 from .__vid__ import Video
 from .__proc__ import _filter
@@ -262,12 +263,11 @@ class Channel:
 
         query = f'{self._url}/about'
         raw = urllib.request.urlopen(query).read().decode()
-        subList = re.findall(
-            r"\"subscriberCountText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?)\"",raw
-        )
-        if len(subList) > 0:
-            final = subList[0].split(' ')
-            return final[0]
+        dict_raw = re.findall("\"subscriberCountText\":(.*?)B", raw)
+        if len(dict_raw) > 0:
+            strJSON = dict_raw[0].replace(',"tv', '')
+            final_dict = json.loads(strJSON)
+            return final_dict['simpleText'].split(' ')[0]
 
 
     @property
