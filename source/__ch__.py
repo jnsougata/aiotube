@@ -200,45 +200,45 @@ class Channel:
             }
 
         """
-        if self.valid is True:
-            query = f'{self._url}/about'
-            raw = urllib.request.urlopen(query).read().decode()
 
-            def get_data(pattern):
-                data = re.findall(pattern, raw)
-                return data[0] if len(data) > 0 else None
+        query = f'{self._url}/about'
+        raw = urllib.request.urlopen(query).read().decode()
 
-            patterns = [
+        def get_data(pattern):
+            data = re.findall(pattern, raw)
+            return data[0] if len(data) > 0 else None
 
-                r"channelMetadataRenderer\":{\"title\":\"(.*?)\"",
-                r"\"subscriberCountText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?)\"",
-                r"\"viewCountText\":{\"simpleText\":\"(.*?)\"}",
-                r"{\"text\":\"Joined \"},{\"text\":\"(.*?)\"}",
-                r"\"country\":{\"simpleText\":\"(.*?)\"}",
-                r"\"canonicalChannelUrl\":\"(.*?)\"",
-                "height\":88},{\"url\":\"(.*?)\"",
-                r"width\":1280,\"height\":351},{\"url\":\"(.*?)\"",
-                r"channelId\":\"(.*?)\""
+        patterns = [
 
-            ]
+            r"channelMetadataRenderer\":{\"title\":\"(.*?)\"",
+            r"\"subscriberCountText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?)\"",
+            r"\"viewCountText\":{\"simpleText\":\"(.*?)\"}",
+            r"{\"text\":\"Joined \"},{\"text\":\"(.*?)\"}",
+            r"\"country\":{\"simpleText\":\"(.*?)\"}",
+            r"\"canonicalChannelUrl\":\"(.*?)\"",
+            "height\":88},{\"url\":\"(.*?)\"",
+            r"width\":1280,\"height\":351},{\"url\":\"(.*?)\"",
+            r"channelId\":\"(.*?)\""
 
-            ls = _HyperThread.run(get_data, patterns)
+        ]
 
-            infoDict = {
-                'name': ls[0],
-                'id': ls[8],
-                'subscribers': ls[1][:-12] if ls[1] is not None else None,
-                'verified':self.verified,
-                'total_views': ls[2][:-6] if ls[2] is not None else None,
-                'joined_at': ls[3],
-                'country': ls[4],
-                'url': self._url,
-                'custom_url': ls[5],
-                'avatar_url': ls[6],
-                'banner_url': ls[7]
-            }
+        ls = _HyperThread.run(get_data, patterns)
 
-            return infoDict
+        infoDict = {
+            'name': ls[0],
+            'id': ls[8],
+            'subscribers': ls[1].split(' ')[0] if ls[1] is not None else None,
+            'verified':self.verified,
+            'total_views': ls[2].split(' ')[0] if ls[2] is not None else None,
+            'joined_at': ls[3],
+            'country': ls[4],
+            'url': self._url,
+            'custom_url': ls[5],
+            'avatar_url': ls[6],
+            'banner_url': ls[7]
+        }
+
+        return infoDict
 
 
     @property
@@ -260,12 +260,14 @@ class Channel:
         :return: total number of subscribers the channel has or None
         """
 
-        QUERY = f'{self._url}/about'
-        raw = urllib.request.urlopen(QUERY).read().decode()
+        query = f'{self._url}/about'
+        raw = urllib.request.urlopen(query).read().decode()
         subList = re.findall(
             r"\"subscriberCountText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?)\"",raw
         )
-        return subList[0][:-12] if len(subList) != 0 else None
+        if len(subList) > 0:
+            final = subList[0].split(' ')
+            return final[0]
 
 
     @property
@@ -275,10 +277,12 @@ class Channel:
         :return: total number of views the channel got or None
         """
 
-        QUERY = f'{self._url}/about'
-        raw = urllib.request.urlopen(QUERY).read().decode()
-        totViewList = re.findall(r"\"viewCountText\":{\"simpleText\":\"(.*?)\"}", raw)
-        return totViewList[0][:-6] if len(totViewList) != 0 else None
+        query = f'{self._url}/about'
+        raw = urllib.request.urlopen(query).read().decode()
+        viewList = re.findall(r"\"viewCountText\":{\"simpleText\":\"(.*?)\"}", raw)
+        if len(viewList) > 0:
+            final = viewList[0].split(' ')
+            return final[0]
 
 
     @property
@@ -288,8 +292,8 @@ class Channel:
         :return: the channel creation date or None
         """
 
-        QUERY = f'{self._url}/about'
-        raw = urllib.request.urlopen(QUERY).read().decode()
+        query = f'{self._url}/about'
+        raw = urllib.request.urlopen(query).read().decode()
         joinList = re.findall(r"{\"text\":\"Joined \"},{\"text\":\"(.*?)\"}", raw)
         return joinList[0] if len(joinList) != 0 else None
 
@@ -301,10 +305,10 @@ class Channel:
         :return: the name of the country from where the channel is or None
         """
 
-        QUERY = f'{self._url}/about'
-        raw = urllib.request.urlopen(QUERY).read().decode()
+        query = f'{self._url}/about'
+        raw = urllib.request.urlopen(query).read().decode()
         countryList = re.findall(r"\"country\":{\"simpleText\":\"(.*?)\"}", raw)
-        return countryList[0] if len(countryList) != 0 else None
+        return countryList[0] if len(countryList) > 0 else None
 
 
     @property
@@ -314,8 +318,8 @@ class Channel:
         :return: the custom _url of the channel or None
         """
 
-        QUERY = f'{self._url}/about'
-        raw = urllib.request.urlopen(QUERY).read().decode()
+        query = f'{self._url}/about'
+        raw = urllib.request.urlopen(query).read().decode()
         customList = re.findall(r"\"canonicalChannelUrl\":\"(.*?)\"", raw)
         customURL = customList[0] if len(customList) != 0 else None
         return customURL if '/channel/' not in customURL and customURL is not None else None
@@ -328,8 +332,8 @@ class Channel:
         :return: the existing description of the channel
         """
 
-        QUERY = f'{self._url}/about'
-        raw = urllib.request.urlopen(QUERY).read().decode()
+        query = f'{self._url}/about'
+        raw = urllib.request.urlopen(query).read().decode()
         descList = re.findall(r"{\"description\":{\"simpleText\":\"(.*?)\"}", raw)
         return descList[0].replace('\\n', '  ') if len(descList) > 0 else None
 
@@ -341,8 +345,8 @@ class Channel:
         :return: logo / avatar url of the channel
         """
 
-        QUERY = f'{self._url}/about'
-        raw = urllib.request.urlopen(QUERY).read().decode()
+        query = f'{self._url}/about'
+        raw = urllib.request.urlopen(query).read().decode()
         data = re.findall("height\":88},{\"url\":\"(.*?)\"",raw)
         return data[0] if len(data) != 0 else None
 
@@ -354,8 +358,8 @@ class Channel:
         :return: banner url of the channel
         """
 
-        QUERY = f'{self._url}/about'
-        raw = urllib.request.urlopen(QUERY).read().decode()
+        query = f'{self._url}/about'
+        raw = urllib.request.urlopen(query).read().decode()
         data = re.findall(r"width\":1280,\"height\":351},{\"url\":\"(.*?)\"",raw)
         return data[0] if len(data) != 0 else None
 
