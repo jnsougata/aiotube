@@ -1,6 +1,6 @@
 ![alt text](https://raw.githubusercontent.com/jnsougata/Ditch-YouTubeAPI/main/add/dya_banner.jpg)
 # Ditch YouTubeAPI             
- **DYA** is a package created to power the user with YouTube Data API functionality **without API Key**    
+ **AioTube** is a package created to power the user with YouTube Data API functionality **without API Key**    
     
  - **[Detailed Docs](https://verified.gitbook.io/dya-py/)** | **[Join Discord](https://discord.gg/YAFGAaMrTC)** 
 # How to use?         

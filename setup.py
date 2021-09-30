@@ -7,19 +7,19 @@ def readme():
 
 
 setup(
-    name = 'dya',
-    version = '3.9.1',
-    description = 'Get Unlimited YouTube Public Data without YouTubeAPI',
+    name = 'aiotube',
+    version = '1.1.0',
+    description = 'Get YouTube Public Data without YouTubeAPI',
     long_description = readme(),
     long_description_content_type="text/markdown",
-    package_dir={'dya': 'source'},
-    packages=['dya'],
+    package_dir={'aiotube': 'source'},
+    packages=['aiotube'],
     install_requires = [
         'urllib3'
     ],
-    url = 'https://github.com/jnsougata/Ditch-YouTubeAPI/blob/main/README.md',
+    url = 'https://github.com/jnsougata/AioTube/blob/main/README.md',
     project_urls={
-        "Bug Tracker": "https://github.com/jnsougata/Ditch-YouTubeAPI/issues"
+        "Bug Tracker": "https://github.com/jnsougata/AioTube/issues"
     },
     author = 'Sougata Jana',
     author_email = 'jnsougata@gmail.com',
