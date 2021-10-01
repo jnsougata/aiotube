@@ -5,9 +5,9 @@
  - **[Join Discord](https://discord.gg/YAFGAaMrTC)** 
 # How to use?         
  - **Installation:**     
-    - `pip install dya`  
+    - `pip install aiotube`  
     
- - **Importing dya:**     
+ - **Importing AioTube:**     
     - `from aiotube import Search, Video, Channel, Playlist, Extras`   
    
  - **Create an instance of YouTube Channel:** 
@@ -66,22 +66,26 @@
 		 
  - **Create an instance of Video Data:**
    - 
-     - `vid = Video("video Id / video url")`    
-      - **Attribute:**     
-         - `info`     
-          > Returns a **Dict** of video information **{ title, views, likes, dislikes, parent, duration, upload_date, thumbnail, tags }** etc.      
+     - `vid = Video("video Id / video url")`
+     - **Method:**
+       - `download(filename:str[optional], audio:bool, video:bool)`
+         > use either video or audio (downloads the best quality only) 
+       
+     - **Attribute:**     
+        - `info`     
+         > Returns a **Dict** of video information **{ title, views, likes, dislikes, parent, duration, upload_date, thumbnail, tags }** etc.      
       
-      - **More Independent Attributes:**          
-          - `title`  Returns **title** of the video          
-          - `views`  Returns **view count** of the video          
-          - `likes`  Returns total **likes** on the video          
-          - `dislikes`  Returns total **dislikes** on the video          
-          - `parent`  Returns **channel id** from which the video belong          
-          - `duration`  Returns **duration** of the video          
-          - `uploaded`  Returns **date of upload** of the video                   
-          - `url` Returns **url** of the video    
-          - `thumbnail`  Returns **hq thumbnail** of the video  
-          - `tags`  Returns **list of tags** of the video       
+     - **More Independent Attributes:**          
+         - `title`  Returns **title** of the video          
+         - `views`  Returns **view count** of the video          
+         - `likes`  Returns total **likes** on the video          
+         - `dislikes`  Returns total **dislikes** on the video          
+         - `parent`  Returns **channel id** from which the video belong          
+         - `duration`  Returns **duration** of the video          
+         - `uploaded`  Returns **date of upload** of the video                   
+         - `url` Returns **url** of the video    
+         - `thumbnail`  Returns **hq thumbnail** of the video  
+         - `tags`  Returns **list of tags** of the video       
  - **Create an instance of Playlist Data:** 
    - 
   
