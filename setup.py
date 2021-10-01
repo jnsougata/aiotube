@@ -12,7 +12,7 @@ setup(
     description = 'Get YouTube Public Data without YouTubeAPI',
     long_description = readme(),
     long_description_content_type="text/markdown",
-    package_dir={'aiotube': 'source'},
+    package_dir={'aiotube': 'src'},
     packages=['aiotube'],
     install_requires = [
         'urllib3','youtube_dl'
