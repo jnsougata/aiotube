@@ -1,4 +1,5 @@
 import re
+import youtube_dl
 import urllib.request
 from .__proc__ import _duration
 from .__hyp__ import _HyperThread
@@ -56,7 +57,8 @@ class Video:
 
         raw = urllib.request.urlopen(self._url).read().decode()
         data = re.findall(
-            r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"", raw
+            r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"",
+            raw
         )
         return data[0][:-6] if len(data) > 0 else None
 
@@ -69,7 +71,10 @@ class Video:
         """
 
         raw = urllib.request.urlopen(self._url).read().decode()
-        data = re.findall(r"toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) ", raw)
+        data = re.findall(
+            r"toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) ",
+            raw
+        )
         return data[0] if len(data) > 0 else None
 
 
@@ -226,3 +231,44 @@ class Video:
         }
 
         return infoDict
+
+
+    def download(
+            self,
+            filename:str = None,
+            audio:bool = None,
+            video:bool = None
+    ):
+        if filename:
+            name = filename.replace(' ','')
+        else:
+            name = 'aiofile'
+
+        def _file(aud, vid):
+            try:
+                if aud and not vid:
+                    ydl_opts = {
+                        'format': 'bestaudio/best',
+                        'outtmpl':f'downloads/{name}_{self.id}.%(ext)s',
+                        'postprocessors': [{
+                            'key': 'FFmpegExtractAudio',
+                            'preferredcodec': 'mp3',
+                            'preferredquality': '192',
+                        }],
+                    }
+                    return ydl_opts
+
+                elif vid and not aud:
+                    ydl_opts = {
+                        'format': 'best',
+                        'outtmpl': f'downloads/{name}_{self.id}.%(ext)s',
+                    }
+                    return ydl_opts
+
+            except UnboundLocalError:
+                return None
+
+        options = _file(audio, video)
+
+        with youtube_dl.YoutubeDL(options) as ydl:
+            ydl.download([self._id])
