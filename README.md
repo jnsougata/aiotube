@@ -68,7 +68,7 @@
    - 
      - `vid = Video("video Id / video url")`
      - **Method:**
-       - `download(filename:str[optional], audio:bool, video:bool)`
+       - `download(filename: str[optional], audio:bool, video:bool)`
          > use either video or audio (downloads the best quality only) 
        
      - **Attribute:**     
