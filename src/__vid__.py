@@ -231,45 +231,60 @@ class Video:
 
         return infoDict
 
-
     def download(
             self,
-            format:str,
-            filename:str = None,
+            format: str,
+            filename: str = None,
     ):
 
         if filename:
-            prefix = filename.replace(' ','')
+            prefix = filename.replace(' ', '')
         else:
             prefix = 'aiofile'
 
-        def check(ext):
 
-            if ext == 'mp3':
-                return _astream(self._id)
 
-            elif ext == 'mp4':
-                return _vstream(self._id)
+        if format == 'mp3':
+            try:
+                stream = _astream(self._id)
+                if stream:
+                    r = requests.get(stream, stream=True)
 
-            else:
-                raise ValueError("invalid format. use mp3 or mp4")
+                    print(f'Downloading [ {self._id} ]')
 
-        try:
-            stream = check(ext=format)
-            if stream:
-                r = requests.get(stream, stream=True)
+                    with open(f"{prefix}_{self._id}.mp3", "wb") as file:
+                        for chunk in r.iter_content(chunk_size=512):
+                            if chunk:
+                                file.write(chunk)
 
-                print(f'Downloading [ {self._id} ]')
+                        print(f'Completed [ {self._id} ]')
+                        print(f'file path: {prefix}_{self._id}.mp3\n----------')
+                        return f"{prefix}_{self._id}.mp3"
+                else:
+                    raise RuntimeError('unable to retrieve file')
+            except:
+                raise RuntimeError('unable to download file')
 
-                with open(f"{prefix}_{self._id}.mp3", "wb") as file:
-                    for chunk in r.iter_content(chunk_size=512):
-                        if chunk:
-                            file.write(chunk)
+        elif format == 'mp4':
+            try:
+                stream = _vstream(self._id)
+                if stream:
+                    r = requests.get(stream, stream=True)
 
-                    print(f'Completed [ {self._id} ]')
-                    print(f'file path: {prefix}_{self._id}.mp3\n----------')
-                    return f"{prefix}_{self._id}.mp3"
-            else:
-                raise RuntimeError('unable to retrieve file')
-        except:
-            raise RuntimeError('unable to download file')
+                    print(f'Downloading [ {self._id} ]')
+
+                    with open(f"{prefix}_{self._id}.mp4", "wb") as file:
+                        for chunk in r.iter_content(chunk_size=512):
+                            if chunk:
+                                file.write(chunk)
+
+                        print(f'Completed [ {self._id} ]')
+                        print(f'file path: {prefix}_{self._id}.mp4\n----------')
+                        return f"{prefix}_{self._id}.mp4"
+                else:
+                    raise RuntimeError('unable to retrieve file')
+            except:
+                raise RuntimeError('unable to download file')
+
+        else:
+            raise ValueError("invalid format. use mp3 or mp4")
