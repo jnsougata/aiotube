@@ -235,42 +235,49 @@ class Video:
 
     def download(
             self,
+            format:str,
             filename:str = None,
-            audio:bool = None,
-            video:bool = None
     ):
+
         if filename:
-            name = filename.replace(' ','')
+            prefix = filename.replace(' ','')
         else:
-            name = 'aiofile'
+            prefix = 'aiofile'
 
-        def _file(aud, vid):
-            try:
-                if aud and not vid:
-                    ydl_opts = {
-                        'format': 'bestaudio/best',
-                        'outtmpl':f'downloads/{name}_{self.id}.%(ext)s',
-                        'postprocessors': [{
-                            'key': 'FFmpegExtractAudio',
-                            'preferredcodec': 'mp3',
-                            'preferredquality': '192',
-                        }],
-                    }
-                    return ydl_opts
+        def check(ext):
 
-                elif vid and not aud:
-                    ydl_opts = {
-                        'format': 'best',
-                        'outtmpl': f'downloads/{name}_{self.id}.%(ext)s',
-                    }
-                    return ydl_opts
+            if ext == 'mp3':
+                ydl_opts = {
+                    'format': 'bestaudio/best',
+                    'outtmpl':f'download/{prefix}_audio_{self.id}.%(ext)s',
+                    'postprocessors': [{
+                        'key': 'FFmpegExtractAudio',
+                        'preferredcodec': 'mp3',
+                        'preferredquality': '192',
+                    }],
+                }
+                return ydl_opts
 
-            except UnboundLocalError:
-                return None
+            elif ext == 'mp4':
+                ydl_opts = {
+                    'format': 'best',
+                    'outtmpl': f'download/{prefix}_video_{self.id}.%(ext)s',
+                    'postprocessors': [{
+                        'key': 'FFmpegVideoConvertor',
+                        'preferedformat': 'mp4',
+                    }]
+                }
+                return ydl_opts
 
-        options = _file(audio, video)
+            else:
+                raise ValueError("invalid format. use mp3 or mp4")
 
-        with youtube_dl.YoutubeDL(options) as ydl:
-            ydl.download([self._id])
+        config = check(format)
 
-        #adding RunTimeError
+        try:
+            with youtube_dl.YoutubeDL(config) as ydl:
+                ydl.download([self._id])
+
+        except youtube_dl.DownloadError:
+            raise RuntimeError('unable to download file. youtube_dl download error')
+
