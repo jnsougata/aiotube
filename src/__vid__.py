@@ -267,7 +267,7 @@ class Video:
                             file.write(chunk)
 
                     print(f'Completed [ {self._id} ]')
-                    print(f'file path: {prefix}_{self._id}.mp3')
+                    print(f'file path: {prefix}_{self._id}.mp3\n----------')
                     return f"{prefix}_{self._id}.mp3"
             else:
                 raise RuntimeError('unable to retrieve file')
