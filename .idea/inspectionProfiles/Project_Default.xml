@@ -15,7 +15,7 @@
     <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredPackages">
         <value>
-          <list size="7">
+          <list size="8">
             <item index="0" class="java.lang.String" itemvalue="aiohttp" />
             <item index="1" class="java.lang.String" itemvalue="discord" />
             <item index="2" class="java.lang.String" itemvalue="selenium" />
@@ -23,6 +23,7 @@
             <item index="4" class="java.lang.String" itemvalue="dya" />
             <item index="5" class="java.lang.String" itemvalue="requests" />
             <item index="6" class="java.lang.String" itemvalue="ImageIO" />
+            <item index="7" class="java.lang.String" itemvalue="pafy" />
           </list>
         </value>
       </option>
