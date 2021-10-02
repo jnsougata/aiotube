@@ -8,14 +8,14 @@ def readme():
 
 setup(
     name = 'aiotube',
-    version = '1.2.2',
+    version = '1.2.6',
     description = 'Get YouTube Public Data without YouTubeAPI',
     long_description = readme(),
     long_description_content_type="text/markdown",
     package_dir={'aiotube': 'src'},
     packages=['aiotube'],
     install_requires = [
-        'urllib3','youtube_dl'
+        'urllib3','pytube'
     ],
     url = 'https://github.com/jnsougata/AioTube/blob/main/README.md',
     project_urls={

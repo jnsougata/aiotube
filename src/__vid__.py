@@ -259,12 +259,12 @@ class Video:
             if stream:
                 r = requests.get(stream, stream=True)
 
-                with open(f"download/{prefix}_{self._id}.mp3", "wb") as file:
+                with open(f"{prefix}_{self._id}.mp3", "wb") as file:
                     for chunk in r.iter_content(chunk_size=512):
                         if chunk:
                             file.write(chunk)
 
-                        print('Download completed!')
+                    print('Download completed!')
             else:
                 raise RuntimeError('unable to retrieve file')
         except:
