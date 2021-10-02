@@ -272,3 +272,5 @@ class Video:
 
         with youtube_dl.YoutubeDL(options) as ydl:
             ydl.download([self._id])
+
+        #adding RunTimeError
