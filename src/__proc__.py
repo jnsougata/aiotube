@@ -1,3 +1,4 @@
+from pytube import YouTube
 from collections import OrderedDict
 
 
@@ -32,3 +33,21 @@ def _duration(seconds: int):
 def _parser(kw:str):
     query = kw.replace(" ", '+')
     return query
+
+
+def _astream(Id: str):
+    url = f'https://www.youtube.com/watch?v={Id}'
+    temp = YouTube(url)
+    stream = temp.streaming_data['formats']
+    for item in stream:
+        if item['itag'] == 17:
+            return item['url']
+
+
+def _vstream(Id: str):
+    url = f'https://www.youtube.com/watch?v={Id}'
+    temp = YouTube(url)
+    stream = temp.streaming_data['formats']
+    for item in stream:
+        if item['itag'] == 22:
+            return item['url']

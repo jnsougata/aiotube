@@ -1,9 +1,8 @@
 import re
-import youtube_dl
+import requests
 import urllib.request
-from .__proc__ import _duration
 from .__hyp__ import _HyperThread
-
+from .__proc__ import _duration, _astream, _vstream
 
 class Video:
 
@@ -247,37 +246,27 @@ class Video:
         def check(ext):
 
             if ext == 'mp3':
-                ydl_opts = {
-                    'format': 'bestaudio/best',
-                    'outtmpl':f'download/{prefix}_audio_{self.id}.%(ext)s',
-                    'postprocessors': [{
-                        'key': 'FFmpegExtractAudio',
-                        'preferredcodec': 'mp3',
-                        'preferredquality': '192',
-                    }],
-                }
-                return ydl_opts
+                return _astream(self._id)
 
             elif ext == 'mp4':
-                ydl_opts = {
-                    'format': 'best',
-                    'outtmpl': f'download/{prefix}_video_{self.id}.%(ext)s',
-                    'postprocessors': [{
-                        'key': 'FFmpegVideoConvertor',
-                        'preferedformat': 'mp4',
-                    }]
-                }
-                return ydl_opts
+                return _vstream(self._id)
 
             else:
                 raise ValueError("invalid format. use mp3 or mp4")
 
-        config = check(format)
-
         try:
-            with youtube_dl.YoutubeDL(config) as ydl:
-                ydl.download([self._id])
+            stream = check(ext=format)
+            if stream:
+                r = requests.get(stream, stream=True)
 
-        except youtube_dl.DownloadError:
-            raise RuntimeError('unable to download file. youtube_dl download error')
+                with open(f"download/{prefix}_{self._id}.mp3", "wb") as file:
+                    for chunk in r.iter_content(chunk_size=512):
+                        if chunk:
+                            file.write(chunk)
+
+                        print('Download completed!')
+            else:
+                raise RuntimeError('unable to retrieve file')
+        except:
+            raise RuntimeError('unable to download file')
 
