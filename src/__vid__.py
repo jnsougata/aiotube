@@ -231,6 +231,7 @@ class Video:
 
         return infoDict
 
+
     def download(
             self,
             format: str,
@@ -288,3 +289,16 @@ class Video:
 
         else:
             raise ValueError("invalid format. use mp3 or mp4")
+
+
+    @property
+    def bytes(self):
+        """
+        :return: returns music file in bytes form
+        """
+        stream = _astream(self._id)
+        if stream:
+            r = requests.get(stream, stream=True)
+            return r.content
+
+            
