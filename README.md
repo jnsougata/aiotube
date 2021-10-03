@@ -85,7 +85,8 @@
          - `uploaded`  Returns **date of upload** of the video                   
          - `url` Returns **url** of the video    
          - `thumbnail`  Returns **hq thumbnail** of the video  
-         - `tags`  Returns **list of tags** of the video       
+         - `tags`  Returns **list of tags** of the video
+         - `bytes` Retuns the music file in **bytes** form     
  - **Create an instance of Playlist Data:** 
    - 
   
