@@ -2,7 +2,7 @@
 # AioTube           
  **All in one Tube** is a package created to power the user with YouTube Data API functionality **without API Key**    
     
- - **[Join Discord](https://discord.gg/YAFGAaMrTC)** 
+ - **[Discord](https://discord.gg/YAFGAaMrTC)** | **[GitHub](https://github.com/jnsougata/AioTube)**
 # How to use?         
  - **Installation:**     
     - `pip install aiotube`  
@@ -37,6 +37,7 @@
        - `avatar_url` Returns the **avatar url** of the channel or **None**       
        - `banner_url` Returns the **banner url** of the channel or **None**  
        - `description` Returns channel's short **description** or **None**
+
  - **Get YouTube Search Results:**
    - 
      - **Get Videos by YouTube Search:**     
@@ -86,7 +87,7 @@
          - `url` Returns **url** of the video    
          - `thumbnail`  Returns **hq thumbnail** of the video  
          - `tags`  Returns **list of tags** of the video
-         - `bytes` Retuns the music file in **bytes** form     
+         - `bytes` Returns the music file in **bytes** form     
  - **Create an instance of Playlist Data:** 
    - 
   

@@ -1,5 +1,4 @@
 import re
-import json
 import urllib.request
 from .__vid__ import Video
 from .__proc__ import _filter
@@ -212,7 +211,7 @@ class Channel:
         patterns = [
 
             "channelMetadataRenderer\":{\"title\":\"(.*?)\"",
-            "subscriberCountText\":(.*?)B",
+            "}},\"simpleText\":\"(.*?) ",
             "\"viewCountText\":{\"simpleText\":\"(.*?)\"}",
             "{\"text\":\"Joined \"},{\"text\":\"(.*?)\"}",
             "\"country\":{\"simpleText\":\"(.*?)\"}",
@@ -224,23 +223,17 @@ class Channel:
         ]
 
         ls = _HyperThread.run(get_data, patterns)
-        
-        if len(ls[1]) > 0:
-            strJSON = ls[1][0].replace(',"tv', '')
-            dct = json.loads(strJSON)
-            sub = dct['simpleText'].split(' ')[0]
-        else:
-            sub = None
             
         if len(ls[2]) > 0:
             views = ls[2].split(' ')[0]
         else:
             views = None
 
+
         infoDict = {
             'name': ls[0],
             'id': ls[8],
-            'subscribers': sub,
+            'subscribers': ls[1],
             'verified':self.verified,
             'total_views': views,
             'joined_at': ls[3],
@@ -275,11 +268,8 @@ class Channel:
 
         query = f'{self._url}/about'
         raw = urllib.request.urlopen(query).read().decode()
-        dict_raw = re.findall("\"subscriberCountText\":(.*?)B", raw)
-        if len(dict_raw) > 0:
-            strJSON = dict_raw[0].replace(',"tv', '')
-            final_dict = json.loads(strJSON)
-            return final_dict['simpleText'].split(' ')[0]
+        subs = re.findall("}},\"simpleText\":\"(.*?) ", raw)
+        return subs[0] if len(subs) > 0 else None
 
 
     @property
