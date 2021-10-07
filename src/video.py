@@ -1,5 +1,4 @@
 import re
-import requests
 import urllib.request
 from .threads import _HyperThread
 from .auxiliary import _duration, _audio_steam, _video_stream
@@ -249,14 +248,12 @@ class Video:
             try:
                 stream = _audio_steam(self._id)
                 if stream:
-                    r = requests.get(stream, stream=True)
+                    r = urllib.request.urlopen(stream).read()
 
                     print(f'Downloading [ {self._id} ]')
 
                     with open(f"{prefix}_{self._id}.mp3", "wb") as file:
-                        for chunk in r.iter_content(chunk_size=512):
-                            if chunk:
-                                file.write(chunk)
+                        file.write(r)
 
                         print(f'Completed [ {self._id} ]')
                         print(f'file path: {prefix}_{self._id}.mp3\n----------')
@@ -270,14 +267,12 @@ class Video:
             try:
                 stream = _video_stream(self._id)
                 if stream:
-                    r = requests.get(stream, stream=True)
+                    r = urllib.request.urlopen(stream).read()
 
                     print(f'Downloading [ {self._id} ]')
 
                     with open(f"{prefix}_{self._id}.mp4", "wb") as file:
-                        for chunk in r.iter_content(chunk_size=512):
-                            if chunk:
-                                file.write(chunk)
+                        file.write(r)
 
                         print(f'Completed [ {self._id} ]')
                         print(f'file path: {prefix}_{self._id}.mp4\n----------')
