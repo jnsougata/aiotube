@@ -1,6 +1,6 @@
 import re
 import urllib.request as req
-from .__hyp__ import _HyperThread
+from .threads import _HyperThread
 
 
 

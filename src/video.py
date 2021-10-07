@@ -1,8 +1,8 @@
 import re
 import requests
 import urllib.request
-from .__hyp__ import _HyperThread
-from .__proc__ import _duration, _astream, _vstream
+from .threads import _HyperThread
+from .auxiliary import _duration, _audio_steam, _video_stream
 
 class Video:
 
@@ -247,7 +247,7 @@ class Video:
 
         if format == 'mp3':
             try:
-                stream = _astream(self._id)
+                stream = _audio_steam(self._id)
                 if stream:
                     r = requests.get(stream, stream=True)
 
@@ -268,7 +268,7 @@ class Video:
 
         elif format == 'mp4':
             try:
-                stream = _vstream(self._id)
+                stream = _video_stream(self._id)
                 if stream:
                     r = requests.get(stream, stream=True)
 
@@ -296,9 +296,12 @@ class Video:
         """
         :return: returns music file in bytes form
         """
-        stream = _astream(self._id)
+        stream = _audio_steam(self._id)
         if stream:
             r = requests.get(stream, stream=True)
             return r.content
 
-            
+
+    @property
+    def downloads(self):
+        return _audio_steam(self._id), _video_stream(self._id)

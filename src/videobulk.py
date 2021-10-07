@@ -1,7 +1,7 @@
 import re
 import urllib.request as req
-from .__proc__ import _duration
-from .__hyp__ import _HyperThread
+from .auxiliary import _duration
+from .threads import _HyperThread
 
 
 

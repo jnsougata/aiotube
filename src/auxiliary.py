@@ -35,7 +35,7 @@ def _parser(kw:str):
     return query
 
 
-def _astream(Id: str):
+def _audio_steam(Id: str):
     url = f'https://www.youtube.com/watch?v={Id}'
     temp = YouTube(url)
     stream = temp.streaming_data['formats']
@@ -44,7 +44,7 @@ def _astream(Id: str):
             return item['url']
 
 
-def _vstream(Id: str):
+def _video_stream(Id: str):
     url = f'https://www.youtube.com/watch?v={Id}'
     temp = YouTube(url)
     stream = temp.streaming_data['formats']

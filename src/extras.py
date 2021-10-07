@@ -1,8 +1,8 @@
 import re
 import urllib.request
-from .__vid__ import Video
-from .__proc__ import _filter
-from .__vidbulk__ import _VideoBulk
+from .video import Video
+from .auxiliary import _filter
+from .videobulk import _VideoBulk
 
 
 class Extras:

@@ -25,9 +25,9 @@ SOFTWARE.
 
 
 
-from .__vid__ import Video
-from .__ch__ import Channel
-from .__qry__ import Search
-from .__ext__ import Extras
-from .__plls__ import Playlist
+from .video import Video
+from .channel import Channel
+from .query import Search
+from .extras import Extras
+from .playlist import Playlist
 

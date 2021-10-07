@@ -1,11 +1,11 @@
 import re
 import urllib.request
-from .__vid__ import Video
-from .__proc__ import _filter
-from .__hyp__ import _HyperThread
+from .video import Video
+from .auxiliary import _filter
+from .threads import _HyperThread
 from urllib.error import HTTPError
-from .__vidbulk__ import _VideoBulk
-from .__pllsbulk__ import _PlaylistBulk
+from .videobulk import _VideoBulk
+from .playlistbulk import _PlaylistBulk
 
 
 

@@ -1,7 +1,7 @@
 import re
 import urllib.request
-from .__vid__ import Video
-from .__proc__ import _filter
+from .video import Video
+from .auxiliary import _filter
 
 
 class Playlist:

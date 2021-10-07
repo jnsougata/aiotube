@@ -1,12 +1,12 @@
 import re
 import urllib.request
-from .__vid__ import Video
-from .__ch__ import Channel
-from .__plls__ import Playlist
-from .__vidbulk__ import _VideoBulk
-from .__chbulk__ import _ChannelBulk
-from .__proc__ import _parser, _filter
-from .__pllsbulk__ import _PlaylistBulk
+from .video import Video
+from .channel import Channel
+from .playlist import Playlist
+from .videobulk import _VideoBulk
+from .channelbulk import _ChannelBulk
+from .auxiliary import _parser, _filter
+from .playlistbulk import _PlaylistBulk
 
 
 class Search:
