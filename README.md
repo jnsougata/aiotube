@@ -74,14 +74,14 @@
        
      - **Attribute:**     
         - `info`     
-         > Returns a **Dict** of video information **{ title, views, likes, dislikes, parent, duration, upload_date, thumbnail, tags }** etc.      
+         > Returns a **Dict** of video information **{ title, views, likes, dislikes, author, duration, upload_date, thumbnail, tags }** etc.      
       
      - **More Independent Attributes:**          
          - `title`  Returns **title** of the video          
          - `views`  Returns **view count** of the video          
          - `likes`  Returns total **likes** on the video          
          - `dislikes`  Returns total **dislikes** on the video          
-         - `parent`  Returns **channel id** from which the video belong          
+         - `author`  Returns **channel id** from which the video belong          
          - `duration`  Returns **duration** of the video          
          - `uploaded`  Returns **date of upload** of the video                   
          - `url` Returns **url** of the video    
