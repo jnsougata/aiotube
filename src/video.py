@@ -292,14 +292,13 @@ class Video:
 
 
     @property
-    def bytes(self):
+    def chunks(self):
         """
         :return: returns music file in bytes form
         """
         stream = _audio_steam(self._id)
         if stream:
-            r = requests.get(stream, stream=True)
-            return r.content
+            return urllib.request.urlopen(stream).read()
 
 
     @property
