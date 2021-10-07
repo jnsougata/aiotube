@@ -1,3 +1,2 @@
 pytube
 urllib3
-requests
