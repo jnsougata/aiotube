@@ -117,7 +117,7 @@ class Video:
 
 
     @property
-    def parent(self):
+    def author(self):
 
         """
         :return: the id of the channel from which the video belongs
@@ -181,7 +181,7 @@ class Video:
             'likes': -> str,
             'dislikes': -> str,
             'duration': -> str,
-            'parent': -> str,
+            'author': -> str,
             'uploaded': -> str,
             'url': -> str,
             'thumbnail': -> str,
@@ -220,7 +220,7 @@ class Video:
             'likes': ls[2],
             'dislikes': ls[3],
             'duration': _duration(int(int(ls[4]) / 1000)),
-            'parent': ls[5],
+            'author': ls[5],
             'uploaded': ls[6],
             'url': self._url,
             'thumbnail': ls[7],
