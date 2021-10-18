@@ -91,7 +91,7 @@ class Channel:
 
 
     @property
-    def streaming_now(self):
+    def live_url(self):
 
         """
         :return: channel's ongoing  livestream url
@@ -106,7 +106,7 @@ class Channel:
 
 
     @property
-    def streaming_all_now(self):
+    def live_urls(self):
 
         """
         :return: channel's ongoing  livestream urls

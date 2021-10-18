@@ -15,7 +15,7 @@ setup(
     package_dir={'aiotube': 'src'},
     packages=['aiotube'],
     install_requires = [
-        'urllib3','pytube'
+        'urllib3'
     ],
     url = 'https://github.com/jnsougata/AioTube/blob/main/README.md',
     project_urls={
