@@ -1,7 +1,7 @@
 import re
 from .video import Video
-from .videobulk import _VideoBulk
 from .threads import _Thread
+from .videobulk import _VideoBulk
 from .auxiliary import _filter, _src
 from .playlistbulk import _PlaylistBulk
 
@@ -151,14 +151,8 @@ class Channel:
         """
         :return: Channel's latest uploaded video in Video Object form
         """
-        def check(Id):
-            if 'live' not in Video(Id).thumbnail:
-                return Id
-            else:
-                return None
 
-        query = f'{self._url}/videos?view=0&sort=dd&flow=grid'
-        raw = urllib.request.urlopen(query).read().decode()
+        raw = _src(f'{self._url}/videos?view=0&sort=dd&flow=grid')
         videos = re.findall(r"gridVideoRenderer\":{\"videoId\":\"(.*?)\"", raw)
         if len(videos) > 0:
             if '_live' not in raw:
