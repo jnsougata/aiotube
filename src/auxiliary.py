@@ -1,5 +1,24 @@
-from pytube import YouTube
+import urllib.request
+from urllib.error import HTTPError
 from collections import OrderedDict
+
+
+
+def _src(url:str):
+    """
+    :param url: url to be requested
+    :return: the requested page
+    """
+    try:
+        with urllib.request.urlopen(url) as resp:
+            return resp.read().decode()
+    except HTTPError as status:
+        if status.code == 404:
+            raise RuntimeError(f'Invalid url used')
+        elif status.code == 429:
+            raise RuntimeError('Too many requests')
+
+
 
 
 def _filter(iterable:list, limit:int = None):
@@ -13,7 +32,11 @@ def _filter(iterable:list, limit:int = None):
     """
     lim = limit if limit is not None else 0
     converted = list(OrderedDict.fromkeys(iterable))
-    return converted[:-len(converted) + lim] if len(converted) > len(converted) - lim > 0 else converted
+
+    if len(converted) - lim > 0:
+        return converted[:-len(converted) + lim]
+    else:
+        return converted
 
 
 def _duration(seconds: int):
@@ -31,23 +54,4 @@ def _duration(seconds: int):
 
 
 def _parser(kw:str):
-    query = kw.replace(" ", '+')
-    return query
-
-
-def _audio_steam(Id: str):
-    url = f'https://www.youtube.com/watch?v={Id}'
-    temp = YouTube(url)
-    stream = temp.streaming_data['formats']
-    for item in stream:
-        if item['itag'] == 17:
-            return item['url']
-
-
-def _video_stream(Id: str):
-    url = f'https://www.youtube.com/watch?v={Id}'
-    temp = YouTube(url)
-    stream = temp.streaming_data['formats']
-    for item in stream:
-        if item['itag'] == 22:
-            return item['url']
+    return kw.replace(" ", '+')

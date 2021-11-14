@@ -1,6 +1,6 @@
 import re
 import urllib.request as req
-from .threads import _HyperThread
+from .threads import _Thread
 
 
 
@@ -16,7 +16,7 @@ class _PlaylistBulk:
             pattern = r"{\"title\":\"(.*?)\""
             return re.findall(pattern, raw)[0]
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/playlist?list={item}' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/playlist?list={item}' for item in self._ls])
 
 
     @property
@@ -31,7 +31,7 @@ class _PlaylistBulk:
             temp = re.findall(pattern, raw)
             return temp[0] if len(temp) > 0 else None
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/playlist?list={item}' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/playlist?list={item}' for item in self._ls])
 
     @property
     def thumbnail(self):
@@ -41,4 +41,4 @@ class _PlaylistBulk:
             temp = re.findall(pattern, raw)
             return temp[0] if len(temp) > 0 else None
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/playlist?list={item}' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/playlist?list={item}' for item in self._ls])

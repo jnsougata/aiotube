@@ -1,7 +1,7 @@
 import re
 import urllib.request as req
 from .auxiliary import _duration
-from .threads import _HyperThread
+from .threads import _Thread
 
 
 
@@ -18,7 +18,7 @@ class _VideoBulk:
             pattern = r"\"title\":\"(.*?)\""
             return re.findall(pattern, raw)[0]
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
 
 
     @property
@@ -29,7 +29,7 @@ class _VideoBulk:
             views = re.findall(pattern, raw)
             return views[0][:-6] if len(views) > 0 else None
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
 
 
     @property
@@ -40,7 +40,7 @@ class _VideoBulk:
             likes = re.findall(pattern, raw)
             return likes[0] if len(likes) > 0 else None
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
 
 
     @property
@@ -51,7 +51,7 @@ class _VideoBulk:
             dislikes = re.findall(pattern, raw)
             return dislikes[0] if len(dislikes) > 0 else None
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
 
 
     @property
@@ -62,7 +62,7 @@ class _VideoBulk:
             duration = re.findall(pattern, raw)
             return _duration(int(int(duration[0]) / 1000))
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
 
 
     @property
@@ -72,7 +72,7 @@ class _VideoBulk:
             pattern = r"uploadDate\":\"(.*?)\""
             return re.findall(pattern, raw)[0]
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
 
 
     @property
@@ -82,7 +82,7 @@ class _VideoBulk:
             pattern = r"channelIds\":\[\"(.*?)\""
             return re.findall(pattern, raw)[0]
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
 
 
     @property
@@ -92,7 +92,7 @@ class _VideoBulk:
             pattern = r"shortDescription\":\"(.*)\",\"isCrawlable"
             return re.findall(pattern, raw)[0]
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
 
 
     @property
@@ -102,7 +102,7 @@ class _VideoBulk:
             pattern = r"playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\""
             return re.findall(pattern, raw)[0]
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
 
 
     @property
@@ -113,7 +113,7 @@ class _VideoBulk:
             tags = re.findall(pattern, raw)
             return tags[0].split(',') if len(tags) > 0 else None
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
 
 
     @property

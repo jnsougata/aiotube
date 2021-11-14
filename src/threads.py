@@ -1,7 +1,7 @@
 import concurrent.futures
 
 
-class _HyperThread:
+class _Thread:
 
     def __init__(self):
         pass

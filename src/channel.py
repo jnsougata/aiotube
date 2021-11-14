@@ -1,10 +1,8 @@
 import re
-import urllib.request
 from .video import Video
-from .auxiliary import _filter
-from .threads import _HyperThread
-from urllib.error import HTTPError
 from .videobulk import _VideoBulk
+from .threads import _Thread
+from .auxiliary import _filter, _src
 from .playlistbulk import _PlaylistBulk
 
 
@@ -14,8 +12,9 @@ class Channel:
     def __init__(self, channelId:str):
 
         """
-        :param str channelId: any of channel _id, _url , custom _url
+        :param str channelId: any of channel id, url , custom url
         """
+        ep = 'https://www.youtube.com/channel/'
 
         if '/channel/' in channelId:
             self._url = channelId
@@ -26,26 +25,25 @@ class Channel:
         elif '/user/' in channelId:
             self._url = channelId
         else:
-            self._url = f'https://www.youtube.com/channel/{channelId}'
+            self._url = ep + channelId
 
 
 
     def __repr__(self):
-        _name = self.name
-        return _name if _name is not None else 'invalid'
+        if self.name:
+            return f'<Channel - {self.name}>'
+        else:
+            f'<Invalid ChannelObject>'
 
 
     @property
     def valid(self):
-        _url = self._url
-        try:
-            urllib.request.urlopen(_url)
-            return True
-        except HTTPError as e:
-            if e.code == 404:
-                return False
-            elif e.code == 429:
-                return None
+
+        """
+        :return: bool i.e. True if channel is valid else False
+        """
+        source = _src(self._url)
+        return True if source else False
 
 
     @property
@@ -57,12 +55,14 @@ class Channel:
     def id(self):
 
         """
-        :return: the ID of the channel
+        :return: the id of the channel
         """
-
-        raw = urllib.request.urlopen(f'{self._url}/about').read().decode()
+        raw = _src(f'{self._url}/about')
         Id = re.search(r"\"channelId\":\"(.*?)\"", raw)
-        return Id.group().replace('"','').replace('channelId:','') if Id else None
+        if Id:
+            return Id.group().replace('"','').replace('channelId:','')
+        else:
+            return
 
 
 
@@ -73,7 +73,7 @@ class Channel:
         :return: bool i.e. True if channel is verified else False
         """
 
-        raw = urllib.request.urlopen(f'{self._url}/about').read().decode()
+        raw = _src(f'{self._url}/about')
         isVerified = re.search(r'label":"Verified', raw)
         return True if isVerified else False
 
@@ -85,20 +85,19 @@ class Channel:
         :return: Bool of channel's Live Status
         """
 
-        raw = urllib.request.urlopen(f'{self._url}/videos?view=2&live_view=501').read().decode()
+        raw = _src(f'{self._url}/videos?view=2&live_view=501')
         return '{"text":" watching"}' in raw
 
 
 
     @property
-    def live_url(self):
+    def livestream(self):
 
         """
         :return: channel's ongoing  livestream url
         """
 
-        raw = urllib.request.urlopen(f'{self._url}/videos?view=2&live_view=501').read().decode()
-
+        raw = _src(f'{self._url}/videos?view=2&live_view=501')
         if '{"text":" watching"}' in raw:
             Id = _filter(re.findall(r"\"videoId\":\"(.*?)\"", raw))[0]
             return f'https://www.youtube.com/watch?v={Id}'
@@ -106,16 +105,13 @@ class Channel:
 
 
     @property
-    def live_urls(self):
+    def livestreams(self):
 
         """
         :return: channel's ongoing  livestream urls
         """
 
-        raw = urllib.request.urlopen(
-            f'{self._url}/videos?view=2&live_view=501'
-        ).read().decode()
-
+        raw = _src(f'{self._url}/videos?view=2&live_view=501')
         if '{"text":" watching"}' in raw:
             Ids = _filter(re.findall(r"\"videoId\":\"(.*?)\"", raw))
             return [f'https://www.youtube.com/watch?v={Id}' for Id in Ids]
@@ -123,19 +119,16 @@ class Channel:
 
 
     @property
-    def past_streams(self):
+    def oldstreams(self):
 
         """
         :return: channel's old livestream urls
         """
 
-        raw = urllib.request.urlopen(
-            f'{self._url}/videos?view=2&live_view=503'
-        ).read().decode()
-
+        raw = _src(f'{self._url}/videos?view=2&live_view=503')
         Ids = _filter(re.findall(r"\"videoId\":\"(.*?)\"", raw))
         urls = [f'https://www.youtube.com/watch?v={Id}' for Id in Ids]
-        return urls if len(urls) > 0 else None
+        return urls if urls else None
 
 
 
@@ -146,11 +139,9 @@ class Channel:
         :return: a < bulk video obj > of latest uploaded videos (consider limit)
         """
 
-        query = f'{self._url}/videos?view=0&sort=dd&flow=grid'
-        raw = urllib.request.urlopen(query).read().decode()
-        videos = re.findall(r"\"gridVideoRenderer\":{\"videoId\":\"(.*?)\"", raw)
-        limited = videos[:(limit - len(videos))] if limit is not None and limit < 30 else videos
-        return _VideoBulk(limited) if len(limited) > 0 else None
+        raw = _src(f'{self._url}/videos?view=0&sort=dd&flow=grid')
+        videos = _filter(re.findall(r"\"gridVideoRenderer\":{\"videoId\":\"(.*?)\"", raw), limit)
+        return _VideoBulk(videos) if limited else None
 
 
 
@@ -173,10 +164,128 @@ class Channel:
             if '_live' not in raw:
                 return Video(videos[0])
             else:
-                ls = _HyperThread.run(check,videos)
+                ls = _Thread.run(check, videos)
                 true_type = [Id for Id in ls if Id is not None]
                 return Video(true_type[0]) if len(true_type) > 0 else None
 
+
+    @property
+    def subscribers(self):
+
+        """
+        :return: total number of subscribers the channel has or None
+        """
+
+        raw = _src(f'{self._url}/about')
+        subs = re.findall("}},\"simpleText\":\"(.*?) ", raw)
+        return subs[0] if subs else None
+
+
+    @property
+    def views(self):
+
+        """
+        :return: total number of views the channel got or None
+        """
+
+        raw = _src(f'{self._url}/about')
+        viewList = re.findall(
+            r"\"viewCountText\":{\"simpleText\":\"(.*?)\"}", raw
+        )
+        if viewList:
+            return viewList[0].split(' ')[0]
+
+
+    @property
+    def joined(self):
+
+        """
+        :return: the channel creation date or None
+        """
+
+        raw = _src(f'{self._url}/about')
+        joinList = re.findall(
+            r"{\"text\":\"Joined \"},{\"text\":\"(.*?)\"}", raw
+        )
+        return joinList[0] if joinList else None
+
+
+    @property
+    def country(self):
+
+        """
+        :return: the name of the country from where the channel is or None
+        """
+
+        raw = _src(f'{self._url}/about')
+        countryList = re.findall(
+            r"\"country\":{\"simpleText\":\"(.*?)\"}", raw
+        )
+        return countryList[0] if countryList else None
+
+
+    @property
+    def custom_url(self):
+
+        """
+        :return: the custom _url of the channel or None
+        """
+
+        raw = _src(f'{self._url}/about')
+        customList = re.findall(r"\"canonicalChannelUrl\":\"(.*?)\"", raw)
+        customURL = customList[0] if customList else None
+        if customURL:
+            if '/channel/' not in customURL:
+                return customURL
+
+
+    @property
+    def description(self):
+
+        """
+        :return: the existing description of the channel
+        """
+
+        raw = _src(f'{self._url}/about')
+        descList = re.findall(r"{\"description\":{\"simpleText\":\"(.*?)\"}", raw)
+        return descList[0].replace('\\n', '  ') if descList else None
+
+
+    @property
+    def avatar(self):
+
+        """
+        :return: logo / avatar url of the channel
+        """
+
+        raw = _src(f'{self._url}/about')
+        data = re.findall("height\":88},{\"url\":\"(.*?)\"",raw)
+        return data[0] if data else None
+
+
+    @property
+    def banner(self):
+
+        """
+        :return: banner url of the channel
+        """
+
+        query = f'{self._url}/about'
+        raw = urllib.request.urlopen(query).read().decode()
+        data = re.findall(r"width\":1280,\"height\":351},{\"url\":\"(.*?)\"",raw)
+        return data[0] if data else None
+
+
+    @property
+    def playlists(self):
+
+        """
+        :return: a list of < playlist object > for each public playlist the channel has
+        """
+
+        raw = _src(f'{self._url}/playlists')
+        idList = re.findall(r"{\"url\":\"/playlist\?list=(.*?)\"", raw)
+        return _PlaylistBulk(_filter(idList)) if idList else None
 
 
     @property
@@ -201,12 +310,11 @@ class Channel:
 
         """
 
-        query = f'{self._url}/about'
-        raw = urllib.request.urlopen(query).read().decode()
+        raw = _src(f'{self._url}/about')
 
-        def get_data(pattern):
+        def extract(pattern):
             data = re.findall(pattern, raw)
-            return data[0] if len(data) > 0 else None
+            return data[0] if data else None
 
         patterns = [
 
@@ -222,20 +330,19 @@ class Channel:
 
         ]
 
-        ls = _HyperThread.run(get_data, patterns)
-            
-        if len(ls[2]) > 0:
+        ls = _Thread.run(extract, patterns)
+
+        if ls[2]:
             views = ls[2].split(' ')[0]
         else:
             views = None
-
 
         infoDict = {
             'name': ls[0],
             'id': ls[8],
             'subscribers': ls[1],
-            'verified':self.verified,
-            'total_views': views,
+            'verified': self.verified,
+            'views': views,
             'joined_at': ls[3],
             'country': ls[4],
             'url': self._url,
@@ -245,135 +352,3 @@ class Channel:
         }
 
         return infoDict
-
-
-    @property
-    def name(self):
-
-        """
-        :return: name of the channel or None
-        """
-
-        name_raw = urllib.request.urlopen(f'{self._url}/about').read().decode()
-        titleList = re.findall(r"channelMetadataRenderer\":{\"title\":\"(.*?)\"", name_raw)
-        return titleList[0] if len(titleList) > 0 else None
-
-
-    @property
-    def subscribers(self):
-
-        """
-        :return: total number of subscribers the channel has or None
-        """
-
-        query = f'{self._url}/about'
-        raw = urllib.request.urlopen(query).read().decode()
-        subs = re.findall("}},\"simpleText\":\"(.*?) ", raw)
-        return subs[0] if len(subs) > 0 else None
-
-
-    @property
-    def total_views(self):
-
-        """
-        :return: total number of views the channel got or None
-        """
-
-        query = f'{self._url}/about'
-        raw = urllib.request.urlopen(query).read().decode()
-        viewList = re.findall(r"\"viewCountText\":{\"simpleText\":\"(.*?)\"}", raw)
-        if len(viewList) > 0:
-            final = viewList[0].split(' ')
-            return final[0]
-
-
-    @property
-    def joined(self):
-
-        """
-        :return: the channel creation date or None
-        """
-
-        query = f'{self._url}/about'
-        raw = urllib.request.urlopen(query).read().decode()
-        joinList = re.findall(r"{\"text\":\"Joined \"},{\"text\":\"(.*?)\"}", raw)
-        return joinList[0] if len(joinList) != 0 else None
-
-
-    @property
-    def country(self):
-
-        """
-        :return: the name of the country from where the channel is or None
-        """
-
-        query = f'{self._url}/about'
-        raw = urllib.request.urlopen(query).read().decode()
-        countryList = re.findall(r"\"country\":{\"simpleText\":\"(.*?)\"}", raw)
-        return countryList[0] if len(countryList) > 0 else None
-
-
-    @property
-    def custom_url(self):
-
-        """
-        :return: the custom _url of the channel or None
-        """
-
-        query = f'{self._url}/about'
-        raw = urllib.request.urlopen(query).read().decode()
-        customList = re.findall(r"\"canonicalChannelUrl\":\"(.*?)\"", raw)
-        customURL = customList[0] if len(customList) != 0 else None
-        return customURL if '/channel/' not in customURL and customURL is not None else None
-
-
-    @property
-    def description(self):
-
-        """
-        :return: the existing description of the channel
-        """
-
-        query = f'{self._url}/about'
-        raw = urllib.request.urlopen(query).read().decode()
-        descList = re.findall(r"{\"description\":{\"simpleText\":\"(.*?)\"}", raw)
-        return descList[0].replace('\\n', '  ') if len(descList) > 0 else None
-
-
-    @property
-    def avatar_url(self):
-
-        """
-        :return: logo / avatar url of the channel
-        """
-
-        query = f'{self._url}/about'
-        raw = urllib.request.urlopen(query).read().decode()
-        data = re.findall("height\":88},{\"url\":\"(.*?)\"",raw)
-        return data[0] if len(data) != 0 else None
-
-
-    @property
-    def banner_url(self):
-
-        """
-        :return: banner url of the channel
-        """
-
-        query = f'{self._url}/about'
-        raw = urllib.request.urlopen(query).read().decode()
-        data = re.findall(r"width\":1280,\"height\":351},{\"url\":\"(.*?)\"",raw)
-        return data[0] if len(data) != 0 else None
-
-
-    @property
-    def playlists(self):
-
-        """
-        :return: a list of < playlist object > for each public playlist the channel has
-        """
-
-        url = f'{self._url}/playlists'
-        raw = urllib.request.urlopen(url).read().decode()
-        idList = re.findall(r"{\"url\":\"/playlist\?list=(.*?)\"", raw)
-        return _PlaylistBulk(_filter(idList)) if len(idList) > 0 else None

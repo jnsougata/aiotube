@@ -1,6 +1,6 @@
 import re
 import urllib.request
-from .threads import _HyperThread
+from .threads import _Thread
 from .auxiliary import _duration, _audio_steam, _video_stream
 
 class Video:
@@ -82,13 +82,7 @@ class Video:
         """
         :return: total dislikes the video got so far
         """
-
-        raw = urllib.request.urlopen(self._url).read().decode()
-        data = re.findall(
-            r"DISLIKE\"},\"defaultText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) dislikes\"",
-            raw
-        )
-        return data[0] if len(data) > 0 else None
+        raise DeprecationWarning("YouTube depreciated public dislike counts")
 
 
     @property
@@ -105,7 +99,7 @@ class Video:
 
 
     @property
-    def upload_date(self):
+    def date(self):
 
         """
         :return: the date on which the video has been uploaded
@@ -200,7 +194,6 @@ class Video:
             r"\"title\":\"(.*?)\"",
             r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"",
             r"toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) ",
-            r"DISLIKE\"},\"defaultText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) dislikes\"",
             r"approxDurationMs\":\"(.*?)\"",
             r"channelIds\":\[\"(.*?)\"",
             r"uploadDate\":\"(.*?)\"",
@@ -209,7 +202,7 @@ class Video:
 
         ]
 
-        ls = _HyperThread.run(_get_data, patterns)
+        ls = _Thread.run(_get_data, patterns)
 
 
         infoDict = {
@@ -218,7 +211,6 @@ class Video:
             'id': self._id,
             'views': ls[1][:-6],
             'likes': ls[2],
-            'dislikes': ls[3],
             'duration': _duration(int(int(ls[4]) / 1000)),
             'author': ls[5],
             'uploaded': ls[6],
@@ -230,72 +222,3 @@ class Video:
 
         return infoDict
 
-
-    def download(
-            self,
-            format: str,
-            filename: str = None,
-    ):
-
-        if filename:
-            prefix = filename.replace(' ', '')
-        else:
-            prefix = 'aiofile'
-
-
-
-        if format == 'mp3':
-            try:
-                stream = _audio_steam(self._id)
-                if stream:
-                    r = urllib.request.urlopen(stream).read()
-
-                    print(f'Downloading [ {self._id} ]')
-
-                    with open(f"{prefix}_{self._id}.mp3", "wb") as file:
-                        file.write(r)
-
-                        print(f'Completed [ {self._id} ]')
-                        print(f'file path: {prefix}_{self._id}.mp3\n----------')
-                        return f"{prefix}_{self._id}.mp3"
-                else:
-                    raise RuntimeError('unable to retrieve file')
-            except:
-                raise RuntimeError('unable to download file')
-
-        elif format == 'mp4':
-            try:
-                stream = _video_stream(self._id)
-                if stream:
-                    r = urllib.request.urlopen(stream).read()
-
-                    print(f'Downloading [ {self._id} ]')
-
-                    with open(f"{prefix}_{self._id}.mp4", "wb") as file:
-                        file.write(r)
-
-                        print(f'Completed [ {self._id} ]')
-                        print(f'file path: {prefix}_{self._id}.mp4\n----------')
-                        return f"{prefix}_{self._id}.mp4"
-                else:
-                    raise RuntimeError('unable to retrieve file')
-            except:
-                raise RuntimeError('unable to download file')
-
-        else:
-            raise ValueError("invalid format. use mp3 or mp4")
-
-
-    @property
-    def chunks(self):
-        """
-        :return: returns music file in bytes form
-        """
-        stream = _audio_steam(self._id)
-        if stream:
-            return urllib.request.urlopen(stream).read()
-
-
-    @property
-    def downloads(self):
-        return _audio_steam(self._id), _video_stream(self._id)

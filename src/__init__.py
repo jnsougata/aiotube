@@ -26,8 +26,8 @@ SOFTWARE.
 
 
 from .video import Video
-from .channel import Channel
 from .query import Search
 from .extras import Extras
+from .channel import Channel
 from .playlist import Playlist
 

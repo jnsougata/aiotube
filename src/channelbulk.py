@@ -1,6 +1,6 @@
 import re
 import urllib.request as req
-from .threads import _HyperThread
+from .threads import _Thread
 
 
 
@@ -26,7 +26,7 @@ class _ChannelBulk:
             pattern = r"channelMetadataRenderer\":{\"title\":\"(.*?)\""
             return re.findall(pattern, raw)[0]
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
 
     @property
@@ -37,7 +37,7 @@ class _ChannelBulk:
             temp = re.findall(pattern, raw)
             return temp[0][:-12] if len(temp) > 0 else None
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
 
     @property
@@ -48,7 +48,7 @@ class _ChannelBulk:
             temp = re.findall(pattern, raw)
             return temp[0][:-6] if len(temp) > 0 else None
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
 
     @property
@@ -59,7 +59,7 @@ class _ChannelBulk:
             temp = re.findall(pattern, raw)
             return temp[0] if len(temp) > 0 else None
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
 
     @property
@@ -70,7 +70,7 @@ class _ChannelBulk:
             temp = re.findall(pattern, raw)
             return temp[0] if len(temp) > 0 else None
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
 
     @property
@@ -83,7 +83,7 @@ class _ChannelBulk:
             return temp if '/channel' not in temp and temp is not None else None
 
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
     @property
     def description(self):
@@ -93,7 +93,7 @@ class _ChannelBulk:
             temp = re.findall(pattern, raw)
             return temp[0] if len(temp) > 0 else None
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
 
     @property
@@ -104,7 +104,7 @@ class _ChannelBulk:
             temp = re.findall(pattern, raw)
             return temp[0] if len(temp) > 0 else None
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
 
     @property
@@ -115,7 +115,7 @@ class _ChannelBulk:
             temp = re.findall(pattern, raw)
             return temp[0] if len(temp) > 0 else None
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
 
     @property
@@ -125,7 +125,7 @@ class _ChannelBulk:
             isVerified = re.search(r'label":"Verified', raw)
             return True if isVerified else False
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
     @property
     def live(self):
@@ -134,4 +134,4 @@ class _ChannelBulk:
             isLive = re.search(r'{"text":" watching"}', raw)
             return True if isLive else False
 
-        return _HyperThread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
+        return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
