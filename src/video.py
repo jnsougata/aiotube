@@ -1,7 +1,7 @@
 import re
 import urllib.request
 from .threads import _Thread
-from .auxiliary import _duration, _audio_steam, _video_stream
+from .auxiliary import _duration
 
 class Video:
 

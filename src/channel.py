@@ -143,8 +143,6 @@ class Channel:
         videos = _filter(re.findall(r"\"gridVideoRenderer\":{\"videoId\":\"(.*?)\"", raw), limit)
         return _VideoBulk(videos) if limited else None
 
-
-
     @property
     def latest(self):
 
@@ -153,14 +151,11 @@ class Channel:
         """
 
         raw = _src(f'{self._url}/videos?view=0&sort=dd&flow=grid')
-        videos = re.findall(r"gridVideoRenderer\":{\"videoId\":\"(.*?)\"", raw)
-        if len(videos) > 0:
-            if '_live' not in raw:
-                return Video(videos[0])
-            else:
-                ls = _Thread.run(check, videos)
-                true_type = [Id for Id in ls if Id is not None]
-                return Video(true_type[0]) if len(true_type) > 0 else None
+        thumbs = re.findall('thumbnails\":\[{\"url\":\"(.*?)\?', raw)
+        ups = [url for url in thumbs if '_live' not in url]
+        videoId = re.findall('i/(.*?)/', ups[0])[0] if ups else None
+        if videoId:
+            return Video(videoId)
 
 
     @property
