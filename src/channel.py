@@ -18,10 +18,8 @@ class Channel:
 
         if '/channel/' in channelId:
             self._url = channelId
-
         elif '/c/' in channelId:
             self._url = channelId
-
         elif '/user/' in channelId:
             self._url = channelId
         else:
@@ -34,6 +32,18 @@ class Channel:
             return f'<Channel - {self.name}>'
         else:
             f'<Invalid ChannelObject>'
+
+
+    @property
+    def name(self):
+
+        """
+        :return: channel's name or None
+        """
+
+        raw = _src(f'{self._url}/about')
+        name = re.findall("channelMetadataRenderer\":{\"title\":\"(.*?)\"", raw)
+        return name[0] if name else None
 
 
     @property
