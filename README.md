@@ -24,18 +24,18 @@
        - `name` Returns **name** of the channel or **None**
        - `live` Returns **True** if the channel is **Live**
        - `verified` Returns **True** if the channel is **Verified**
-       - `streaming_now` Returns single **url** of newest occurring live stream or **None**
-       - `streaming_all_now` Returns list of **urls** of all occurring live streams or **None**
-       - `past_streams` Returns list of **urls** of old live streams or **None**
+       - `livestream` Returns single **url** of newest occurring live stream or **None**
+       - `livestreams` Returns list of **urls** of all occurring live streams or **None**
+       - `oldstreams` Returns list of **urls** of old live streams or **None**
        - `latest` Returns **the latest Video (obj)** of the channel or **None**
        - `playlists` Returns **bulk playlist (obj)** of channel's public playlists
        - `subscribers` Returns **sub-count** of the channel or **None**        
-       - `total_views` Returns total number of **views** of the channel or **None**           
+       - `views` Returns total number of **views** of the channel or **None**           
        - `joined` Returns channel **creation date** or **None**       
        - `country` Returns the generic country of the channel or **None**      
        - `custom_url` Returns the **custom url** of the channel or **None**
-       - `avatar_url` Returns the **avatar url** of the channel or **None**       
-       - `banner_url` Returns the **banner url** of the channel or **None**  
+       - `avatar` Returns the **avatar url** of the channel or **None**       
+       - `banner` Returns the **banner url** of the channel or **None**  
        - `description` Returns channel's short **description** or **None**
 
  - **Get YouTube Search Results:**

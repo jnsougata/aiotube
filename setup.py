@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name = 'aiotube',
-    version = '1.3.6',
+    version = '1.3.8',
     description = 'Get YouTube Public Data without YouTubeAPI',
     long_description = readme(),
     long_description_content_type="text/markdown",
