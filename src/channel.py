@@ -269,7 +269,7 @@ class Channel:
         else:
             views = None
 
-        infoDict = {
+        return {
             'name': ls[0],
             'id': ls[8],
             'subscribers': ls[1],
@@ -282,4 +282,3 @@ class Channel:
             'avatar_url': ls[6],
             'banner_url': ls[7]
         }
-        return infoDict
