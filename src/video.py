@@ -45,11 +45,9 @@ class Video:
 
     @property
     def views(self):
-
         """
         :return: total views the video got so far
         """
-
         raw = _src(self._url)
         data = re.findall(
             r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"",
@@ -86,17 +84,14 @@ class Video:
         """
         raw = _src(self._url)
         data = re.findall(r"approxDurationMs\":\"(.*?)\"", raw)
-
-        return _duration(int(int(data[0]) / 1000)) if len(data) > 0 else None
+        return _duration(int(int(data[0]) / 1000)) if data else None
 
 
     @property
     def date(self):
-
         """
         :return: the date on which the video has been uploaded
         """
-
         raw = _src(self._url)
         data = re.findall(r"uploadDate\":\"(.*?)\"", raw)
         return data[0] if len(data) > 0 else None
@@ -104,11 +99,9 @@ class Video:
 
     @property
     def author(self):
-
         """
         :return: the id of the channel from which the video belongs
         """
-
         raw = _src(self._url)
         data = re.findall(r"channelIds\":\[\"(.*?)\"", raw)
         return data[0] if len(data) > 0 else None
@@ -116,11 +109,9 @@ class Video:
 
     @property
     def description(self):
-
         """
         :return: description provided with the video
         """
-
         raw = _src(self._url)
         data = re.findall(r"shortDescription\":\"(.*)\",\"isCrawlable", raw)
         return data[0].replace('\\n', '') if len(data) > 0 else None
@@ -128,11 +119,9 @@ class Video:
 
     @property
     def thumbnail(self):
-
         """
         :return: _url of the thumbnail of the video
         """
-
         raw = _src(self._url)
         data = re.findall(
             r"playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\"",
@@ -143,11 +132,9 @@ class Video:
 
     @property
     def tags(self):
-
         """
         :return: list of tags used in video meta-data
         """
-
         raw = _src(self._url)
         data = re.findall(r"<meta name=\"keywords\" content=\"(.*?)\">", raw)
         return data[0].split(',') if len(data) > 0 else None
@@ -157,7 +144,6 @@ class Video:
     def info(self):
         """
         :return: dict containing the the whole info of the video
-
         dict = {
 
             'title': -> str,
@@ -173,7 +159,6 @@ class Video:
             'tags': -> list,
         }
         """
-
         raw = _src(self._url)
 
         def _get_data(pattern):
@@ -207,6 +192,4 @@ class Video:
             'url': self._url,
             'thumbnail': ls[7],
             'tags': ls[8].split(','),
-
         }
-
