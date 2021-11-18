@@ -18,7 +18,6 @@ class _ChannelBulk:
     def url(self):
         return [f'https://www.youtube.com/channel/{item}' for item in self._ls]
 
-
     @property
     def name(self):
         def _get_data(url: str):
@@ -27,7 +26,6 @@ class _ChannelBulk:
             return re.findall(pattern, raw)[0]
 
         return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
-
 
     @property
     def subscribers(self):
@@ -39,7 +37,6 @@ class _ChannelBulk:
 
         return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
-
     @property
     def total_views(self):
         def _get_data(url: str):
@@ -49,7 +46,6 @@ class _ChannelBulk:
             return temp[0][:-6] if len(temp) > 0 else None
 
         return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
-
 
     @property
     def joined(self):
@@ -61,7 +57,6 @@ class _ChannelBulk:
 
         return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
-
     @property
     def country(self):
         def _get_data(url: str):
@@ -71,7 +66,6 @@ class _ChannelBulk:
             return temp[0] if len(temp) > 0 else None
 
         return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
-
 
     @property
     def custom_url(self):
@@ -95,7 +89,6 @@ class _ChannelBulk:
 
         return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
-
     @property
     def avatar_url(self):
         def _get_data(url: str):
@@ -106,7 +99,6 @@ class _ChannelBulk:
 
         return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
-
     @property
     def banner_url(self):
         def _get_data(url: str):
@@ -116,7 +108,6 @@ class _ChannelBulk:
             return temp[0] if len(temp) > 0 else None
 
         return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
-
 
     @property
     def verified(self):

@@ -1,7 +1,6 @@
 import re
-import urllib.request
 from .threads import _Thread
-from .auxiliary import _duration
+from .auxiliary import _duration, _src
 
 class Video:
 
@@ -36,12 +35,10 @@ class Video:
 
     @property
     def title(self):
-
         """
         :return: the title of the video
         """
-
-        raw = urllib.request.urlopen(self._url).read().decode()
+        raw = _src(self._url)
         data = re.findall(r"\"title\":\"(.*?)\"", raw)
         return data[0] if len(data) > 0 else None
 
@@ -53,7 +50,7 @@ class Video:
         :return: total views the video got so far
         """
 
-        raw = urllib.request.urlopen(self._url).read().decode()
+        raw = _src(self._url)
         data = re.findall(
             r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"",
             raw
@@ -63,12 +60,10 @@ class Video:
 
     @property
     def likes(self):
-
         """
         :return: total likes the video got so far
         """
-
-        raw = urllib.request.urlopen(self._url).read().decode()
+        raw = _src(self._url)
         data = re.findall(
             r"toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) ",
             raw
@@ -78,7 +73,6 @@ class Video:
 
     @property
     def dislikes(self):
-
         """
         :return: total dislikes the video got so far
         """
@@ -87,12 +81,10 @@ class Video:
 
     @property
     def duration(self):
-
         """
         :return: total duration of  the video in 00h 00m 00s
         """
-
-        raw = urllib.request.urlopen(self._url).read().decode()
+        raw = _src(self._url)
         data = re.findall(r"approxDurationMs\":\"(.*?)\"", raw)
 
         return _duration(int(int(data[0]) / 1000)) if len(data) > 0 else None
@@ -105,7 +97,7 @@ class Video:
         :return: the date on which the video has been uploaded
         """
 
-        raw = urllib.request.urlopen(self._url).read().decode()
+        raw = _src(self._url)
         data = re.findall(r"uploadDate\":\"(.*?)\"", raw)
         return data[0] if len(data) > 0 else None
 
@@ -117,7 +109,7 @@ class Video:
         :return: the id of the channel from which the video belongs
         """
 
-        raw = urllib.request.urlopen(self._url).read().decode()
+        raw = _src(self._url)
         data = re.findall(r"channelIds\":\[\"(.*?)\"", raw)
         return data[0] if len(data) > 0 else None
 
@@ -129,7 +121,7 @@ class Video:
         :return: description provided with the video
         """
 
-        raw = urllib.request.urlopen(self._url).read().decode()
+        raw = _src(self._url)
         data = re.findall(r"shortDescription\":\"(.*)\",\"isCrawlable", raw)
         return data[0].replace('\\n', '') if len(data) > 0 else None
 
@@ -141,7 +133,7 @@ class Video:
         :return: _url of the thumbnail of the video
         """
 
-        raw = urllib.request.urlopen(self._url).read().decode()
+        raw = _src(self._url)
         data = re.findall(
             r"playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\"",
             raw
@@ -156,14 +148,13 @@ class Video:
         :return: list of tags used in video meta-data
         """
 
-        raw = urllib.request.urlopen(self._url).read().decode()
+        raw = _src(self._url)
         data = re.findall(r"<meta name=\"keywords\" content=\"(.*?)\">", raw)
         return data[0].split(',') if len(data) > 0 else None
 
 
     @property
     def info(self):
-
         """
         :return: dict containing the the whole info of the video
 
@@ -183,7 +174,7 @@ class Video:
         }
         """
 
-        raw = urllib.request.urlopen(self._url).read().decode()
+        raw = _src(self._url)
 
         def _get_data(pattern):
             data = re.findall(pattern, raw)
@@ -204,8 +195,7 @@ class Video:
 
         ls = _Thread.run(_get_data, patterns)
 
-
-        infoDict = {
+        return {
 
             'title': ls[0],
             'id': self._id,
@@ -219,6 +209,4 @@ class Video:
             'tags': ls[8].split(','),
 
         }
-
-        return infoDict
 
