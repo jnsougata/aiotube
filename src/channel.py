@@ -12,7 +12,7 @@ class Channel:
         """
         :param str channelId: any of channel id, url , custom url
         """
-        ep = 'https://www.youtube.com/channel/'
+        head = 'https://www.youtube.com/channel/'
 
         if '/channel/' in channelId:
             self._url = channelId
@@ -21,7 +21,8 @@ class Channel:
         elif '/user/' in channelId:
             self._url = channelId
         else:
-            self._url = ep + channelId
+            self._url = head + channelId
+
 
     def __repr__(self):
         if self.name:
@@ -116,7 +117,7 @@ class Channel:
         """
         raw = _src(f'{self._url}/videos?view=0&sort=dd&flow=grid')
         videos = _filter(re.findall(r"\"gridVideoRenderer\":{\"videoId\":\"(.*?)\"", raw), limit)
-        return _VideoBulk(videos) if limited else None
+        return _VideoBulk(videos) if videos else None
 
     @property
     def latest(self):
@@ -208,8 +209,7 @@ class Channel:
         """
         :return: banner url of the channel
         """
-        query = f'{self._url}/about'
-        raw = urllib.request.urlopen(query).read().decode()
+        raw = _src(f'{self._url}/about')
         data = re.findall(r"width\":1280,\"height\":351},{\"url\":\"(.*?)\"", raw)
         return data[0] if data else None
 

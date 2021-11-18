@@ -10,16 +10,17 @@ class _ChannelBulk:
         self._ls = iterable
 
     @property
-    def id(self):
+    def ids(self):
         return self._ls
 
 
     @property
-    def url(self):
-        return [f'https://www.youtube.com/channel/{item}' for item in self._ls]
+    def urls(self):
+        head = 'https://www.youtube.com/channel/'
+        return [f'{head}{item}' for item in self._ls]
 
     @property
-    def name(self):
+    def names(self):
         def _get_data(url: str):
             raw = req.urlopen(url).read().decode()
             pattern = r"channelMetadataRenderer\":{\"title\":\"(.*?)\""
@@ -38,7 +39,7 @@ class _ChannelBulk:
         return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
     @property
-    def total_views(self):
+    def views(self):
         def _get_data(url: str):
             raw = req.urlopen(url).read().decode()
             pattern = r"\"viewCountText\":{\"simpleText\":\"(.*?)\"}"
@@ -58,7 +59,7 @@ class _ChannelBulk:
         return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
     @property
-    def country(self):
+    def countries(self):
         def _get_data(url: str):
             raw = req.urlopen(url).read().decode()
             pattern = r"\"country\":{\"simpleText\":\"(.*?)\"}"
@@ -68,7 +69,7 @@ class _ChannelBulk:
         return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
     @property
-    def custom_url(self):
+    def custom_urls(self):
         def _get_data(url: str):
             raw = req.urlopen(url).read().decode()
             pattern = r"\"canonicalChannelUrl\":\"(.*?)\""
@@ -90,7 +91,7 @@ class _ChannelBulk:
         return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
     @property
-    def avatar_url(self):
+    def avatar_urls(self):
         def _get_data(url: str):
             raw = req.urlopen(url).read().decode()
             pattern = "height\":88},{\"url\":\"(.*?)\""
@@ -100,7 +101,7 @@ class _ChannelBulk:
         return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
     @property
-    def banner_url(self):
+    def banner_urls(self):
         def _get_data(url: str):
             raw = req.urlopen(url).read().decode()
             pattern = r"width\":1280,\"height\":351},{\"url\":\"(.*?)\""
@@ -110,7 +111,7 @@ class _ChannelBulk:
         return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
     @property
-    def verified(self):
+    def verifieds(self):
         def _get_data(url: str):
             raw = req.urlopen(url).read().decode()
             isVerified = re.search(r'label":"Verified', raw)
@@ -119,7 +120,7 @@ class _ChannelBulk:
         return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
 
     @property
-    def live(self):
+    def lives(self):
         def _get_data(url: str):
             raw = req.urlopen(url).read().decode()
             isLive = re.search(r'{"text":" watching"}', raw)

@@ -14,7 +14,7 @@ def _src(url:str):
             return resp.read().decode()
     except HTTPError as status:
         if status.code == 404:
-            raise RuntimeError(f'Invalid url used')
+            raise RuntimeError('Invalid url')
         elif status.code == 429:
             raise RuntimeError('Too many requests')
 
@@ -28,7 +28,7 @@ def _filter(iterable:list, limit:int = None):
     :param iterable: list or tuple of elements
     :return: modified list (consider limit)
     """
-    lim = limit if limit is not None else 0
+    lim = limit if limit else 0
     converted = list(OrderedDict.fromkeys(iterable))
 
     if len(converted) - lim > 0:
@@ -38,12 +38,10 @@ def _filter(iterable:list, limit:int = None):
 
 
 def _duration(seconds: int):
-
     """
     :param seconds: duration to be converted
     :return: a duration string with 00h 00m 00s format
     """
-
     dur_hour = int(seconds // 3600)
     dur_min = int((seconds % 3600) // 60)
     dur_sec = int(seconds - (3600 * dur_hour) - (60 * dur_min))
