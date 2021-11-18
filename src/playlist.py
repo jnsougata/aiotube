@@ -1,7 +1,6 @@
 import re
-import urllib.request
 from .video import Video
-from .auxiliary import _filter, _src
+from .auxiliary import _src, _filter
 
 
 class Playlist:

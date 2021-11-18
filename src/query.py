@@ -1,5 +1,4 @@
 import re
-import urllib.request
 from .video import Video
 from .channel import Channel
 from .playlist import Playlist
@@ -15,23 +14,18 @@ class Search:
         pass
 
 
-
-    @classmethod
-    def video(cls, keywords:str):
-
+    @staticmethod
+    def video(keywords:str):
         """
-
         :return: < video object > regarding the query
-
         """
-
         raw = _src(f'https://www.youtube.com/results?search_query={_parser(keywords)}&sp=EgIQAQ%253D%253D')
         video_ids = re.findall(r"\"videoId\":\"(.*?)\"", raw)
         return Video(video_ids[0]) if video_ids else None
 
 
-    @classmethod
-    def channel(cls, keywords:str):
+    @staticmethod
+    def channel(keywords:str):
         """
         :return: < channel object > regarding the query
         """
@@ -40,8 +34,8 @@ class Search:
         return Channel(channel_ids[0]) if channel_ids else None
 
 
-    @classmethod
-    def videos(cls, keywords:str, limit: int = None):
+    @staticmethod
+    def videos(keywords:str, limit: int = None):
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total number of videos to be searched
@@ -53,8 +47,8 @@ class Search:
         return _VideoBulk(pureList) if pureList else None
 
 
-    @classmethod
-    def channels(cls, keywords:str, limit: int = None):
+    @staticmethod
+    def channels(keywords:str, limit: int = None):
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total number of channels to be searched
@@ -66,8 +60,8 @@ class Search:
         return _ChannelBulk(pureList) if pureList else None
 
 
-    @classmethod
-    def playlist(cls, keywords:str):
+    @staticmethod
+    def playlist(keywords:str):
 
         """
         :return: < playlist object > regarding the query
@@ -78,8 +72,8 @@ class Search:
         return Playlist(found[0]) if found else None
 
 
-    @classmethod
-    def playlists(cls, keywords:str, limit: int = None):
+    @staticmethod
+    def playlists(keywords:str, limit: int = None):
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total playlists be searched
