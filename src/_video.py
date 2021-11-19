@@ -154,9 +154,8 @@ class Video:
             r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"",
             r"toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) ",
             r"approxDurationMs\":\"(.*?)\"",
-            r"channelIds\":\[\"(.*?)\"",
-            r"uploadDate\":\"(.*?)\"",
             r"author\":\"(.*?)\"",
+            r"uploadDate\":\"(.*?)\"",
             r"playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\"",
             r"<meta name=\"keywords\" content=\"(.*?)\">"
 
@@ -167,13 +166,13 @@ class Video:
         return {
 
             'title': ls[0],
-            'id': ls[4],
+            'id': self._id,
             'views': ls[1][:-6],
             'likes': ls[2],
             'duration': _duration(int(int(ls[3]) / 1000)),
-            'author': ls[6],
+            'author': ls[4],
             'uploaded': ls[5],
             'url': self._url,
-            'thumbnail': ls[7],
-            'tags': ls[8].split(','),
+            'thumbnail': ls[6],
+            'tags': ls[7].split(','),
         }
