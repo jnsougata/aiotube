@@ -171,7 +171,7 @@ class Video:
             'views': ls[1][:-6],
             'likes': ls[2],
             'duration': _duration(int(int(ls[3]) / 1000)),
-            'author': ls[6][0],
+            'author': ls[6],
             'uploaded': ls[5],
             'url': self._url,
             'thumbnail': ls[7],
