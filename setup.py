@@ -9,7 +9,7 @@ def readme():
 
 setup(
     name='aiotube',
-    version='1.3.8',
+    version='1.3.9',
     description='Get YouTube Public Data without YouTubeAPI',
     long_description=readme(),
     long_description_content_type="text/markdown",
