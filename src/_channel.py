@@ -268,6 +268,8 @@ class Channel:
         else:
             views = None
 
+        curl = ls[5] if ls[5] and '/channel' not in ls[5] else None
+
         return {
             'name': ls[0],
             'id': ls[8],
@@ -277,7 +279,7 @@ class Channel:
             'joined_at': ls[3],
             'country': ls[4],
             'url': self._url,
-            'custom_url': ls[5],
+            'custom_url': curl,
             'avatar_url': ls[6],
             'banner_url': ls[7]
         }
