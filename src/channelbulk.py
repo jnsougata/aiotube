@@ -5,9 +5,8 @@ from .threads import _Thread
 
 class _ChannelBulk:
 
-    def __init__(self, iter:list):
+    def __init__(self, iter: list):
         self._ls = iter
-
 
     @property
     def ids(self):
@@ -22,13 +21,13 @@ class _ChannelBulk:
     def _sources(self):
         head = 'https://www.youtube.com/channel/'
         urls = [f'{head}{item}/about' for item in self._ls]
+
         def get_page(url):
             return _src(url)
         return _Thread.run(get_page, urls)
         
     @property
     def names(self):
-        srcs = self._sources
         pattern = r"channelMetadataRenderer\":{\"title\":\"(.*?)\""
         return [re.findall(pattern, item)[0] for item in self._sources]
 
@@ -67,7 +66,6 @@ class _ChannelBulk:
         pattern = r"description\":{\"simpleText\":\"(.*?)\""
         temp = [re.findall(pattern, item) for item in self._sources]
         return [item[0].replace('\\n', ' ') if item else None for item in temp]
-
 
     @property
     def avatars(self):
