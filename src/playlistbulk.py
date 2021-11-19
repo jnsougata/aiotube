@@ -1,5 +1,4 @@
 import re
-import urllib.request as req
 from .auxiliary import _src
 from .threads import _Thread
 
