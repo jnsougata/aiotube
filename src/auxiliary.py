@@ -3,7 +3,7 @@ from urllib.error import HTTPError
 from collections import OrderedDict
 
 
-def _src(url:str):
+def _src(url: str):
     """
     :param url: url to be requested
     :return: the requested page
@@ -17,7 +17,8 @@ def _src(url:str):
         elif status.code == 429:
             raise RuntimeError('Too many requests')
 
-def _filter(iterable:list, limit:int = None):
+
+def _filter(iterable: list, limit: int = None):
     """
     Restricts element repetition in iterable
     :param int limit: number of desired elements
@@ -32,6 +33,7 @@ def _filter(iterable:list, limit:int = None):
     else:
         return converted
 
+
 def _duration(seconds: int):
     """
     :param seconds: duration to be converted
@@ -42,5 +44,6 @@ def _duration(seconds: int):
     dur_sec = int(seconds - (3600 * dur_hour) - (60 * dur_min))
     return f'{dur_hour}h {dur_min}m {dur_sec}s'
 
-def _parser(kw:str):
+
+def _parser(kw: str):
     return kw.replace(" ", '+')
