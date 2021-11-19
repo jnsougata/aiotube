@@ -23,11 +23,8 @@ SOFTWARE.
 """
 
 
-
-
-from .video import Video
-from .query import Search
-from .extras import Extras
-from .channel import Channel
-from .playlist import Playlist
-
+from ._video import Video
+from ._query import Search
+from ._extras import Extras
+from ._channel import Channel
+from ._playlist import Playlist

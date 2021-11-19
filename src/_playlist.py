@@ -1,6 +1,6 @@
 import re
-from .video import Video
-from .auxiliary import _src, _filter
+from ._video import Video
+from ._auxiliary import _src, _filter
 
 
 class Playlist:

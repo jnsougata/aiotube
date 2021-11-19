@@ -1,9 +1,9 @@
 import re
-from .video import Video
-from .threads import _Thread
-from .videobulk import _VideoBulk
-from .auxiliary import _filter, _src
-from .playlistbulk import _PlaylistBulk
+from ._video import Video
+from ._threads import _Thread
+from ._videobulk import _VideoBulk
+from ._auxiliary import _filter, _src
+from ._playlistbulk import _PlaylistBulk
 
 
 class Channel:

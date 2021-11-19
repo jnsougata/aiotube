@@ -1,6 +1,6 @@
 import re
-from .auxiliary import _src
-from .threads import _Thread
+from ._auxiliary import _src
+from ._threads import _Thread
 
 
 class _ChannelBulk:
