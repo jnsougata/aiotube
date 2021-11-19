@@ -1,6 +1,6 @@
 
 # AioTube           
- **All in one Tube** is a package created to power the user with YouTube Data API functionality **without API Key**    
+ **All in One Tube** is a package created to power the user with YouTube Data API v3 functionality **without API Key**. Only valid for public information.   
     
  - **[Discord](https://discord.gg/YAFGAaMrTC)** | **[GitHub](https://github.com/jnsougata/AioTube)**
 # How to use?         
@@ -68,9 +68,6 @@
  - **Create an instance of Video Data:**
    - 
      - `vid = Video("video Id / video url")`
-     - **Method:**
-       - `download(format: str, filename: str[optional])`
-         > use `mp3` or `mp4` as `format` [ downloads available best quality ]
        
      - **Attribute:**     
         - `info`     
@@ -87,7 +84,7 @@
          - `url` Returns **url** of the video    
          - `thumbnail`  Returns **hq thumbnail** of the video  
          - `tags`  Returns **list of tags** of the video
-         - `bytes` Returns the music file in **bytes** form     
+     
  - **Create an instance of Playlist Data:** 
    - 
   
@@ -110,10 +107,10 @@
       - `extras = Extras()`    
       
       - **Attributes:**    
-         - `Trending`  Returns **#1 Trending** Video Object    
-         - `Music`  Returns trending ***Music*** Video Objects **[bulk]**   
-         - `Gaming`  Returns trending ***Gaming*** Video Objects **[bulk]**    
-         - `News`  Returns trending ***News*** Video Objects **[bulk]**    
-         - `Live`  Returns trending ***Live*** Video Objects **[bulk]**    
-         - `Learning`  Returns trending ***Educational*** Video Objects **[bulk]**    
-         - `Sports`  Returns trending ***Sports*** Video Objects **[bulk]**
+         - `trending`  Returns **#1 Trending** Video Object    
+         - `music`  Returns trending ***Music*** Video Objects **[bulk]**   
+         - `gaming`  Returns trending ***Gaming*** Video Objects **[bulk]**    
+         - `news`  Returns trending ***News*** Video Objects **[bulk]**    
+         - `livestream`  Returns trending ***Live*** Video Objects **[bulk]**    
+         - `learning`  Returns trending ***Educational*** Video Objects **[bulk]**    
+         - `sports`  Returns trending ***Sports*** Video Objects **[bulk]**
