@@ -7,8 +7,8 @@ class _Thread:
         pass
 
 
-    @classmethod
-    def run(cls, function, args: list) -> list:
+    @staticmethod
+    def run(function, args: list) -> list:
         num = len(args) if len(args) > 0 else 1
         if args:
             with concurrent.futures.ThreadPoolExecutor(max_workers=num) as exec:

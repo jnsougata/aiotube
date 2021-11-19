@@ -1,72 +1,61 @@
 import re
 import urllib.request as req
+from .auxiliary import _src
 from .threads import _Thread
 
 
 
 class _ChannelBulk:
 
-    def __init__(self, iterable:list):
-        self._ls = iterable
+    def __init__(self, iter:list):
+        self._ls = iter
 
     @property
     def ids(self):
         return self._ls
 
-
     @property
     def urls(self):
         head = 'https://www.youtube.com/channel/'
         return [f'{head}{item}' for item in self._ls]
-
+    
+    @property
+    def sources(self):
+        head = 'https://www.youtube.com/channel/'
+        urls = [f'{head}{item}/about' for item in self._ls]
+        def get_page(url):
+            return _src(url)
+        return _Thread.run(get_page, urls)
+        
     @property
     def names(self):
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"channelMetadataRenderer\":{\"title\":\"(.*?)\""
-            return re.findall(pattern, raw)[0]
-
-        return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
+        srcs = self.sources
+        pattern = r"channelMetadataRenderer\":{\"title\":\"(.*?)\""
+        return [re.findall(pattern, item)[0] for item in srcs]
 
     @property
     def subscribers(self):
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"\"subscriberCountText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?)\""
-            temp = re.findall(pattern, raw)
-            return temp[0][:-12] if len(temp) > 0 else None
-
-        return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
+        srcs = self.sources
+        pattern = r"}},\"simpleText\":\"(.*?) "
+        return [re.findall(pattern, item)[0] if re.findall(pattern, item) else None for item in srcs]
 
     @property
     def views(self):
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"\"viewCountText\":{\"simpleText\":\"(.*?)\"}"
-            temp = re.findall(pattern, raw)
-            return temp[0][:-6] if len(temp) > 0 else None
-
-        return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
+        srcs = self.sources
+        pattern = r"viewCountText\":{\"simpleText\":\"(.*?)\""
+        return [re.findall(pattern, item)[0][:-6] if re.findall(pattern, item) else None for item in srcs]
 
     @property
     def joined(self):
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"{\"text\":\"Joined \"},{\"text\":\"(.*?)\"}"
-            temp = re.findall(pattern, raw)
-            return temp[0] if len(temp) > 0 else None
-
-        return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
+        srcs = self.sources
+        pattern = r"text\":\"Joined \"},{\"text\":\"(.*?)\""
+        return [re.findall(pattern, item)[0] if re.findall(pattern, item) else None for item in srcs]
 
     @property
     def countries(self):
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"\"country\":{\"simpleText\":\"(.*?)\"}"
-            temp = re.findall(pattern, raw)
-            return temp[0] if len(temp) > 0 else None
-
-        return _Thread.run(_get_data, [f'https://www.youtube.com/channel/{item}/about' for item in self._ls])
+        srcs = self.sources
+        pattern = pattern = r"country\":{\"simpleText\":\"(.*?)\""
+        return [re.findall(pattern, item)[0] if re.findall(pattern, item) else None for item in srcs]
 
     @property
     def custom_urls(self):
