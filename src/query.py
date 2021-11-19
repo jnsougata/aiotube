@@ -13,9 +13,8 @@ class Search:
     def __init__(self):
         pass
 
-
     @staticmethod
-    def video(keywords:str):
+    def video(keywords: str):
         """
         :return: < video object > regarding the query
         """
@@ -23,9 +22,8 @@ class Search:
         video_ids = re.findall(r"\"videoId\":\"(.*?)\"", raw)
         return Video(video_ids[0]) if video_ids else None
 
-
     @staticmethod
-    def channel(keywords:str):
+    def channel(keywords: str):
         """
         :return: < channel object > regarding the query
         """
@@ -33,9 +31,8 @@ class Search:
         channel_ids = re.findall(r"{\"channelId\":\"(.*?)\"", raw)
         return Channel(channel_ids[0]) if channel_ids else None
 
-
     @staticmethod
-    def videos(keywords:str, limit: int):
+    def videos(keywords: str, limit: int):
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total number of videos to be searched
@@ -46,9 +43,8 @@ class Search:
         pureList = _filter(limit=limit, iterable=raw_ids)
         return _VideoBulk(pureList) if pureList else None
 
-
     @staticmethod
-    def channels(keywords:str, limit: int):
+    def channels(keywords: str, limit: int):
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total number of channels to be searched
@@ -59,21 +55,17 @@ class Search:
         pureList = _filter(limit=limit, iterable=raw_ids)
         return _ChannelBulk(pureList) if pureList else None
 
-
     @staticmethod
-    def playlist(keywords:str):
-
+    def playlist(keywords: str):
         """
         :return: < playlist object > regarding the query
         """
-
         raw = _src(f'https://www.youtube.com/results?search_query={_parser(keywords)}&sp=EgIQAw%253D%253D')
         found = re.findall(r"playlistId\":\"(.*?)\"", raw)
         return Playlist(found[0]) if found else None
 
-
     @staticmethod
-    def playlists(keywords:str, limit: int):
+    def playlists(keywords: str, limit: int):
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total playlists be searched
@@ -81,5 +73,5 @@ class Search:
         """
         raw = _src(f'https://www.youtube.com/results?search_query={_parser(keywords)}&sp=EgIQAw%253D%253D')
         found = re.findall(r"playlistId\":\"(.*?)\"", raw)
-        pure = _filter(limit = limit, iterable = found)
+        pure = _filter(limit=limit, iterable=found)
         return _PlaylistBulk(pure) if pure else None
