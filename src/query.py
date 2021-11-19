@@ -35,7 +35,7 @@ class Search:
 
 
     @staticmethod
-    def videos(keywords:str, limit: int = None):
+    def videos(keywords:str, limit: int):
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total number of videos to be searched
@@ -48,7 +48,7 @@ class Search:
 
 
     @staticmethod
-    def channels(keywords:str, limit: int = None):
+    def channels(keywords:str, limit: int):
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total number of channels to be searched
@@ -73,7 +73,7 @@ class Search:
 
 
     @staticmethod
-    def playlists(keywords:str, limit: int = None):
+    def playlists(keywords:str, limit: int):
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total playlists be searched

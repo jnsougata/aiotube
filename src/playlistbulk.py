@@ -3,7 +3,6 @@ from .auxiliary import _src
 from .threads import _Thread
 
 
-
 class _PlaylistBulk:
 
     def __init__(self, iter: list):
@@ -14,6 +13,7 @@ class _PlaylistBulk:
         head = 'https://www.youtube.com/playlist?list='
         return [f'{head}{item}' for item in self._ls]
 
+    
     @property
     def _sources(self):
         def get_page(url):
