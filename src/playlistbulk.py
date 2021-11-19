@@ -1,44 +1,39 @@
 import re
 import urllib.request as req
+from .auxiliary import _src
 from .threads import _Thread
 
 
 
 class _PlaylistBulk:
 
-    def __init__(self, iterable: list):
-        self._ls = iterable
+    def __init__(self, iter: list):
+        self._ls = iter
 
     @property
-    def name(self):
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"{\"title\":\"(.*?)\""
-            return re.findall(pattern, raw)[0]
-
-        return _Thread.run(_get_data, [f'https://www.youtube.com/playlist?list={item}' for item in self._ls])
-
+    def urls(self):
+        head = 'https://www.youtube.com/playlist?list='
+        return [f'{head}{item}' for item in self._ls]
 
     @property
-    def url(self):
-        return [f'https://www.youtube.com/playlist?list={item}' for item in self._ls]
+    def _sources(self):
+        def get_page(url):
+            return _src(url)
+        return _Thread.run(get_page, self.urls)
 
     @property
-    def video_count(self):
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"stats\":\[{\"runs\":\[{\"text\":\"(.*?)\""
-            temp = re.findall(pattern, raw)
-            return temp[0] if len(temp) > 0 else None
-
-        return _Thread.run(_get_data, [f'https://www.youtube.com/playlist?list={item}' for item in self._ls])
+    def names(self):
+        pattern = r"title\":\"(.*?)\""
+        return [re.findall(pattern, item)[0] for item in self._sources]
 
     @property
-    def thumbnail(self):
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"og:image\" content=\"(.*?)\?"
-            temp = re.findall(pattern, raw)
-            return temp[0] if len(temp) > 0 else None
+    def video_counts(self):
+        pattern = r"stats\":\[{\"runs\":\[{\"text\":\"(.*?)\""
+        temp = [re.findall(pattern, item) for item in self._sources]
+        return [item[0] if item else None for item in temp]
 
-        return _Thread.run(_get_data, [f'https://www.youtube.com/playlist?list={item}' for item in self._ls])
+    @property
+    def thumbnails(self):
+        pattern = r"og:image\" content=\"(.*?)\?"
+        temp = [re.findall(pattern, item) for item in self._sources]
+        return [item[0] if item else None for item in temp]
