@@ -1,126 +1,85 @@
 import re
-import urllib.request as req
-from .auxiliary import _duration
 from .threads import _Thread
-
+from .auxiliary import _src, _duration
 
 
 class _VideoBulk:
 
-    def __init__(self, iterable:list):
+    def __init__(self, iterable: list):
         self._ls = iterable
 
     @property
-    def title(self):
+    def _sources(self):
+        head = 'https://www.youtube.com/watch?v='
+        urls = [f'{head}{item}/about' for item in self._ls]
 
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"\"title\":\"(.*?)\""
-            return re.findall(pattern, raw)[0]
+        def get_page(url):
+            return _src(url)
 
-        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
+        return _Thread.run(get_page, urls)
 
+    @property
+    def ids(self):
+        return self._ls
+
+    @property
+    def urls(self):
+        head = 'https://www.youtube.com/watch?v='
+        return [f'{head}{item}' for item in self._ls]
+
+    @property
+    def titles(self):
+        pattern = r"title\":\"(.*?)\""
+        return [re.findall(pattern, item)[0] for item in self._sources]
 
     @property
     def views(self):
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\""
-            views = re.findall(pattern, raw)
-            return views[0][:-6] if len(views) > 0 else None
-
-        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
-
+        pattern = r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\""
+        temp = [re.findall(pattern, item) for item in self._sources]
+        return [item[0][:-6] if item else None for item in temp]
 
     @property
     def likes(self):
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) "
-            likes = re.findall(pattern, raw)
-            return likes[0] if len(likes) > 0 else None
-
-        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
-
+        pattern = r"toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) "
+        temp = [re.findall(pattern, item) for item in self._sources]
+        return [item[0] if item else None for item in temp]
 
     @property
     def dislikes(self):
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"DISLIKE\"},\"defaultText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) dislikes\""
-            dislikes = re.findall(pattern, raw)
-            return dislikes[0] if len(dislikes) > 0 else None
-
-        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
-
+        raise DeprecationWarning('This property is deprecated as YouTube removed public dislike counts.')
 
     @property
-    def duration(self):
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"approxDurationMs\":\"(.*?)\""
-            duration = re.findall(pattern, raw)
-            return _duration(int(int(duration[0]) / 1000))
-
-        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
-
+    def durations(self):
+        pattern = r"approxDurationMs\":\"(.*?)\""
+        temp = [re.findall(pattern, item) for item in self._sources]
+        return [_duration(int(int(item[0]) / 1000)) if item else None for item in temp]
 
     @property
-    def upload_date(self):
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"uploadDate\":\"(.*?)\""
-            return re.findall(pattern, raw)[0]
-
-        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
-
+    def dates(self):
+        pattern = r"uploadDate\":\"(.*?)\""
+        temp = [re.findall(pattern, item) for item in self._sources]
+        return [item[0] if item else None for item in temp]
 
     @property
-    def parent(self):
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"channelIds\":\[\"(.*?)\""
-            return re.findall(pattern, raw)[0]
-
-        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
-
+    def parents(self):
+        pattern = r"channelIds\":\[\"(.*?)\""
+        temp = [re.findall(pattern, item) for item in self._sources]
+        return [item[0] if item else None for item in temp]
 
     @property
-    def description(self):
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"shortDescription\":\"(.*)\",\"isCrawlable"
-            return re.findall(pattern, raw)[0]
-
-        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
-
+    def descriptions(self):
+        pattern = r"shortDescription\":\"(.*)\",\"isCrawlable"
+        temp = [re.findall(pattern, item) for item in self._sources]
+        return [item[0].replace('\\n', ' ') if item else None for item in temp]
 
     @property
-    def thumbnail(self):
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\""
-            return re.findall(pattern, raw)[0]
-
-        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
-
+    def thumbnails(self):
+        pattern = r"playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\""
+        temp = [re.findall(pattern, item) for item in self._sources]
+        return [item[0] if item else None for item in temp]
 
     @property
     def tags(self):
-        def _get_data(url: str):
-            raw = req.urlopen(url).read().decode()
-            pattern = r"<meta name=\"keywords\" content=\"(.*?)\">"
-            tags = re.findall(pattern, raw)
-            return tags[0].split(',') if len(tags) > 0 else None
-
-        return _Thread.run(_get_data, [f'https://www.youtube.com/watch?v={item}' for item in self._ls])
-
-
-    @property
-    def url(self):
-        return [f'https://www.youtube.com/watch?v={item}' for item in self._ls]
-
-
-    @property
-    def id(self):
-        return self._ls
+        pattern = r"<meta name=\"keywords\" content=\"(.*?)\">"
+        temp = [re.findall(pattern, item) for item in self._sources]
+        return [item[0].split(',') if item else None for item in temp]
