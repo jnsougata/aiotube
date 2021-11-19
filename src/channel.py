@@ -23,7 +23,6 @@ class Channel:
         else:
             self._url = head + channelId
 
-
     def __repr__(self):
         if self.name:
             return f'<Channel - {self.name}>'
