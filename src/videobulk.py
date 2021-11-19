@@ -46,7 +46,7 @@ class _VideoBulk:
 
     @property
     def dislikes(self):
-        raise DeprecationWarning('This property is deprecated as YouTube removed public dislike counts.')
+        raise DeprecationWarning("This property is deprecated as YouTube is slowly removing public dislike counts.")
 
     @property
     def durations(self):
