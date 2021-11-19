@@ -1,5 +1,4 @@
 import re
-from channel import Channel
 from .threads import _Thread
 from .auxiliary import _duration, _src
 
@@ -157,7 +156,7 @@ class Video:
             r"approxDurationMs\":\"(.*?)\"",
             r"channelIds\":\[\"(.*?)\"",
             r"uploadDate\":\"(.*?)\"",
-            r"channelIds\":\[\"(.*?)\"",
+            r"author\":\"(.*?)\"",
             r"playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\"",
             r"<meta name=\"keywords\" content=\"(.*?)\">"
 
@@ -172,7 +171,7 @@ class Video:
             'views': ls[1][:-6],
             'likes': ls[2],
             'duration': _duration(int(int(ls[3]) / 1000)),
-            'author': ls[6],
+            'author': ls[6][0],
             'uploaded': ls[5],
             'url': self._url,
             'thumbnail': ls[7],
