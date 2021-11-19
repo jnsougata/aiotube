@@ -2,14 +2,13 @@ import re
 from .threads import _Thread
 from .auxiliary import _duration, _src
 
+
 class Video:
 
     def __init__(self, videoId: str):
-
         """
         :param videoId: video id or the url of the video
         """
-
         if 'watch?v=' in videoId:
             self._url = videoId
             self._id = re.findall(r"v=(.*)", videoId)[0]
@@ -22,16 +21,13 @@ class Video:
             self._url = f'https://www.youtube.com/watch?v={videoId}'
             self._id = videoId
 
-
     @property
     def url(self):
         return self._url
 
-
     @property
     def id(self):
         return self._id
-
 
     @property
     def title(self):
@@ -41,7 +37,6 @@ class Video:
         raw = _src(self._url)
         data = re.findall(r"\"title\":\"(.*?)\"", raw)
         return data[0] if len(data) > 0 else None
-
 
     @property
     def views(self):
@@ -55,7 +50,6 @@ class Video:
         )
         return data[0][:-6] if len(data) > 0 else None
 
-
     @property
     def likes(self):
         """
@@ -68,14 +62,9 @@ class Video:
         )
         return data[0] if len(data) > 0 else None
 
-
     @property
     def dislikes(self):
-        """
-        :return: total dislikes the video got so far
-        """
-        raise DeprecationWarning("YouTube depreciated public dislike counts")
-
+        raise DeprecationWarning("This property is deprecated as YouTube depreciated public dislike counts.")
 
     @property
     def duration(self):
@@ -86,7 +75,6 @@ class Video:
         data = re.findall(r"approxDurationMs\":\"(.*?)\"", raw)
         return _duration(int(int(data[0]) / 1000)) if data else None
 
-
     @property
     def date(self):
         """
@@ -95,7 +83,6 @@ class Video:
         raw = _src(self._url)
         data = re.findall(r"uploadDate\":\"(.*?)\"", raw)
         return data[0] if len(data) > 0 else None
-
 
     @property
     def author(self):
@@ -106,7 +93,6 @@ class Video:
         data = re.findall(r"channelIds\":\[\"(.*?)\"", raw)
         return data[0] if len(data) > 0 else None
 
-
     @property
     def description(self):
         """
@@ -115,7 +101,6 @@ class Video:
         raw = _src(self._url)
         data = re.findall(r"shortDescription\":\"(.*)\",\"isCrawlable", raw)
         return data[0].replace('\\n', '') if len(data) > 0 else None
-
 
     @property
     def thumbnail(self):
@@ -129,7 +114,6 @@ class Video:
         )
         return data[0] if len(data) > 0 else None
 
-
     @property
     def tags(self):
         """
@@ -138,7 +122,6 @@ class Video:
         raw = _src(self._url)
         data = re.findall(r"<meta name=\"keywords\" content=\"(.*?)\">", raw)
         return data[0].split(',') if len(data) > 0 else None
-
 
     @property
     def info(self):
