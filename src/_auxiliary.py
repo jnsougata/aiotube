@@ -18,7 +18,7 @@ def _src(url: str):
             raise RuntimeError('Too many requests')
 
 
-def _filter(iterable: list, limit: int = None):
+def _filter(iterable: list, limit: int = None) -> list:
     """
     Restricts element repetition in iterable
     :param int limit: number of desired elements

@@ -80,7 +80,7 @@ class Channel:
         return '{"text":" watching"}' in raw
 
     @property
-    def livestream(self):
+    def livestream(self) -> str:
         """
         :return: channel's ongoing  livestream url
         """
@@ -90,7 +90,7 @@ class Channel:
             return f'https://www.youtube.com/watch?v={Id}'
 
     @property
-    def livestreams(self):
+    def livestreams(self) -> list:
         """
         :return: channel's ongoing  livestream urls
         """
@@ -100,7 +100,7 @@ class Channel:
             return [f'https://www.youtube.com/watch?v={Id}' for Id in Ids]
 
     @property
-    def oldstreams(self):
+    def oldstreams(self) -> list:
         """
         :return: channel's old livestream urls
         """
@@ -126,10 +126,8 @@ class Channel:
         raw = _src(f'{self._url}/videos?view=0&sort=dd&flow=grid')
         thumbs = re.findall('thumbnails\":\[{\"url\":\"(.*?)\?', raw)
         ups = [url for url in thumbs if '_live' not in url]
-        if ups:
-            videoId = re.findall('i/(.*?)/', ups[0])
-            if videoId:
-                return Video(videoId[0])
+        videoId = re.findall('i/(.*?)/', ups[0]) if ups else None
+        return Video(videoId[0]) if videoId else None
 
     @property
     def subscribers(self):
