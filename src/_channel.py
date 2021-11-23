@@ -86,7 +86,7 @@ class Channel:
         """
         raw = _src(f'{self._url}/videos?view=2&live_view=501')
         if '{"text":" watching"}' in raw:
-            Id = _filter(re.findall(r"\"videoId\":\"(.*?)\"", raw))[0]
+            Id = _filter(re.findall(r"videoId\":\"(.*?)\"", raw))[0]
             return f'https://www.youtube.com/watch?v={Id}'
 
     @property
@@ -126,9 +126,10 @@ class Channel:
         raw = _src(f'{self._url}/videos?view=0&sort=dd&flow=grid')
         thumbs = re.findall('thumbnails\":\[{\"url\":\"(.*?)\?', raw)
         ups = [url for url in thumbs if '_live' not in url]
-        videoId = re.findall('i/(.*?)/', ups[0])[0] if ups else None
-        if videoId:
-            return Video(videoId)
+        if ups:
+            videoId = re.findall('i/(.*?)/', ups[0])
+            if videoId:
+                return Video(videoId[0])
 
     @property
     def subscribers(self):

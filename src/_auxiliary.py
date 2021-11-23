@@ -25,13 +25,15 @@ def _filter(iterable: list, limit: int = None):
     :param iterable: list or tuple of elements
     :return: modified list (consider limit)
     """
-    lim = limit if limit else 0
-    converted = list(OrderedDict.fromkeys(iterable))
-
-    if len(converted) - lim > 0:
-        return converted[:-len(converted) + lim]
+    if iterable:
+        lim = limit if limit else len(iterable)
+        converted = list(OrderedDict.fromkeys(iterable))
+        if len(converted) - lim > 0:
+            return converted[:-len(converted) + lim]
+        else:
+            return converted
     else:
-        return converted
+        return []
 
 
 def _duration(seconds: int):
