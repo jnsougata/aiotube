@@ -105,7 +105,7 @@ class Channel:
         :return: channel's old livestream urls
         """
         raw = _src(f'{self._url}/videos?view=2&live_view=503')
-        Ids = _filter(re.findall(r"\"videoId\":\"(.*?)\"", raw))
+        Ids = _filter(re.findall(r"videoId\":\"(.*?)\"", raw))
         urls = [f'https://www.youtube.com/watch?v={Id}' for Id in Ids]
         return urls if urls else None
 

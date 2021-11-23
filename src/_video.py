@@ -36,7 +36,7 @@ class Video:
         """
         raw = _src(self._url)
         data = re.findall(r"\"title\":\"(.*?)\"", raw)
-        return data[0] if len(data) > 0 else None
+        return data[0] if data else None
 
     @property
     def views(self):
@@ -48,7 +48,7 @@ class Video:
             r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"",
             raw
         )
-        return data[0][:-6] if len(data) > 0 else None
+        return data[0][:-6] if data else None
 
     @property
     def likes(self):
@@ -60,7 +60,7 @@ class Video:
             r"toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) ",
             raw
         )
-        return data[0] if len(data) > 0 else None
+        return data[0] if data else None
 
     @property
     def dislikes(self):
@@ -82,7 +82,7 @@ class Video:
         """
         raw = _src(self._url)
         data = re.findall(r"uploadDate\":\"(.*?)\"", raw)
-        return data[0] if len(data) > 0 else None
+        return data[0] if data else None
 
     @property
     def author(self):
@@ -91,7 +91,7 @@ class Video:
         """
         raw = _src(self._url)
         data = re.findall(r"channelIds\":\[\"(.*?)\"", raw)
-        return data[0] if len(data) > 0 else None
+        return data[0] if data else None
 
     @property
     def description(self):
@@ -100,7 +100,7 @@ class Video:
         """
         raw = _src(self._url)
         data = re.findall(r"shortDescription\":\"(.*)\",\"isCrawlable", raw)
-        return data[0].replace('\\n', '') if len(data) > 0 else None
+        return data[0].replace('\\n', '') if data else None
 
     @property
     def thumbnail(self):
@@ -112,7 +112,7 @@ class Video:
             r"playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\"",
             raw
         )
-        return data[0] if len(data) > 0 else None
+        return data[0] if data else None
 
     @property
     def tags(self):
@@ -121,7 +121,7 @@ class Video:
         """
         raw = _src(self._url)
         data = re.findall(r"<meta name=\"keywords\" content=\"(.*?)\">", raw)
-        return data[0].split(',') if len(data) > 0 else None
+        return data[0].split(',') if data else None
 
     @property
     def info(self):
