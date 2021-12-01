@@ -1,4 +1,4 @@
-# **__Welcome to the AioTube Guide__**
+# **__Welcome to the `official aiotube guide`__**
 This guide will walkthrough the different ways to use aiotube
 
 ## Table of Content
@@ -21,6 +21,13 @@ This guide will walkthrough the different ways to use aiotube
      - [Basics](#video_basics)
      - [Attributes](#video_attributes)
      - [Dict](#video_dict)
+   - [Channel](#channel) 
+     - [Attributes](#channel_attributes)
+   - [Playlist](#playlist) 
+     - [Attributes](#playlist_attributes)
+   - [Extras](#extras) 
+     - [Attributes](#extras_attributes)
+- [The end](#end)
 
 ## <a name="aiotube"></a> Aiotube
 
@@ -33,6 +40,8 @@ functionality without API Key. Only valid for public information.
 > [`Code(Github)`](https://github.com/jnsougata/AioTube)
 > 
 > [`Support Server(Discord)`](https://discord.gg/YAFGAaMrTC)
+> 
+> [`Gist Creator`](https://slumberdemon.carrd.co)
 
 ## <a name="installation"></a> Installation
 
@@ -43,10 +52,13 @@ pip install aiotube
 ## <a name="getting_started"></a> Getting Started
 
 ```py
+# Imports everything (Search, Vide, Channel, Playlist, Extras)
 # This guide will use *
+
 from aiotube import *
 
 # Imports individual options
+
 from aiotube import Search, Video, Channel, Playlist, Extras
 ```
 
@@ -60,7 +72,6 @@ from aiotube import Search, Video, Channel, Playlist, Extras
 This will get the first video from youtube search results
 
 ```py
-import aiotube
 from aiotube import *
 
 Video = Search.video(keywords='youtube rewind')
@@ -71,9 +82,10 @@ Now if we `print(Video)` we will get something like this:
 <aiotube._video.Video object at 0x7fed958807c0>
 
 ```
+
 This is not exactly what we want though so to get the video url we have to use the `url` attribute
+
 ```py
-import aiotube
 from aiotube import *
 
 Video = Search.video(keywords='youtube rewind')
@@ -90,7 +102,6 @@ https://www.youtube.com/watch?v=YbJOTdZBX1g
 To get more information on the video we can use the following attributes: `title`, `views`, `likes`, `dislikes`(This property is deprecated as YouTube is slowly removing public dislike counts), `author`, `duration`, `url`, `thumbnail`, `tags`
 
 ```py
-import aiotube
 from aiotube import *
 
 Video = Search.video('youtube rewind')
@@ -123,7 +134,6 @@ https://i.ytimg.com/vi/YbJOTdZBX1g/maxresdefault.jpg
 You can also get videos in bulk. Even though their is no limit to the search aiotube wont return the exact amount, as it has to load the full page. Bulk video search also has some attributes: `ids`, `urls`, `views`, `likes`, `dislikes`(This property is deprecated as YouTube is slowly removing public dislike counts), `durations`, `dates`, `parents`, `descriptions`, `thumbnails`, `tags`
 
 ```py
-import aiotube
 from aiotube import *
 
 Videos = Search.videos('youtube rewind', limit=100)
@@ -158,7 +168,6 @@ Output:
 As with the video search you can obtain certain attributes of a channel: `id`, `info`, `valid`, `name`, `live`, `verified`, `livestream`, `livestreams`, `oldstreams`, `latest`, `playlists`, `subscribers`, `views`, `joined`, `country`, `custom_url`, `avatar`, `banner`, `description`
 
 ```py
-import aiotube
 from aiotube import *
 
 Channel = Search.channel(keywords='SlumberDemon')
@@ -383,8 +392,7 @@ UCWLM2AmtzOCO68MKJn7FFuQ
 
 You can also get data by using the `info` attribute which returns a dict
 
-```p
-import aiotube
+```py
 from aiotube import *
 
 Vid = Video("8Or7UuuQu1Y&t=6s") # video Id / video url
@@ -402,7 +410,7 @@ Output:
 
 #### <a name="channel_attributes"></a> Attributes
 
-To get channel data you can use the following attributes: `id`, `valid`, `name` `info`(Returns dict), `live`, `verified`, `livestream`, `livestreams`, `oldstreams`, `latest`, `playlists`, `subscribers`, `views`, `joined`, `country`, `custom_url`, `avatar`, `banner`, `description`
+Similar to the [video basics](#video_basics) if you don't include any attributes it will return an `object`. To get channel data you can use the following attributes: `id`, `valid`, `name` `info`(Returns dict), `live`, `verified`, `livestream`, `livestreams`, `oldstreams`, `latest`, `playlists`, `subscribers`, `views`, `joined`, `country`, `custom_url`, `avatar`, `banner`, `description`
 
 ```py
 from aiotube import *
@@ -419,3 +427,101 @@ Output:
 https://www.youtube.com/channel/UCWLM2AmtzOCO68MKJn7FFuQ
 SlumberDemon
 ````
+
+## <a name="playlist"></a> Create an instance of Playlist Data
+
+#### <a name="playlist_attributes"></a> Attributes
+
+To get playlist data we can use the following attributes: `info`(Returns dict), `name`, `url`, `video_count`, `thumbnail`
+
+```py
+from aiotube import *
+
+Playlist = Playlist("PLBnetXbvs5BGzGIsoxe6MYhX1hB7iRoOD") # playlist id
+
+print(Playlist.name)
+print(Playlist.url)
+print(Playlist.video_count)
+```
+
+Output:
+
+```
+Youtube Rewind (2010-2020)
+https://www.youtube.com/playlist?list=PLBnetXbvs5BGzGIsoxe6MYhX1hB7iRoOD
+11
+```
+
+You can also use the `videos` attribute, which retuns `video` objects. Currently you can't do anything with them but in future there will be a selection of attributes to use.
+
+```py
+from aiotube import *
+
+Playlist = Playlist("PLBnetXbvs5BGzGIsoxe6MYhX1hB7iRoOD") # playlist id
+
+Videos = Playlist.videos(limit=100)
+
+print(Videos)
+```
+
+Output:
+
+```
+[<aiotube._video.Video object at 0x7f0ac724bc70>, <aiotube._video.Video object at 0x7f0ac724bdc0>, <aiotube._video.Video object at 0x7f0ac724bc10>, <aiotube._video.Video object at 0x7f0ac724bcd0>, <aiotube._video.Video object at 0x7f0ac724bd00>, <aiotube._video.Video object at 0x7f0ac724bf40>, <aiotube._video.Video object at 0x7f0ac724bfa0>, <aiotube._video.Video object at 0x7f0ac7259850>, <aiotube._video.Video object at 0x7f0ac7259100>, <aiotube._video.Video object at 0x7f0ac72598e0>, <aiotube._video.Video object at 0x7f0ac7259070>]
+```
+
+## <a name="extras"></a> Create an instance of YouTube Extras
+
+#### <a name="extras_attributes"></a> Attributes
+
+Using extras alows you to get the currently trending videos. The following attributes can be used: `trending`, `music`, `gaming`, `news`, `livestream`, `learning`, `sports`
+
+```py
+from aiotube import *
+
+Extras = Extras()
+
+print(Extras.trending)
+print(Extras.music)
+print(Extras.gaming)
+print(Extras.news)
+print(Extras.livestream)
+print(Extras.learning)
+print(Extras.sports)
+```
+
+This will output the following:
+
+```
+<aiotube._video.Video object at 0x7fccb009cfa0>
+<aiotube._videobulk._VideoBulk object at 0x7fccb009cfa0>
+<aiotube._videobulk._VideoBulk object at 0x7fccb009cfa0>
+<aiotube._videobulk._VideoBulk object at 0x7fccb009cfa0>
+<aiotube._videobulk._VideoBulk object at 0x7fccb009cfa0>
+<aiotube._videobulk._VideoBulk object at 0x7fccb009cfa0>
+<aiotube._videobulk._VideoBulk object at 0x7fccb009cfa0>
+```
+
+Extras will return [video](#video_attributes) and [VideoBulk](#search_video_bulk) objects. These links will lead to the attributes that can be used to obtain more information from these objects. An example can be seen below:
+
+```py
+from aiotube import *
+
+Extras = Extras()
+
+print(Extras.trending.url) # single video object in url format
+print(Extras.music.urls) # multiple video bulk objects in url format
+```
+
+Output:
+
+```
+https://www.youtube.com/watch?v=2jfbXZiE6Lc
+['https://www.youtube.com/watch?v=-AxZDTPX5x8', 'https://www.youtube.com/watch?v=PfwIpoVMvNs', 'https://www.youtube.com/watch?v=waADh9bESBk', 'https://www.youtube.com/watch?v=8e7S8l4s1OM', 'https://www.youtube.com/watch?v=4zqsbsWttcI', 'https://www.youtube.com/watch?v=1qrhnK6FGr0', 'https://www.youtube.com/watch?v=cw1qDzyiYW4', 'https://www.youtube.com/watch?v=fmKrSGTfCiU', 'https://www.youtube.com/watch?v=idqomUhHrQE', 'https://www.youtube.com/watch?v=fUWcVNLNvrs', 'https://www.youtube.com/watch?v=aAkMkVFwAoo', 'https://www.youtube.com/watch?v=B-tOZxoNrFk', 'https://www.youtube.com/watch?v=wKhRnZZ0cJI', 'https://www.youtube.com/watch?v=_JmwTmhC3zg', 'https://www.youtube.com/watch?v=_p0PjkdLFm4', 'https://www.youtube.com/watch?v=oMCG-fL-uCM', 'https://www.youtube.com/watch?v=2xttF0lM_Wk', 'https://www.youtube.com/watch?v=Ew-zmk81G1k', 'https://www.youtube.com/watch?v=PhKVSZsRxQM', 'https://www.youtube.com/watch?v=GyBlCur-eJ0', 'https://www.youtube.com/watch?v=a3U_Oeezy18', 'https://www.youtube.com/watch?v=KWTLVZMBhBY', 'https://www.youtube.com/watch?v=MdNfV0667C8', 'https://www.youtube.com/watch?v=58g_dyMTQHQ', 'https://www.youtube.com/watch?v=KyA8f5E4q8w', 'https://www.youtube.com/watch?v=__6OB8_QZC8', 'https://www.youtube.com/watch?v=PWU3MapYLMw', 'https://www.youtube.com/watch?v=rSEd7vZo6Lk', 'https://www.youtube.com/watch?v=IL_UlIcuYMc', 'https://www.youtube.com/watch?v=2iaA5NxC69E', 'https://www.youtube.com/watch?v=0U5CWjQeUnE', 'https://www.youtube.com/watch?v=uPD0QOGTmMI', 'https://www.youtube.com/watch?v=GChxzIwyNt4', 'https://www.youtube.com/watch?v=JJwEoHmteZE', 'https://www.youtube.com/watch?v=kSl8EwMrwjE', 'https://www.youtube.com/watch?v=zc372PmNIzE', 'https://www.youtube.com/watch?v=0dje_eehMIE', 'https://www.youtube.com/watch?v=hz_pTf76Suk', 'https://www.youtube.com/watch?v=XYnMAnZTQu0', 'https://www.youtube.com/watch?v=_64VTQLdFGQ', 'https://www.youtube.com/watch?v=39NfSiXXgcE', 'https://www.youtube.com/watch?v=nPwCmfgJl30', 'https://www.youtube.com/watch?v=nrIPxlFzDi0', 'https://www.youtube.com/watch?v=5qm8PH4xAss', 'https://www.youtube.com/watch?v=ViwtNLUqkMY', 'https://www.youtube.com/watch?v=eBG7P-K-r1Y', 'https://www.youtube.com/watch?v=d05tQrhNMkA', 'https://www.youtube.com/watch?v=LfRNRymrv9k', 'https://www.youtube.com/watch?v=_JZom_gVfuw', 'https://www.youtube.com/watch?v=gJLIiF15wjQ', 'https://www.youtube.com/watch?v=4N1iwQxiHrs', 'https://www.youtube.com/watch?v=hSofzQURQDk', 'https://www.youtube.com/watch?v=Lrle0x_DHBM', 'https://www.youtube.com/watch?v=eVTXPUF4Oz4', 'https://www.youtube.com/watch?v=35AWgksymtA', 'https://www.youtube.com/watch?v=kTJczUoc26U', 'https://www.youtube.com/watch?v=e4ujS1er1r0', 'https://www.youtube.com/watch?v=tqiXwx0NG0Q', 'https://www.youtube.com/watch?v=Jf3JOkPsogI', 'https://www.youtube.com/watch?v=-dB7P2kRJ8Q', 'https://www.youtube.com/watch?v=_NGQfFCFUn4', 'https://www.youtube.com/watch?v=O1Qh7j1yD8Y', 'https://www.youtube.com/watch?v=UJtjoQ5TcVI', 'https://www.youtube.com/watch?v=FTQbiNvZqaY', 'https://www.youtube.com/watch?v=orJSJGHjBLI', 'https://www.youtube.com/watch?v=nAUwKeO93bY', 'https://www.youtube.com/watch?v=ffcitRgiNDs', 'https://www.youtube.com/watch?v=ngG2XKJ_y1Q', 'https://www.youtube.com/watch?v=jx0Ag3fEeDE', 'https://www.youtube.com/watch?v=nJr_8l0AEWE', 'https://www.youtube.com/watch?v=TfJf9T8f9u4', 'https://www.youtube.com/watch?v=H-OJFUU0lyE', 'https://www.youtube.com/watch?v=gpzmn4ZoB5k', 'https://www.youtube.com/watch?v=mHrQXY93qMc', 'https://www.youtube.com/watch?v=sCX2Uc75_T4', 'https://www.youtube.com/watch?v=4ymUUTvAkkc', 'https://www.youtube.com/watch?v=BK78W5t5YlI', 'https://www.youtube.com/watch?v=U3ASj1L6_sY', 'https://www.youtube.com/watch?v=U2SNwtE-0Us', 'https://www.youtube.com/watch?v=tollGa3S0o8', 'https://www.youtube.com/watch?v=eeNv4wf2D1U', 'https://www.youtube.com/watch?v=ksY3wb4vtlA', 'https://www.youtube.com/watch?v=y8trd3gjJt0', 'https://www.youtube.com/watch?v=G_zuB-ogIBw', 'https://www.youtube.com/watch?v=0Gjx-ZQuQ_Y', 'https://www.youtube.com/watch?v=agvibm7Wqy4', 'https://www.youtube.com/watch?v=nzGVO6BR4Ek', 'https://www.youtube.com/watch?v=HZ8V7HpkAtk', 'https://www.youtube.com/watch?v=NC4bc0OFvwk', 'https://www.youtube.com/watch?v=5isjqo_xtCo', 'https://www.youtube.com/watch?v=2F34hoIEFkk', 'https://www.youtube.com/watch?v=faf98cNY8A8', 'https://www.youtube.com/watch?v=zNv46Vp-l18', 'https://www.youtube.com/watch?v=H0ciir6G0jA', 'https://www.youtube.com/watch?v=eQvj5LRacrM', 'https://www.youtube.com/watch?v=FPLTf_3-FP0', 'https://www.youtube.com/watch?v=VwPZ58WGcrs', 'https://www.youtube.com/watch?v=g450xDoMxKo', 'https://www.youtube.com/watch?v=snsTmi9N9Gs', 'https://www.youtube.com/watch?v=U5rLz5AZBIA', 'https://www.youtube.com/watch?v=OMHHUsQRmvo', 'https://www.youtube.com/watch?v=7xzU9Qqdqww', 'https://www.youtube.com/watch?v=a_YR4dKArgo', 'https://www.youtube.com/watch?v=DUT5rEU6pqM', 'https://www.youtube.com/watch?v=bqpA5Acc8-c', 'https://www.youtube.com/watch?v=GtUVQei3nX4', 'https://www.youtube.com/watch?v=oUbpGmR1-QM', 'https://www.youtube.com/watch?v=vYMxOzxKYYo', 'https://www.youtube.com/watch?v=iWyvMerss4w', 'https://www.youtube.com/watch?v=0DdCoNbbRvQ', 'https://www.youtube.com/watch?v=y7394ESN91Y', 'https://www.youtube.com/watch?v=J4_W-R3iPJ8']
+```
+
+## <a name="end"></a> The end
+
+Thank you for reading this long guide! If you have any problems or ideas join the [`Support Server(Discord)`](https://discord.gg/YAFGAaMrTC) or comment on this gist! 
+
+Written by [SlumberDemon](slumberdemon.carrd.co)
