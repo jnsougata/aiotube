@@ -524,4 +524,4 @@ https://www.youtube.com/watch?v=2jfbXZiE6Lc
 
 Thank you for reading this long guide! If you have any problems or ideas join the [`Support Server(Discord)`](https://discord.gg/YAFGAaMrTC) or comment on this gist! 
 
-Written by [SlumberDemon](slumberdemon.carrd.co)
+Written by [SlumberDemon](https://slumberdemon.carrd.co)
