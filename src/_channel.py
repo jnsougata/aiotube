@@ -77,7 +77,8 @@ class Channel:
         :return: Bool of channel's Live Status
         """
         raw = _src(f'{self._url}/videos?view=2&live_view=501')
-        return '{"text":" watching"}' in raw
+        check = re.findall("thumbnailOverlays\":\[(.*?)]", raw)
+        return '{"text":"LIVE"}' in check[0]
 
     @property
     def livestream(self) -> str:
@@ -85,7 +86,8 @@ class Channel:
         :return: channel's ongoing  livestream url
         """
         raw = _src(f'{self._url}/videos?view=2&live_view=501')
-        if '{"text":" watching"}' in raw:
+        check = re.findall("thumbnailOverlays\":\[(.*?)]", raw)
+        if '{"text":"LIVE"}' in check[0]:
             Id = _filter(re.findall(r"videoId\":\"(.*?)\"", raw))[0]
             return f'https://www.youtube.com/watch?v={Id}'
 
