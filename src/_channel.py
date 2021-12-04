@@ -78,7 +78,7 @@ class Channel:
         """
         raw = _src(f'{self._url}/videos?view=2&live_view=501')
         check = re.findall("thumbnailOverlays\":\[(.*?)]", raw)
-        return '{"text":"LIVE"}' in check[0]
+        return '{"text":"LIVE"}' in check[0] if check else False
 
     @property
     def livestream(self) -> str:
@@ -87,7 +87,7 @@ class Channel:
         """
         raw = _src(f'{self._url}/videos?view=2&live_view=501')
         check = re.findall("thumbnailOverlays\":\[(.*?)]", raw)
-        if '{"text":"LIVE"}' in check[0]:
+        if check and '{"text":"LIVE"}' in check[0]:
             Id = _filter(re.findall(r"videoId\":\"(.*?)\"", raw))[0]
             return f'https://www.youtube.com/watch?v={Id}'
 
