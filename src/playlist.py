@@ -1,6 +1,7 @@
 import re
-from ._video import Video
-from ._auxiliary import _src, _filter
+from .video import Video
+from .videobulk import _VideoBulk
+from .auxiliary import _src, _filter
 
 
 class Playlist:
@@ -38,7 +39,7 @@ class Playlist:
         video_count = re.findall(r"stats\":\[{\"runs\":\[{\"text\":\"(.*?)\"", raw)
         return video_count[0] if video_count else None
 
-    def videos(self, limit: int = None):
+    def videos(self, limit: int):
         """
         :param int limit: number of videos the user want from the playlist
         :return: list of < video objects > for each video in the playlist (consider limit)
@@ -47,7 +48,7 @@ class Playlist:
         raw = _src(f'https://www.youtube.com/playlist?list={self.id}')
         videos = re.findall(r"videoId\":\"(.*?)\"", raw)
         pure = _filter(limit=limit, iterable=videos)
-        return [Video(item) for item in pure]
+        return _VideoBulk(pure)
 
     @property
     def thumbnail(self):

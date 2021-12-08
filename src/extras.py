@@ -1,7 +1,7 @@
 import re
-from ._video import Video
-from ._videobulk import _VideoBulk
-from ._auxiliary import _filter, _src
+from .video import Video
+from .videobulk import _VideoBulk
+from .auxiliary import _filter, _src
 
 
 class Extras:

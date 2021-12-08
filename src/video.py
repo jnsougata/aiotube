@@ -1,6 +1,6 @@
 import re
 from ._threads import _Thread
-from ._auxiliary import _duration, _src
+from .auxiliary import _duration, _src
 
 
 class Video:
@@ -126,7 +126,7 @@ class Video:
     @property
     def info(self):
         """
-        :return: dict containing the the whole info of the video
+        :return: dict containing the whole info of the video
         dict = {
 
             'title': -> str,

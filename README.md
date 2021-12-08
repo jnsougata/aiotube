@@ -96,11 +96,11 @@
            > Returns a **dict** of info of the playlist containing playlist's ***name***, ***video count***, ***video ids***, ***thumbnail URL***, ***playlist URL***  
 			
      - **More Independent Attributes:**
-       - `name`  Returns the **name** of the playlist or **None**  
-       - `url`  Returns the **url** of the playlist or **None**
-       - `videos`  Returns the list of **video Objects** of the videos in playlist or **None**
-       - `video_count`  Returns the **video count** of the playlist or **None**  
-       - `thumbnail`  Returns the **thumbnail** of the playlist or **None**  
+       - `name`  Returns the **name** of the playlist  
+       - `url`  Returns the **url** of the playlist 
+       - `videos`  Returns **video bulk object** of the videos in playlist 
+       - `video_count`  Returns the **video count** of the playlist 
+       - `thumbnail`  Returns the **thumbnail** of the playlist
     
  - **Create an instance of YouTube Extras:**
    - 

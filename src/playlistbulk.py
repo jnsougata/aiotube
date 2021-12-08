@@ -1,5 +1,5 @@
 import re
-from ._auxiliary import _src
+from .auxiliary import _src
 from ._threads import _Thread
 
 
@@ -9,11 +9,14 @@ class _PlaylistBulk:
         self._ls = iter
 
     @property
+    def ids(self):
+        return self._ls
+
+    @property
     def urls(self):
         head = 'https://www.youtube.com/playlist?list='
         return [f'{head}{item}' for item in self._ls]
 
-    
     @property
     def _sources(self):
         def get_page(url):

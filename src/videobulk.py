@@ -1,6 +1,6 @@
 import re
 from ._threads import _Thread
-from ._auxiliary import _src, _duration
+from .auxiliary import _src, _duration
 
 
 class _VideoBulk:

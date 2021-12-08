@@ -1,11 +1,11 @@
 import re
-from ._video import Video
-from ._channel import Channel
-from ._playlist import Playlist
-from ._videobulk import _VideoBulk
-from ._channelbulk import _ChannelBulk
-from ._playlistbulk import _PlaylistBulk
-from ._auxiliary import _parser, _filter, _src
+from .video import Video
+from .channel import Channel
+from .playlist import Playlist
+from .videobulk import _VideoBulk
+from .channelbulk import _ChannelBulk
+from .playlistbulk import _PlaylistBulk
+from .auxiliary import _parser, _filter, _src
 
 
 class Search:

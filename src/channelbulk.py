@@ -1,5 +1,5 @@
 import re
-from ._auxiliary import _src
+from .auxiliary import _src
 from ._threads import _Thread
 
 
