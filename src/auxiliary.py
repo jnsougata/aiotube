@@ -3,6 +3,9 @@ from urllib.error import HTTPError
 from collections import OrderedDict
 
 
+__all__ = ['_src', '_filter', '_duration', '_parser']
+
+
 def _src(url: str):
     """
     :param url: url to be requested
@@ -16,6 +19,8 @@ def _src(url: str):
             raise RuntimeError('Invalid url')
         elif status.code == 429:
             raise RuntimeError('Too many requests')
+        else:
+            raise RuntimeError('Unknown error')
 
 
 def _filter(iterable: list, limit: int = None) -> list:

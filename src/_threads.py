@@ -12,5 +12,3 @@ class _Thread:
         if args:
             with concurrent.futures.ThreadPoolExecutor(max_workers=num) as exec:
                 return list(exec.map(function, args))
-
-        
