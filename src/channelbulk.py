@@ -5,8 +5,8 @@ from ._threads import _Thread
 
 class _ChannelBulk:
 
-    def __init__(self, iter: list):
-        self._ls = iter
+    def __init__(self, iterable: list):
+        self._ls = iterable
 
     @property
     def ids(self):

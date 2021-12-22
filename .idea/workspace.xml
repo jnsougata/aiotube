@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="515acc61-91d1-426a-a2b9-e98fd297421f" name="Changes" comment="updated notes">
-      <change beforePath="$PROJECT_DIR$/.idea/AioTube.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/AioTube.iml" afterDir="false" />
+    <list default="true" id="515acc61-91d1-426a-a2b9-e98fd297421f" name="Changes" comment="updated">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/query.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/channel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/channel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/channelbulk.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/channelbulk.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/playlist.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/playlist.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/playlistbulk.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/playlistbulk.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/video.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/video.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,7 +113,14 @@
       <option name="project" value="LOCAL" />
       <updated>1640149388102</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="updated">
+      <created>1640150085973</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1640150085973</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -130,6 +141,7 @@
     <MESSAGE value="fix" />
     <MESSAGE value="new version" />
     <MESSAGE value="updated notes" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated notes" />
+    <MESSAGE value="updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated" />
   </component>
 </project>

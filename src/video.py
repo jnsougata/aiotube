@@ -5,21 +5,21 @@ from .auxiliary import _duration, _src
 
 class Video:
 
-    def __init__(self, videoId: str):
+    def __init__(self, video_id: str):
         """
-        :param videoId: video id or the url of the video
+        :param video_id: video id or the url of the video
         """
-        if 'watch?v=' in videoId:
-            self._url = videoId
-            self._id = re.findall(r"v=(.*)", videoId)[0]
+        if 'watch?v=' in video_id:
+            self._url = video_id
+            self._id = re.findall(r"v=(.*)", video_id)[0]
 
-        elif 'youtu.be/' in videoId:
-            idL = re.findall(r"youtu\.be/(.*)", videoId)
-            self._url = f'https://www.youtube.com/watch?v={idL[0]}'
-            self._id = re.findall(r"/(.*)", videoId)[0]
+        elif 'youtu.be/' in video_id:
+            id_list = re.findall(r"youtu\.be/(.*)", video_id)
+            self._url = f'https://www.youtube.com/watch?v={id_list[0]}'
+            self._id = re.findall(r"/(.*)", video_id)[0]
         else:
-            self._url = f'https://www.youtube.com/watch?v={videoId}'
-            self._id = videoId
+            self._url = f'https://www.youtube.com/watch?v={video_id}'
+            self._id = video_id
 
     @property
     def url(self):

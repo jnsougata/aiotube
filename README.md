@@ -26,7 +26,7 @@
        - `verified` Returns **True** if the channel is **Verified**
        - `livestream` Returns single **url** of newest occurring live stream or **None**
        - `livestreams` Returns list of **urls** of all occurring live streams or **None**
-       - `oldstreams` Returns list of **urls** of old live streams or **None**
+       - `old_streams` Returns list of **urls** of old live streams or **None**
        - `latest` Returns **the latest Video (obj)** of the channel or **None**
        - `playlists` Returns **bulk playlist (obj)** of channel's public playlists
        - `subscribers` Returns **sub-count** of the channel or **None**        

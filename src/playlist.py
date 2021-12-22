@@ -1,5 +1,4 @@
 import re
-from .video import Video
 from .videobulk import _VideoBulk
 from .auxiliary import _src, _filter
 

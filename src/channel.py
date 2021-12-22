@@ -8,20 +8,20 @@ from .playlistbulk import _PlaylistBulk
 
 class Channel:
 
-    def __init__(self, channelId: str):
+    def __init__(self, channel_id: str):
         """
-        :param str channelId: any of channel id, url , custom url
+        :param str channel_id: any of channel id, url , custom url
         """
         head = 'https://www.youtube.com/channel/'
 
-        if '/channel/' in channelId:
-            self._url = channelId
-        elif '/c/' in channelId:
-            self._url = channelId
-        elif '/user/' in channelId:
-            self._url = channelId
+        if '/channel/' in channel_id:
+            self._url = channel_id
+        elif '/c/' in channel_id:
+            self._url = channel_id
+        elif '/user/' in channel_id:
+            self._url = channel_id
         else:
-            self._url = head + channelId
+            self._url = head + channel_id
 
     def __repr__(self):
         if self.name:
@@ -56,11 +56,9 @@ class Channel:
         :return: the id of the channel
         """
         raw = _src(f'{self._url}/about')
-        Id = re.search(r"\"channelId\":\"(.*?)\"", raw)
-        if Id:
-            return Id.group().replace('"', '').replace('channelId:', '')
-        else:
-            return
+        _id = re.search(r"\"channelId\":\"(.*?)\"", raw)
+        if _id:
+            return _id.group().replace('"', '').replace('channelId:', '')
 
     @property
     def verified(self):
@@ -68,8 +66,8 @@ class Channel:
         :return: bool i.e. True if channel is verified else False
         """
         raw = _src(f'{self._url}/about')
-        isVerified = re.search(r'label":"Verified', raw)
-        return True if isVerified else False
+        is_verified = re.search(r'label":"Verified', raw)
+        return True if is_verified else False
 
     @property
     def live(self):
@@ -88,8 +86,8 @@ class Channel:
         raw = _src(f'{self._url}/videos?view=2&live_view=501')
         check = re.findall("thumbnailOverlays\":\[(.*?)]", raw)
         if check and '{"text":"LIVE"}' in check[0]:
-            Id = _filter(re.findall(r"videoId\":\"(.*?)\"", raw))[0]
-            return f'https://www.youtube.com/watch?v={Id}'
+            _id = _filter(re.findall(r"videoId\":\"(.*?)\"", raw))[0]
+            return f'https://www.youtube.com/watch?v={_id}'
 
     @property
     def livestreams(self) -> list:
@@ -98,17 +96,17 @@ class Channel:
         """
         raw = _src(f'{self._url}/videos?view=2&live_view=501')
         if '{"text":" watching"}' in raw:
-            Ids = _filter(re.findall(r"\"videoId\":\"(.*?)\"", raw))
-            return [f'https://www.youtube.com/watch?v={Id}' for Id in Ids]
+            ids = _filter(re.findall(r"\"videoId\":\"(.*?)\"", raw))
+            return [f'https://www.youtube.com/watch?v={Id}' for Id in ids]
 
     @property
-    def oldstreams(self) -> list:
+    def old_streams(self) -> list:
         """
         :return: channel's old livestream urls
         """
         raw = _src(f'{self._url}/videos?view=2&live_view=503')
-        Ids = _filter(re.findall(r"videoId\":\"(.*?)\"", raw))
-        urls = [f'https://www.youtube.com/watch?v={Id}' for Id in Ids]
+        ids = _filter(re.findall(r"videoId\":\"(.*?)\"", raw))
+        urls = [f'https://www.youtube.com/watch?v={Id}' for Id in ids]
         return urls if urls else None
 
     def uploads(self, limit: int = None):
@@ -128,8 +126,8 @@ class Channel:
         raw = _src(f'{self._url}/videos?view=0&sort=dd&flow=grid')
         thumbs = re.findall('thumbnails\":\[{\"url\":\"(.*?)\?', raw)
         ups = [url for url in thumbs if '_live' not in url]
-        videoId = re.findall('i/(.*?)/', ups[0]) if ups else None
-        return Video(videoId[0]) if videoId else None
+        video_id = re.findall('i/(.*?)/', ups[0]) if ups else None
+        return Video(video_id[0]) if video_id else None
 
     @property
     def subscribers(self):
@@ -146,11 +144,11 @@ class Channel:
         :return: total number of views the channel got or None
         """
         raw = _src(f'{self._url}/about')
-        viewList = re.findall(
+        view_list = re.findall(
             r"\"viewCountText\":{\"simpleText\":\"(.*?)\"}", raw
         )
-        if viewList:
-            return viewList[0].split(' ')[0]
+        if view_list:
+            return view_list[0].split(' ')[0]
 
     @property
     def joined(self):
@@ -158,10 +156,10 @@ class Channel:
         :return: the channel creation date or None
         """
         raw = _src(f'{self._url}/about')
-        joinList = re.findall(
+        join_list = re.findall(
             r"{\"text\":\"Joined \"},{\"text\":\"(.*?)\"}", raw
         )
-        return joinList[0] if joinList else None
+        return join_list[0] if join_list else None
 
     @property
     def country(self):
@@ -169,10 +167,10 @@ class Channel:
         :return: the name of the country from where the channel is or None
         """
         raw = _src(f'{self._url}/about')
-        countryList = re.findall(
+        country_list = re.findall(
             r"\"country\":{\"simpleText\":\"(.*?)\"}", raw
         )
-        return countryList[0] if countryList else None
+        return country_list[0] if country_list else None
 
     @property
     def custom_url(self):
@@ -180,11 +178,11 @@ class Channel:
         :return: the custom _url of the channel or None
         """
         raw = _src(f'{self._url}/about')
-        customList = re.findall(r"\"canonicalChannelUrl\":\"(.*?)\"", raw)
-        customURL = customList[0] if customList else None
-        if customURL:
-            if '/channel/' not in customURL:
-                return customURL
+        custom_list = re.findall(r"\"canonicalChannelUrl\":\"(.*?)\"", raw)
+        custom_url = custom_list[0] if custom_list else None
+        if custom_url:
+            if '/channel/' not in custom_url:
+                return custom_url
 
     @property
     def description(self):
@@ -192,8 +190,8 @@ class Channel:
         :return: the existing description of the channel
         """
         raw = _src(f'{self._url}/about')
-        descList = re.findall(r"{\"description\":{\"simpleText\":\"(.*?)\"}", raw)
-        return descList[0].replace('\\n', '  ') if descList else None
+        desc_list = re.findall(r"{\"description\":{\"simpleText\":\"(.*?)\"}", raw)
+        return desc_list[0].replace('\\n', '  ') if desc_list else None
 
     @property
     def avatar(self):
@@ -219,8 +217,8 @@ class Channel:
         :return: a list of < playlist object > for each public playlist the channel has
         """
         raw = _src(f'{self._url}/playlists')
-        idList = re.findall(r"{\"url\":\"/playlist\?list=(.*?)\"", raw)
-        return _PlaylistBulk(_filter(idList)) if idList else None
+        id_list = re.findall(r"{\"url\":\"/playlist\?list=(.*?)\"", raw)
+        return _PlaylistBulk(_filter(id_list)) if id_list else None
 
     @property
     def info(self):
