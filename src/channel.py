@@ -282,3 +282,16 @@ class Channel:
             'avatar_url': ls[6],
             'banner_url': ls[7]
         }
+
+    @property
+    def video_count(self):
+        """
+        :return: the number of videos in the channel
+        """
+        raw = _src(f'https://www.youtube.com/results?search_query={self.id}&sp=EgIQAg%253D%253D')
+        counts = re.findall('ideoCountText\":{\"runs\":\[{\"text\":(.*?)}', raw)
+        count_string = counts[0].replace(',', '').replace('"', '') if counts else None
+        # handling channel with single digit video count
+        if count_string:
+            byp_count = count_string.split()
+            return int(byp_count[0])

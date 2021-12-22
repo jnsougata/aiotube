@@ -28,6 +28,7 @@
        - `livestreams` Returns list of **urls** of all occurring live streams or **None**
        - `old_streams` Returns list of **urls** of old live streams or **None**
        - `latest` Returns **the latest Video (obj)** of the channel or **None**
+       - `video_count` Returns the **video count** of the channel currently having or **None**
        - `playlists` Returns **bulk playlist (obj)** of channel's public playlists
        - `subscribers` Returns **sub-count** of the channel or **None**        
        - `views` Returns total number of **views** of the channel or **None**           
