@@ -15,8 +15,8 @@
      - `channel = Channel("channel Id / url / custom url") `    
             
      - **Method:**
-        - `uploads(*limit:int [optional])`       
-             > Returns ***bulk video Object*** of latest uploaded videos if channel is not live at that moment
+        - `uploads(limit: int)`       
+             > Returns ***bulk video Object*** of latest uploaded videos **(first 30 videos)**.
      - **Attributes:** 
        - `id` Returns **id** of the channel or **None**
        - `info` Returns a **dict** of channel's information
@@ -114,3 +114,12 @@
          - `livestream`  Returns trending ***Live*** Video Objects **[bulk]**    
          - `learning`  Returns trending ***Educational*** Video Objects **[bulk]**    
          - `sports`  Returns trending ***Sports*** Video Objects **[bulk]**
+ 
+
+ - **Note on Bulk Objects:**
+   - 
+     - Any **Bulk Objects** is **not** iterable. 
+     - It almost has the same functionality as **Primary Object** (not always).
+     - It holds the same attributes as **Primary Objects** but in plural form.
+     - Upon applying a valid attribute, it will return all data in list form.
+   
