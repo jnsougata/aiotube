@@ -288,6 +288,7 @@ class Channel:
         """
         :return: the number of videos in the channel
         """
+        # TODO: reduce the number of requests to 1
         raw = _src(f'https://www.youtube.com/results?search_query={self.id}&sp=EgIQAg%253D%253D')
         counts = re.findall('ideoCountText\":{\"runs\":\[{\"text\":(.*?)}', raw)
         count_string = counts[0].replace(',', '').replace('"', '') if counts else None
