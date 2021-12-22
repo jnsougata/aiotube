@@ -40,8 +40,8 @@ class Search:
         """
         raw = _src(f'https://www.youtube.com/results?search_query={_parser(keywords)}&sp=EgIQAQ%253D%253D')
         raw_ids = re.findall(r"\"videoId\":\"(.*?)\"", raw)
-        pureList = _filter(limit=limit, iterable=raw_ids)
-        return _VideoBulk(pureList) if pureList else None
+        pure_list = _filter(limit=limit, iterable=raw_ids)
+        return _VideoBulk(pure_list) if pure_list else None
 
     @staticmethod
     def channels(keywords: str, limit: int):
@@ -52,8 +52,8 @@ class Search:
         """
         raw = _src(f'https://www.youtube.com/results?search_query={_parser(keywords)}&sp=EgIQAg%253D%253D')
         raw_ids = re.findall(r"{\"channelId\":\"(.*?)\"", raw)
-        pureList = _filter(limit=limit, iterable=raw_ids)
-        return _ChannelBulk(pureList) if pureList else None
+        pure_list = _filter(limit=limit, iterable=raw_ids)
+        return _ChannelBulk(pure_list) if pure_list else None
 
     @staticmethod
     def playlist(keywords: str):

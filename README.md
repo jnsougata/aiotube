@@ -12,7 +12,7 @@
    
  - **Create an instance of YouTube Channel:** 
    - 
-     - `channel = Channel("channel Id / url / custom url") `    
+     - `channel = Channel(Channel ID / URL / Custom URL) `    
             
      - **Method:**
         - `uploads(limit: int)`       
@@ -41,28 +41,28 @@
  - **Get YouTube Search Results:**
    - 
      - **Get Videos by YouTube Search:**     
-        - `Result = Search.video(*keywords: str)`   
+        - `Result = Search.video(keywords: str)`   
 		       
             > Returns a **Video Object** according to queries. 
 			     
-        - `Results = Search.videos(*keywords: str, *limit:int [optional])`   
+        - `Results = Search.videos(keywords: str, limit:int)`   
 		        
            > Returns a list of **Bulk Video Objects** according to queries.    
            
      - **Get Channels by YouTube Search:**    
        
-        - `Result = Search.channel(*keywords: str)`          
+        - `Result = Search.channel(keywords: str)`          
              > Returns a **Channel Object** according to queries.     
 		  
-        - `Results = Search.channels(*keywords: str, *limit:int [optional])`          
+        - `Results = Search.channels(keywords: str, limit:int)`          
 	 
            > Returns a list of **Bulk Channel Objects** according to queries.    
            
      - **Get Playlists by YouTube Search:**    
-        - `Result = Search.playlist(*keywords: str)`          
+        - `Result = Search.playlist(keywords: str)`          
              > Returns a **Playlist Object** according to queries. 
 		 
-        - `Results = Search.playlists(*keywords: str, *limit:int [optional])`
+        - `Results = Search.playlists(keywords: str, limit:int)`
             > Returns a list of **Bulk Playlist Objects** according to queries. 
 		 
  - **Create an instance of Video Data:**
@@ -88,8 +88,8 @@
  - **Create an instance of Playlist Data:** 
    - 
   
-     - `playlist = Playlist("playlist id")`
-  
+     - `playlist = Playlist(Playlist ID / Playlist URL)`
+     
      - **Attribute:**
    
         - `info`   
