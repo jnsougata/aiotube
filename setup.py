@@ -3,13 +3,12 @@ from setuptools import setup
 
 def readme():
     with open('README.md') as file:
-        README = file.read()
-    return README
+        return file.read()
 
 
 setup(
     name='aiotube',
-    version='1.4.4',
+    version='1.4.5',
     description='Get YouTube Public Data without YouTubeAPI',
     long_description=readme(),
     long_description_content_type="text/markdown",
