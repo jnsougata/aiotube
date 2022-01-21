@@ -294,7 +294,7 @@ Output:
 
 ###### <a name="search_playlist_attributes"></a> Attributes
 
-Aiotube can also get a youtube playlist you can also use attributes: `name`, `url`, `video`, `videos`, `video_count`, `thumbnail`
+Aiotube can also get a youtube playlist you can also use attributes: `name`, `url`, `videos`, `video_count`, `thumbnail`
 
 ```py
 from aiotube import *
