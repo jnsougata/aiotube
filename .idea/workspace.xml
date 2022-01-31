@@ -1,17 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="6adff9fc-843c-4bc4-aba2-9783b729a46f" name="Changes" comment="">
+    <list default="true" id="65ce3b26-38b3-44d8-9485-676407dba7c3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/setup.cfg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aiotube/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/AioTube.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/AioTube.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/how2use.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_threads.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/_threads.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/auxiliary.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/auxiliary.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/channel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/channel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/channelbulk.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/channelbulk.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/extras.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/extras.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/playlist.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/playlist.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/playlistbulk.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/playlistbulk.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/query.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/video.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/video.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/videobulk.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/videobulk.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -19,27 +42,48 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectId" id="22in9Z5KLHdbo9UHqOS42rmIQ3c" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectId" id="24TnSvHXpMqponQZRPhtfzgbtev" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../AirDrive/setup.py" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Git\AioTube\src\aiotube" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="6adff9fc-843c-4bc4-aba2-9783b729a46f" name="Changes" comment="" />
-      <created>1640329125523</created>
+      <changelist id="65ce3b26-38b3-44d8-9485-676407dba7c3" name="Changes" comment="" />
+      <created>1643663448288</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1640329125523</updated>
+      <updated>1643663448288</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>

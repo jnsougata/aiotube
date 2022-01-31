@@ -1,33 +1,38 @@
-from setuptools import setup
+import pathlib
+from setuptools import setup, find_packages
 
 
-def readme():
-    with open('README.md') as file:
-        return file.read()
+here = pathlib.Path(__file__).parent.resolve()
+
+long_description = (here / 'README.md').read_text(encoding='utf-8')
 
 
 setup(
     name='aiotube',
-    version='1.4.5',
+    version='1.4.6',
     description='Access YouTube Public Data without YouTubeAPI',
-    long_description=readme(),
-    long_description_content_type="text/markdown",
-    package_dir={'aiotube': 'src'},
-    packages=['aiotube'],
-    install_requires=[
-        'urllib3'
-    ],
-    url='https://github.com/jnsougata/AioTube/blob/main/README.md',
-    project_urls={
-        "Bug Tracker": "https://github.com/jnsougata/AioTube/issues"
-    },
-    author='Sougata Jana',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+    url='https://github.com/jnsougata/aiotube',
+    author='jnsougata',
     author_email='jnsougata@gmail.com',
-    license='MIT',
     classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent"
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        "Programming Language :: Python :: 3.10",
+        'Programming Language :: Python :: 3 :: Only',
     ],
-    python_requires=">=3.6"
+    keywords='youtube, youtube-data, youtube-api, youtube-data-api-v3',
+    package_dir={'': 'src'},
+    packages=find_packages(where='src'),
+    python_requires='>=3.6, <4',
+    install_requires=['urllib3'],
+    project_urls={
+        'Bug Reports': 'https://github.com/jnsougata/aiotube/issues',
+        'Source': 'https://github.com/jnsougata/aiotube',
+    },
 )

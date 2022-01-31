@@ -25,9 +25,9 @@ class Channel:
 
     def __repr__(self):
         if self.name:
-            return f'<Channel - {self.name}>'
+            return f'<Channel | {self.name}>'
         else:
-            f'<Invalid ChannelObject>'
+            f'<Invalid ! ChannelObject>'
 
     @property
     def name(self):
