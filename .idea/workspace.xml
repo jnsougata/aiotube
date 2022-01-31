@@ -1,28 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="65ce3b26-38b3-44d8-9485-676407dba7c3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/setup.cfg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aiotube/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/AioTube.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/AioTube.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/publish.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/publish.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/how2use.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_threads.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/_threads.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/auxiliary.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/auxiliary.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/channel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/channel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/channelbulk.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/channelbulk.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/extras.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/extras.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/playlist.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/playlist.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/playlistbulk.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/playlistbulk.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/query.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/video.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/video.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/videobulk.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aiotube/videobulk.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +21,7 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -54,7 +39,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../AirDrive/setup.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../AirDrive/.github/workflows/publish.yml" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -70,6 +55,21 @@
       <option name="presentableId" value="Default" />
       <updated>1643663448288</updated>
     </task>
+    <task id="LOCAL-00001" summary="reformat">
+      <created>1643664046237</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1643664046237</updated>
+    </task>
+    <task id="LOCAL-00002" summary="reformat">
+      <created>1643664222069</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1643664222069</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -85,5 +85,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="reformat" />
+    <option name="LAST_COMMIT_MESSAGE" value="reformat" />
   </component>
 </project>
