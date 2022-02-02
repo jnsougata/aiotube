@@ -1,6 +1,7 @@
 import urllib.request
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 from collections import OrderedDict
+from .errors import TooManyRequests, InvalidUrl, BadURL, AIOError
 
 
 __all__ = ['_src', '_filter', '_duration', '_parser']
@@ -14,13 +15,15 @@ def _src(url: str):
     try:
         with urllib.request.urlopen(url) as resp:
             return resp.read().decode()
-    except HTTPError as status:
-        if status.code == 404:
-            raise RuntimeError('Invalid url')
-        elif status.code == 429:
-            raise RuntimeError('Too many requests')
-        else:
-            raise RuntimeError('Unknown error')
+    except HTTPError as error:
+        if error.code == 404:
+            raise InvalidUrl('can not find anything the requested url')
+        if error.code == 429:
+            raise TooManyRequests('sending too many requests in a short period of time')
+    except URLError:
+        raise BadURL('bad url format used')
+    except Exception as error:
+        raise AIOError(f'{error}')
 
 
 def _filter(iterable: list, limit: int = None) -> list:

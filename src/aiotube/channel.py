@@ -15,13 +15,13 @@ class Channel:
         head = 'https://www.youtube.com/channel/'
 
         if '/channel/' in channel_id:
-            self._url = channel_id
+            self._url = channel_id.replace(' ', '')
         elif '/c/' in channel_id:
-            self._url = channel_id
+            self._url = channel_id.replace(' ', '')
         elif '/user/' in channel_id:
-            self._url = channel_id
+            self._url = channel_id.replace(' ', '')
         else:
-            self._url = head + channel_id
+            self._url = f'{head}{channel_id}'.replace(' ', '')
 
     def __repr__(self):
         if self.name:
