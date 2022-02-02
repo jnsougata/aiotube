@@ -1,7 +1,7 @@
 import urllib.request
 from urllib.error import HTTPError, URLError
 from collections import OrderedDict
-from .errors import TooManyRequests, InvalidUrl, BadURL, AIOError
+from .errors import TooManyRequests, InvalidURL, BadURL, AIOError
 
 
 __all__ = ['_src', '_filter', '_duration', '_parser']
@@ -17,7 +17,7 @@ def _src(url: str):
             return resp.read().decode()
     except HTTPError as error:
         if error.code == 404:
-            raise InvalidUrl('can not find anything the requested url')
+            raise InvalidURL('can not find anything the requested url')
         if error.code == 429:
             raise TooManyRequests('sending too many requests in a short period of time')
     except URLError:
