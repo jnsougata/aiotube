@@ -176,3 +176,8 @@ class Video:
             'thumbnail': ls[6],
             'tags': ls[7].split(','),
         }
+
+    @property
+    def streams(self):
+        return _src(self._url)
+

@@ -1,7 +1,14 @@
 import re
-from aiotube import Channel
+import aiotube
+from urllib.parse import unquote
 
-ch = Channel('https://www.youtube.com/c/VillagerEsportsve')
+vid = aiotube.Video('FlUMx2Hnug8')
 
-print(ch.links)
+src = vid.streams
 
+urls = re.findall(r'https://rr(.*?)"', src)
+modified = [url.encode().decode('unicode_escape') for url in urls]
+actual = list(set([unquote(f"https://rr{url}") for url in modified]))
+for url in actual:
+    if 'initplayback' not in url:
+        print(url)
