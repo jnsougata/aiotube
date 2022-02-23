@@ -44,7 +44,7 @@ class _ChannelBulk:
         return [item[0][:-6] if item else None for item in temp]
 
     @property
-    def joined(self):
+    def joining_dates(self):
         pattern = r"text\":\"Joined \"},{\"text\":\"(.*?)\""
         temp = [re.findall(pattern, item) for item in self._sources]
         return [item[0] if item else None for item in temp]

@@ -44,9 +44,6 @@ class _VideoBulk:
         temp = [re.findall(pattern, item) for item in self._sources]
         return [item[0] if item else None for item in temp]
 
-    @property
-    def dislikes(self):
-        raise DeprecationWarning("This property is deprecated as YouTube is slowly removing public dislike counts.")
 
     @property
     def durations(self):
@@ -55,13 +52,13 @@ class _VideoBulk:
         return [_duration(int(int(item[0]) / 1000)) if item else None for item in temp]
 
     @property
-    def dates(self):
+    def upload_dates(self):
         pattern = r"uploadDate\":\"(.*?)\""
         temp = [re.findall(pattern, item) for item in self._sources]
         return [item[0] if item else None for item in temp]
 
     @property
-    def parents(self):
+    def authors(self):
         pattern = r"channelIds\":\[\"(.*?)\""
         temp = [re.findall(pattern, item) for item in self._sources]
         return [item[0] if item else None for item in temp]

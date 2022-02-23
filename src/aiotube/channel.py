@@ -1,6 +1,8 @@
 import re
+from .live import Live
 from .video import Video
 from ._threads import _Thread
+from urllib.parse import unquote
 from .videobulk import _VideoBulk
 from .auxiliary import _filter, _src
 from .playlistbulk import _PlaylistBulk
@@ -13,7 +15,6 @@ class Channel:
         :param str channel_id: any of channel id, url , custom url
         """
         head = 'https://www.youtube.com/channel/'
-
         if '/channel/' in channel_id:
             self._url = channel_id.replace(' ', '')
         elif '/c/' in channel_id:
@@ -79,15 +80,15 @@ class Channel:
         return '{"text":"LIVE"}' in check[0] if check else False
 
     @property
-    def livestream(self) -> str:
+    def livestream(self):
         """
         :return: channel's ongoing  livestream url
         """
         raw = _src(f'{self._url}/videos?view=2&live_view=501')
         check = re.findall("thumbnailOverlays\":\[(.*?)]", raw)
         if check and '{"text":"LIVE"}' in check[0]:
-            _id = _filter(re.findall(r"videoId\":\"(.*?)\"", raw))[0]
-            return f'https://www.youtube.com/watch?v={_id}'
+            id_ = _filter(re.findall(r"videoId\":\"(.*?)\"", raw))[0]
+            return Live(id_)
 
     @property
     def livestreams(self) -> list:
@@ -97,17 +98,16 @@ class Channel:
         raw = _src(f'{self._url}/videos?view=2&live_view=501')
         if '{"text":" watching"}' in raw:
             ids = _filter(re.findall(r"\"videoId\":\"(.*?)\"", raw))
-            return [f'https://www.youtube.com/watch?v={Id}' for Id in ids]
+            return [Live(id_) for id_ in ids]
 
     @property
-    def old_streams(self) -> list:
+    def old_streams(self):
         """
         :return: channel's old livestream urls
         """
         raw = _src(f'{self._url}/videos?view=2&live_view=503')
         ids = _filter(re.findall(r"videoId\":\"(.*?)\"", raw))
-        urls = [f'https://www.youtube.com/watch?v={Id}' for Id in ids]
-        return urls if urls else None
+        return _VideoBulk(ids)
 
     def uploads(self, limit: int = None):
         """
@@ -151,7 +151,7 @@ class Channel:
             return view_list[0].split(' ')[0]
 
     @property
-    def joined(self):
+    def created_at(self):
         """
         :return: the channel creation date or None
         """
@@ -223,22 +223,7 @@ class Channel:
     @property
     def info(self):
         """
-        :return: a dict containing channel info
-
-        dict = {
-            'name': -> str,
-            'id': -> str,
-            'subscribers': -> str,
-            'verified': -> bool,
-            'total_views': -> str,
-            'joined_at': -> str,
-            'country': -> str,
-            'url': ->str,
-            'custom_url': -> str,
-            'avatar_url': -> str,
-            'banner_url': -> str
-            }
-
+        :return: a dict containing channel info like subscribers, views, etc.
         """
         raw = _src(f'{self._url}/about')
 
@@ -275,7 +260,7 @@ class Channel:
             'subscribers': ls[1],
             'verified': self.verified,
             'views': views,
-            'joined_at': ls[3],
+            'created_at': ls[3],
             'country': ls[4],
             'url': self._url,
             'custom_url': curl,
@@ -290,9 +275,19 @@ class Channel:
         """
         # TODO: reduce the number of requests to 1
         raw = _src(f'https://www.youtube.com/results?search_query={self.id}&sp=EgIQAg%253D%253D')
-        counts = re.findall('ideoCountText\":{\"runs\":\[{\"text\":(.*?)}', raw)
+        counts = re.findall('videoCountText\":{\"runs\":\[{\"text\":(.*?)}', raw)
+        print(counts)
         count_string = counts[0].replace(',', '').replace('"', '') if counts else None
         # handling channel with single digit video count
         if count_string:
-            byp_count = count_string.split()
-            return int(byp_count[0])
+            return int(count_string.split()[0])
+
+    @property
+    def links(self) -> list:
+        """
+        :return: a list of social media links added to the channel
+        """
+        raw = _src(f'{self._url}/about')
+        bad_links = re.findall('q=https%3A%2F%2F(.*?)"', raw)
+        filtered = ['https://' + unquote(link) for link in list(set(bad_links))]
+        return filtered if filtered else None

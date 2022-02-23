@@ -3,7 +3,7 @@ from ._threads import _Thread
 from .auxiliary import _src
 
 
-class Video:
+class Live:
 
     def __init__(self, video_id: str):
         """
@@ -66,14 +66,6 @@ class Video:
     def dislikes(self):
         raise DeprecationWarning("This property is deprecated as YouTube is slowly removing public dislike counts.")
 
-    @property
-    def duration(self):
-        """
-        :return: total duration of  the video in 00h 00m 00s
-        """
-        raw = _src(self._url)
-        data = re.findall(r"approxDurationMs\":\"(.*?)\"", raw)
-        return _duration(int(int(data[0]) / 1000)) if data else None
 
     @property
     def upload_date(self):
@@ -151,7 +143,6 @@ class Video:
         patterns = [
 
             r"\"title\":\"(.*?)\"",
-            r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"",
             r"toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) ",
             r"approxDurationMs\":\"(.*?)\"",
             r"author\":\"(.*?)\"",
@@ -167,12 +158,12 @@ class Video:
 
             'title': ls[0],
             'id': self._id,
-            'views': ls[1][:-6],
+            'views': ls[1],
             'likes': ls[2],
-            'duration': int(ls[3]) / 1000,
-            'author': ls[4],
-            'upload_date': ls[5],
+            'duration': None,
+            'author': ls[3],
+            'upload_date': ls[4],
             'url': self._url,
-            'thumbnail': ls[6],
-            'tags': ls[7].split(','),
+            'thumbnail': ls[5],
+            'tags': ls[6].split(',') if ls[6] else None,
         }

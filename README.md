@@ -1,6 +1,8 @@
 
 # AioTube           
- **All in One Tube** is a package created to power the user with YouTube Data API v3 functionality **without API Key**. Only valid for public information.   
+ **All in One Tube** is a package created to power the user with YouTube Data API v3 functionality **without API Key**.
+ 
+ *Only valid for public information.*   
     
  - **[Discord](https://discord.gg/YAFGAaMrTC)** | **[GitHub](https://github.com/jnsougata/AioTube)**
 # How to use?         
@@ -22,17 +24,18 @@
        - `info` Returns a **dict** of channel's information
        - `valid` Returns **True** if channel is valid else **False**
        - `name` Returns **name** of the channel or **None**
+       - `links` Returns **social links** added to the channel or **None**
        - `live` Returns **True** if the channel is **Live**
        - `verified` Returns **True** if the channel is **Verified**
-       - `livestream` Returns single **url** of newest occurring live stream or **None**
-       - `livestreams` Returns list of **urls** of all occurring live streams or **None**
+       - `livestream` Returns **live video (obj)** of newest occurring live stream or **None**
+       - `livestreams` Returns **bulk video (obj)** of all occurring live streams or **None**
        - `old_streams` Returns list of **urls** of old live streams or **None**
-       - `latest` Returns **the latest Video (obj)** of the channel or **None**
+       - `latest` Returns **the latest video (obj)** of the channel or **None**
        - `video_count` Returns the **video count** of the channel currently having or **None**
        - `playlists` Returns **bulk playlist (obj)** of channel's public playlists
        - `subscribers` Returns **sub-count** of the channel or **None**        
        - `views` Returns total number of **views** of the channel or **None**           
-       - `joined` Returns channel **creation date** or **None**       
+       - `created_at` Returns channel **creation date** or **None**       
        - `country` Returns the generic country of the channel or **None**      
        - `custom_url` Returns the **custom url** of the channel or **None**
        - `avatar` Returns the **avatar url** of the channel or **None**       
@@ -46,7 +49,7 @@
 		       
             > Returns a **Video Object** according to queries. 
 			     
-        - `Results = Search.videos(keywords: str, limit:int)`   
+        - `Results = Search.videos(keywords: str, limit: int)`   
 		        
            > Returns a list of **Bulk Video Objects** according to queries.    
            
@@ -72,7 +75,7 @@
        
      - **Attribute:**     
         - `info`     
-         > Returns a **Dict** of video information **{ title, views, likes, dislikes, author, duration, upload_date, thumbnail, tags }** etc.      
+         > Returns a **Dict** of video information ***title, views, likes, dislikes, author, duration, upload_date, thumbnail, tags*** etc.      
       
      - **More Independent Attributes:**          
          - `title`  Returns **title** of the video          
@@ -81,7 +84,7 @@
          - `dislikes`  Returns total **dislikes** on the video          
          - `author`  Returns **channel id** from which the video belong          
          - `duration`  Returns **duration** of the video          
-         - `uploaded`  Returns **date of upload** of the video                   
+         - `upload_date`  Returns **date of upload** of the video                   
          - `url` Returns **url** of the video    
          - `thumbnail`  Returns **hq thumbnail** of the video  
          - `tags`  Returns **list of tags** of the video
@@ -94,7 +97,7 @@
      - **Attribute:**
    
         - `info`   
-           > Returns a **dict** of info of the playlist containing playlist's ***name***, ***video count***, ***video ids***, ***thumbnail URL***, ***playlist URL***  
+           > Returns a **dict** of info of the playlist containing ***name***, ***video count***, ***video ids***, ***thumbnail URL***, ***playlist URL***  
 			
      - **More Independent Attributes:**
        - `name`  Returns the **name** of the playlist  
