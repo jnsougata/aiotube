@@ -1,6 +1,8 @@
 import re
+from urllib.parse import unquote
 from ._threads import _Thread
 from .auxiliary import _src
+from .streams import Streams
 
 
 class Video:
@@ -176,8 +178,4 @@ class Video:
             'thumbnail': ls[6],
             'tags': ls[7].split(','),
         }
-
-    @property
-    def streams(self):
-        return _src(self._url)
 
