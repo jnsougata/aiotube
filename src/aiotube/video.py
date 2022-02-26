@@ -1,8 +1,6 @@
 import re
-from urllib.parse import unquote
 from ._threads import _Thread
 from .auxiliary import _src
-from .streams import Streams
 
 
 class Video:
@@ -65,17 +63,13 @@ class Video:
         return data[0] if data else None
 
     @property
-    def dislikes(self):
-        raise DeprecationWarning("This property is deprecated as YouTube is slowly removing public dislike counts.")
-
-    @property
     def duration(self):
         """
-        :return: total duration of  the video in 00h 00m 00s
+        :return: total duration of  the video in seconds
         """
         raw = _src(self._url)
         data = re.findall(r"approxDurationMs\":\"(.*?)\"", raw)
-        return _duration(int(int(data[0]) / 1000)) if data else None
+        return int(data[0]) / 1000 if data else None
 
     @property
     def upload_date(self):
@@ -179,3 +173,8 @@ class Video:
             'tags': ls[7].split(','),
         }
 
+    @property
+    def is_streamed(self):
+        if 'simpleText":"Streamed live' in _src(self._url):
+            return True
+        return False

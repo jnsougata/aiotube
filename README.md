@@ -30,6 +30,8 @@
        - `livestream` Returns **live video (obj)** of newest occurring live stream or **None**
        - `livestreams` Returns **bulk video (obj)** of all occurring live streams or **None**
        - `old_streams` Returns list of **urls** of old live streams or **None**
+       - `recent_upload` Returns **video (obj)** of most recently uploaded video or **None**
+       - `recent_streamed` Returns **video (obj)** of the recently streamed video or **None**
        - `latest` Returns **the latest video (obj)** of the channel or **None**
        - `video_count` Returns the **video count** of the channel currently having or **None**
        - `playlists` Returns **bulk playlist (obj)** of channel's public playlists
@@ -83,11 +85,12 @@
          - `likes`  Returns total **likes** on the video          
          - `dislikes`  Returns total **dislikes** on the video          
          - `author`  Returns **channel id** from which the video belong          
-         - `duration`  Returns **duration** of the video          
+         - `duration`  Returns **duration** of the video in seconds         
          - `upload_date`  Returns **date of upload** of the video                   
          - `url` Returns **url** of the video    
          - `thumbnail`  Returns **hq thumbnail** of the video  
          - `tags`  Returns **list of tags** of the video
+         - `is_streamed` Returns **True** if the video was **streamed**
      
  - **Create an instance of Playlist Data:** 
    - 

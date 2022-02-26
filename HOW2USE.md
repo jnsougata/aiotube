@@ -1,5 +1,5 @@
 # **__Welcome to the `official aiotube guide`__**
-This guide will walkthrough the different ways to use aiotube
+This guide will walk through the different ways to use aiotube
 
 ## Table of Content
 - [Aiotube](#aiotube)
@@ -69,10 +69,10 @@ from aiotube import Search, Video, Channel, Playlist, Extras
 
 ###### <a name="search_video_basics"></a> Basics
 
-This will get the first video from youtube search results
+This will get the first video from YouTube search results
 
 ```py
-from aiotube import *
+from aiotube import Search
 
 Video = Search.video(keywords='youtube rewind')
 ```
@@ -86,7 +86,7 @@ Now if we `print(Video)` we will get something like this:
 This is not exactly what we want though so to get the video url we have to use the `url` attribute
 
 ```py
-from aiotube import *
+from aiotube import Search
 
 Video = Search.video(keywords='youtube rewind')
 
@@ -99,10 +99,10 @@ https://www.youtube.com/watch?v=YbJOTdZBX1g
 
 ###### <a name="search_video_attributes"></a> Attributes
 
-To get more information on the video we can use the following attributes: `title`, `views`, `likes`, `dislikes`(This property is deprecated as YouTube is slowly removing public dislike counts), `author`, `duration`, `url`, `thumbnail`, `tags`
+To get more information on the video we can use the following attributes: `title`, `views`, `likes`, `dislikes`, `author`, `duration`, `url`, `thumbnail`, `tags`
 
 ```py
-from aiotube import *
+from aiotube import Search
 
 Video = Search.video('youtube rewind')
 
@@ -131,7 +131,7 @@ https://i.ytimg.com/vi/YbJOTdZBX1g/maxresdefault.jpg
 
 ###### <a name="search_video_bulk"></a> Bulk
 
-You can also get videos in bulk. Even though their is no limit to the search aiotube wont return the exact amount, as it has to load the full page. Bulk video search also has some attributes: `ids`, `urls`, `views`, `likes`, `dislikes`(This property is deprecated as YouTube is slowly removing public dislike counts), `durations`, `dates`, `parents`, `descriptions`, `thumbnails`, `tags`
+You can also get videos in bulk. Even though there is no limit to the search aiotube won't return the exact amount, as it has to load the full page. Bulk video search also has some attributes: `ids`, `urls`, `views`, `likes`, `durations`, `upload_dates`, `authors`, `descriptions`, `thumbnails`, `tags`
 
 ```py
 from aiotube import *
@@ -144,7 +144,7 @@ print(Videos.views)
 print(Videos.likes)
 print(Videos.durations)
 print(Videos.dates)
-print(Videos.parents)
+print(Videos.authors)
 print(Videos.descriptions)
 ```
 
@@ -165,10 +165,10 @@ Output:
 
 ###### <a name="search_channel_attributes"></a> Attributes
 
-As with the video search you can obtain certain attributes of a channel: `id`, `info`, `valid`, `name`, `live`, `verified`, `livestream`, `livestreams`, `oldstreams`, `latest`, `playlists`, `subscribers`, `views`, `joined`, `country`, `custom_url`, `avatar`, `banner`, `description`
+As with the video search you can obtain certain attributes of a channel: `id`, `info`, `valid`, `name`, `live`, `verified`, `livestream`, `livestreams`, `oldstreams`, `latest`, `playlists`, `subscribers`, `views`, `created_at`, `country`, `custom_url`, `avatar`, `banner`, `description`
 
 ```py
-from aiotube import *
+from aiotube import Search
 
 Channel = Search.channel(keywords='SlumberDemon')
 
@@ -185,7 +185,7 @@ print(Channel.latest)
 print(Channel.playlists)
 print(Channel.subscribers)
 print(Channel.views)
-print(Channel.joined)
+print(Channel.created_at)
 print(Channel.country)
 print(Channel.custom_url)
 print(Channel.avatar)
@@ -219,7 +219,7 @@ Professional Sleepy Head
 For channel search you can use the `info` attribute which returns a dict
 
 ```py
-from aiotube import *
+from aiotube import Search
 
 Channel = Search.channel('SlumberDemon')
 
@@ -252,7 +252,7 @@ Output:
 <aiotube._videobulk._VideoBulk object at 0x7f79d4c38be0>
 ```
 
-This will output a **videobulk** object which also as the atributes: `ids`, `urls`, `views`, `likes`, `dislikes`(This property is deprecated as YouTube is slowly removing public dislike counts), `durations`, `dates`, `parents`, `descriptions`, `thumbnails`, `tags`
+This will output a **videobulk** object which also as the attributes: `ids`, `urls`, `views`, `likes`, `durations`, `dates`, `parents`, `descriptions`, `thumbnails`, `tags`
 
 ```py
 from aiotube import *
@@ -263,7 +263,7 @@ Uploads = Channel.uploads(limit=100)
 
 print(Uploads.ids)
 
-# I will stop listing all atributes as they are listed above
+# I will stop listing all attributes as they are listed above
 ```
 
 Output:
@@ -274,10 +274,10 @@ Output:
 
 ###### <a name="search_channel_bulk"></a> Bulk
 
-Channel search also has a **channelbulk** similar to the **videobulk**, it also has attributes: `ids`, `urls`, `names`, `subscribers`, `views`, `joined`, `countries`, `custom_urls`, `descriptions`, `avatars`, `banners`, `verifieds`, `lives`
+Channel search also has a **channelbulk** similar to the **videobulk**, it also has attributes: `ids`, `urls`, `names`, `subscribers`, `views`, `created_ats`, `countries`, `custom_urls`, `descriptions`, `avatars`, `banners`, `verifieds`, `lives`
 
 ```py
-from aiotube import *
+from aiotube import Search
 
 Channels = Search.channels('SlumberDemon', limit=100)
 
@@ -294,7 +294,7 @@ Output:
 
 ###### <a name="search_playlist_attributes"></a> Attributes
 
-Aiotube can also get a youtube playlist you can also use attributes: `name`, `url`, `videos`, `video_count`, `thumbnail`
+Aiotube can also get a YouTube playlist you can also use attributes: `name`, `url`, `videos`, `video_count`, `thumbnail`
 
 ```py
 from aiotube import *
@@ -353,7 +353,7 @@ This outputs the following:
 With aiotube you can get info on spesific videos instead of finding them through search. You will always need to add attributes or aiotube will only return an `object`
 
 ```py
-from aiotube import *
+from aiotube import Video
 
 Vid = Video("8Or7UuuQu1Y&t=6s") # video Id / video url
 
@@ -371,7 +371,7 @@ This will give you the following video object:
 To get info on the video we can use attributes: `title`, `views`, `likes`, `dislikes`(This property is deprecated as YouTube is slowly removing public dislike counts), `author`, `duration`, `url`, `thumbnail`, `tags`
 
 ```py
-from aiotube import *
+from aiotube import Video
 
 Vid = Video("8Or7UuuQu1Y&t=6s") # video Id / video url
 
@@ -393,7 +393,7 @@ UCWLM2AmtzOCO68MKJn7FFuQ
 You can also get data by using the `info` attribute which returns a dict
 
 ```py
-from aiotube import *
+from aiotube import Video
 
 Vid = Video("8Or7UuuQu1Y&t=6s") # video Id / video url
 
@@ -413,7 +413,7 @@ Output:
 Similar to the [video basics](#video_basics) if you don't include any attributes it will return an `object`. To get channel data you can use the following attributes: `id`, `valid`, `name` `info`(Returns dict), `live`, `verified`, `livestream`, `livestreams`, `oldstreams`, `latest`, `playlists`, `subscribers`, `views`, `joined`, `country`, `custom_url`, `avatar`, `banner`, `description`
 
 ```py
-from aiotube import *
+from aiotube import Channel
 
 Channel = Channel("UCWLM2AmtzOCO68MKJn7FFuQ") # channel Id / url / custom url
 
@@ -435,7 +435,7 @@ SlumberDemon
 To get playlist data we can use the following attributes: `info`(Returns dict), `name`, `url`, `video_count`, `thumbnail`
 
 ```py
-from aiotube import *
+from aiotube import Playlist
 
 Playlist = Playlist("PLBnetXbvs5BGzGIsoxe6MYhX1hB7iRoOD") # playlist id
 
@@ -455,7 +455,7 @@ https://www.youtube.com/playlist?list=PLBnetXbvs5BGzGIsoxe6MYhX1hB7iRoOD
 You can also use the `videos` attribute, which retuns `video` objects. Currently you can't do anything with them but in future there will be a selection of attributes to use.
 
 ```py
-from aiotube import *
+from aiotube import Playlist
 
 Playlist = Playlist("PLBnetXbvs5BGzGIsoxe6MYhX1hB7iRoOD") # playlist id
 
@@ -474,7 +474,7 @@ Output:
 
 #### <a name="extras_attributes"></a> Attributes
 
-Using extras alows you to get the currently trending videos. The following attributes can be used: `trending`, `music`, `gaming`, `news`, `livestream`, `learning`, `sports`
+Using extras allows you to get the currently trending videos. The following attributes can be used: `trending`, `music`, `gaming`, `news`, `livestream`, `learning`, `sports`
 
 ```py
 from aiotube import *
@@ -505,7 +505,7 @@ This will output the following:
 Extras will return [video](#video_attributes) and [VideoBulk](#search_video_bulk) objects. These links will lead to the attributes that can be used to obtain more information from these objects. An example can be seen below:
 
 ```py
-from aiotube import *
+from aiotube import Extras
 
 Extras = Extras()
 

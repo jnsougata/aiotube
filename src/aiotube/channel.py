@@ -121,13 +121,12 @@ class Channel:
     @property
     def latest(self):
         """
-        :return: Channel's latest uploaded video in Video Object form
+        :return: Channel's most recent video in Video Object form
         """
         raw = _src(f'{self._url}/videos?view=0&sort=dd&flow=grid')
-        thumbs = re.findall('thumbnails\":\[{\"url\":\"(.*?)\?', raw)
-        ups = [url for url in thumbs if '_live' not in url]
-        video_id = re.findall('i/(.*?)/', ups[0]) if ups else None
-        return Video(video_id[0]) if video_id else None
+        any_video = re.findall(r"videoId\":\"(.*?)\"", raw)
+        if any_video:
+            return Video(any_video[0])
 
     @property
     def subscribers(self):
@@ -291,3 +290,21 @@ class Channel:
         bad_links = re.findall('q=https%3A%2F%2F(.*?)"', raw)
         filtered = ['https://' + unquote(link) for link in list(set(bad_links))]
         return filtered if filtered else None
+
+    @property
+    def recent_uploaded(self):
+        raw = _src(f'{self._url}/videos?view=0&sort=dd&flow=grid')
+        block_data = re.findall('gridVideoRenderer\":{(.*?)\"navigationEndpoint', raw)
+        filtered = [data for data in block_data if 'simpleText":"Streamed' not in data]
+        if filtered:
+            target_source = filtered[0]
+            return Video(re.findall('videoId\":\"(.*?)\"', target_source)[0])
+
+    @property
+    def recent_streamed(self):
+        raw = _src(f'{self._url}/videos?view=0&sort=dd&flow=grid')
+        block_data = re.findall('gridVideoRenderer\":{(.*?)\"navigationEndpoint', raw)
+        filtered = [data for data in block_data if 'simpleText":"Streamed' in data]
+        if filtered:
+            target_source = filtered[0]
+            return Video(re.findall('videoId\":\"(.*?)\"', target_source)[0])
