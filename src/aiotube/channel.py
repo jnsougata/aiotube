@@ -296,8 +296,9 @@ class Channel:
         raw = _src(f'{self._url}/videos?view=0&sort=dd&flow=grid')
         block_data = re.findall('gridVideoRenderer\":{(.*?)\"navigationEndpoint', raw)
         filtered = [data for data in block_data if 'simpleText":"Streamed' not in data]
-        if filtered:
-            target_source = filtered[0]
+        more = [data for data in block_data if '{"text":" watching"}]' not in data]
+        if more:
+            target_source = more[0]
             return Video(re.findall('videoId\":\"(.*?)\"', target_source)[0])
 
     @property
