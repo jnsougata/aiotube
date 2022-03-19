@@ -74,5 +74,4 @@ class _ChannelBulk:
 
     @property
     def live_nows(self):
-        pattern = r'{"text":" watching"}'
-        return [True if re.search(pattern, item) else False for item in self._sources]
+        return [True if rgx.live.search(data) else False for data in self._sources]
