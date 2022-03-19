@@ -1,65 +1,59 @@
-import re
+from ._http import _get_video_data
 from ._threads import _Thread
-from .auxiliary import _src, _duration
+from .auxiliary import _duration
+from ._rgxs import _VideoPatterns as rgx
 
 
 class _VideoBulk:
 
     def __init__(self, iterable: list):
-        self._ls = iterable
+        self._video_ids = iterable
 
     @property
     def _sources(self):
-        urls = ['https://www.youtube.com/watch?v=' + video_id for video_id in self._ls]
 
-        def get_raw_data(url):
-            return _src(url)
+        def fetch_bulk_source(url):
+            return _get_video_data(url)
 
-        return _Thread.run(get_raw_data, urls)
+        return _Thread.run(fetch_bulk_source, self.urls)
 
     @property
     def ids(self):
-        return self._ls
+        return self._video_ids
 
     @property
     def urls(self):
         head = 'https://www.youtube.com/watch?v='
-        return [f'{head}{item}' for item in self._ls]
+        return [head + video_id for video_id in self._video_ids]
 
     @property
     def titles(self):
-        pattern = r"title\":\"(.*?)\""
-        return [re.findall(pattern, item)[0] for item in self._sources]
+        return [rgx.title.findall(data)[0] for data in self._sources]
 
     @property
     def views(self):
-        pattern = r"\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\""
-        temp = [re.findall(pattern, item) for item in self._sources]
+        temp = [rgx.views.findall(data) for data in self._sources]
         return [item[0][:-6] if item else None for item in temp]
 
     @property
     def likes(self):
-        pattern = r"toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) "
-        temp = [re.findall(pattern, item) for item in self._sources]
+        temp = [rgx.likes.findall(data) for data in self._sources]
         return [item[0] if item else None for item in temp]
 
 
     @property
     def durations(self):
-        pattern = r"approxDurationMs\":\"(.*?)\""
-        temp = [re.findall(pattern, item) for item in self._sources]
+        temp = [rgx.duration.findall(data) for data in self._sources]
         return [_duration(int(int(item[0]) / 1000)) if item else None for item in temp]
 
     @property
     def upload_dates(self):
-        pattern = r"uploadDate\":\"(.*?)\""
-        temp = [re.findall(pattern, item) for item in self._sources]
+        temp = [rgx.upload_date.findall(pattern, item) for item in self._sources]
         return [item[0] if item else None for item in temp]
 
     @property
     def authors(self):
-        pattern = r"channelIds\":\[\"(.*?)\""
-        temp = [re.findall(pattern, item) for item in self._sources]
+        temp = [rgx.author_id.findall(data) for data in self._sources]
         return [item[0] if item else None for item in temp]
 
     @property
