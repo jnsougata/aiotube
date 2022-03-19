@@ -10,13 +10,12 @@ class _VideoBulk:
 
     @property
     def _sources(self):
-        head = 'https://www.youtube.com/watch?v='
-        urls = [f'{head}{item}/about' for item in self._ls]
+        urls = ['https://www.youtube.com/watch?v=' + video_id for video_id in self._ls]
 
-        def get_page(url):
+        def get_raw_data(url):
             return _src(url)
 
-        return _Thread.run(get_page, urls)
+        return _Thread.run(get_raw_data, urls)
 
     @property
     def ids(self):
