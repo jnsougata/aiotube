@@ -14,6 +14,7 @@ from ._threads import _Thread
 from urllib.parse import unquote
 from .videobulk import VideoBulk
 from .utils import filter
+from .upcoming import Upcoming
 from .playlistbulk import PlaylistBulk
 from ._rgxs import _ChannelPatterns as rgx
 
@@ -295,15 +296,15 @@ class Channel:
         return Video(rgx.video_id.findall(fl_2[0])[0]) if fl_2 else None
 
     @property
-    def upcoming(self) -> Optional[Video]:
+    def upcoming(self) -> Optional[Upcoming]:
         raw = _get_upcoming_videos(self._url)
         if rgx.upcoming_check.search(raw):
             upcoming = rgx.upcoming.findall(raw)
-            return Video(upcoming[0]) if upcoming else None
+            return Upcoming(upcoming[0]) if upcoming else None
         return None
 
     @property
-    def all_upcoming(self):
+    def all_upcoming(self) -> Optional[List[str]]:
         raw = _get_upcoming_videos(self._url)
         if rgx.upcoming_check.search(raw):
             video_ids = rgx.upcoming.findall(raw)

@@ -1,36 +1,38 @@
 from ._threads import _Thread
 from ._http import _get_video_data
 from ._rgxs import _VideoPatterns as rgx
-
+from typing import List, Optional, Dict, Any
 
 class Video:
 
+    HEAD = 'https://www.youtube.com/watch?v='
+
     def __init__(self, video_id: str):
-        """
-        :param video_id: video id or the url of the video
-        """
+
         if 'watch?v=' in video_id:
+            ids = video_id.split('=')
+            self._id = ids[-1]
             self._url = video_id
-            self._id = re.findall(r"v=(.*)", video_id)[0]
 
         elif 'youtu.be/' in video_id:
-            id_list = re.findall(r"youtu\.be/(.*)", video_id)
-            self._url = f'https://www.youtube.com/watch?v={id_list[0]}'
-            self._id = re.findall(r"/(.*)", video_id)[0]
+            ids = video_id.split('/')
+            self._id = ids[-1]
+            self._url = self.HEAD + self._id
+
         else:
             self._id = video_id
-            self._url = f'https://www.youtube.com/watch?v={video_id}'
+            self._url = self.HEAD + self._id
 
     @property
-    def url(self):
+    def url(self) -> str:
         return self._url
 
     @property
-    def id(self):
+    def id(self) -> str:
         return self._id
 
     @property
-    def title(self) -> str:
+    def title(self) -> Optional[str]:
         """
         :return: the title of the video
         """
@@ -39,7 +41,7 @@ class Video:
         return data[0] if data else None
 
     @property
-    def views(self) -> str:
+    def views(self) -> Optional[str]:
         """
         :return: total views the video got so far
         """
@@ -48,7 +50,7 @@ class Video:
         return data[0][:-6] if data else None
 
     @property
-    def likes(self) -> str:
+    def likes(self) -> Optional[str]:
         """
         :return: total likes the video got so far
         """
@@ -57,7 +59,7 @@ class Video:
         return data[0] if data else None
 
     @property
-    def duration(self) -> float:
+    def duration(self) -> Optional[float]:
         """
         :return: total duration of  the video in seconds
         """
@@ -66,7 +68,7 @@ class Video:
         return int(data[0]) / 1000 if data else None
 
     @property
-    def upload_date(self) -> str:
+    def upload_date(self) -> Optional[str]:
         """
         :return: the date on which the video has been uploaded
         """
@@ -75,7 +77,7 @@ class Video:
         return data[0] if data else None
 
     @property
-    def author(self) -> str:
+    def author(self) -> Optional[str]:
         """
         :return: the id of the channel from which the video belongs
         """
@@ -84,7 +86,7 @@ class Video:
         return data[0] if data else None
 
     @property
-    def description(self) -> str:
+    def description(self) -> Optional[str]:
         """
         :return: description provided with the video
         """
@@ -93,7 +95,7 @@ class Video:
         return data[0].replace('\\n', '\n') if data else None
 
     @property
-    def thumbnail(self) -> str:
+    def thumbnail(self) -> Optional[str]:
         """
         :return: _url of the thumbnail of the video
         """
@@ -102,7 +104,7 @@ class Video:
         return data[0] if data else None
 
     @property
-    def tags(self) -> list[str]:
+    def tags(self) -> Optional[List[str]]:
         """
         :return: list of tags used in video meta-data
         """
@@ -117,7 +119,7 @@ class Video:
         return False
 
     @property
-    def info(self) -> dict:
+    def info(self) -> Dict[str, Any]:
         """
         :return: dict containing the whole info of the video
         """
