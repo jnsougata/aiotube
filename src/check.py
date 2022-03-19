@@ -1,7 +1,7 @@
-from aiotube import Channel, Video, Playlist, Extras
+from aiotube import Channel, Video, Playlist, Extras, Search
 
-
-print(Extras.livestreams().likes)
+channels = Search.channels("YouTube").verifieds
+print(channels)
 
 
 # UC47rNmkDcNgbOcM-2BwzJTQ

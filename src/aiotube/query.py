@@ -32,7 +32,7 @@ class Search:
         return Channel(channel_ids[0]) if channel_ids else None
 
     @staticmethod
-    def videos(keywords: str, limit: int):
+    def videos(keywords: str, limit: int = 20):
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total number of videos to be searched
@@ -44,7 +44,7 @@ class Search:
         return _VideoBulk(pure_list) if pure_list else None
 
     @staticmethod
-    def channels(keywords: str, limit: int):
+    def channels(keywords: str, limit: int = 20):
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total number of channels to be searched
@@ -65,7 +65,7 @@ class Search:
         return Playlist(found[0]) if found else None
 
     @staticmethod
-    def playlists(keywords: str, limit: int):
+    def playlists(keywords: str, limit: int = 20):
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total playlists be searched
