@@ -1,5 +1,5 @@
 from ._threads import _Thread
-from .auxiliary import _filter
+from .utils import filter
 from ._http import _get_playlist_data
 from ._rgxs import _PlaylistPatterns as rgx
 from typing import List
@@ -44,4 +44,4 @@ class PlaylistBulk:
 
     @property
     def video_ids(self) -> List[List[str]]:
-        return [_filter(rgx.video_id.findall(data)) for data in self._sources]
+        return [filter(rgx.video_id.findall(data)) for data in self._sources]

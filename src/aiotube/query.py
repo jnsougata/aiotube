@@ -1,4 +1,4 @@
-from .auxiliary import _filter
+from .utils import filter
 from .video import Video
 from .channel import Channel
 from .playlist import Playlist
@@ -46,7 +46,7 @@ class Search:
         :return: list of < video object > of each video regarding the query (consider limit)
         """
         video_ids = rgx.video_id.findall(_find_videos(keywords))
-        pure_list = _filter(limit=limit, iterable=video_ids)
+        pure_list = filter(limit=limit, iterable=video_ids)
         return VideoBulk(pure_list) if pure_list else None
 
     @staticmethod
@@ -57,7 +57,7 @@ class Search:
         :return: list of < channel object > of each video regarding the query (consider limit)
         """
         channel_ids = rgx.channel_id.findall(_find_channels(keywords))
-        pure_list = _filter(limit=limit, iterable=channel_ids)
+        pure_list = filter(limit=limit, iterable=channel_ids)
         return ChannelBulk(pure_list) if pure_list else None
 
     @staticmethod
@@ -68,5 +68,5 @@ class Search:
         :return: list of < playlist object > of each playlist regarding the query (consider limit)
         """
         playlist_ids = rgx.playlist_id.findall(_find_playlists(keywords))
-        pure_list = _filter(limit=limit, iterable=playlist_ids)
+        pure_list = filter(limit=limit, iterable=playlist_ids)
         return PlaylistBulk(pure_list) if pure_list else None

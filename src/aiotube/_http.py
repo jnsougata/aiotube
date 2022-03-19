@@ -1,4 +1,4 @@
-from .auxiliary import _src, create_http_pool, _parser
+from .utils import _src, create_http_pool, parser
 
 
 def _get_channel_about(head: str) -> str:
@@ -79,19 +79,19 @@ def _get_trending_sports_videos() -> str:
 def _find_videos(query: str) -> str:
     head = 'https://www.youtube.com/results?search_query='
     tail = '&sp=EgIQAQ%253D%253D'
-    parsed_query = _parser(query)
+    parsed_query = parser(query)
     return _src(head + parsed_query + tail)
 
 
 def _find_channels(query: str) -> str:
     head = 'https://www.youtube.com/results?search_query='
     tail = '&sp=EgIQAg%253D%253D'
-    parsed_query = _parser(query)
+    parsed_query = parser(query)
     return _src(head + parsed_query + tail)
 
 
 def _find_playlists(query: str) -> str:
     head = 'https://www.youtube.com/results?search_query='
     tail = '&sp=EgIQAw%253D%253D'
-    parsed_query = _parser(query)
+    parsed_query = parser(query)
     return _src(head + parsed_query + tail)

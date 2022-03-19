@@ -1,6 +1,5 @@
 from ._http import _get_video_data
 from ._threads import _Thread
-from .auxiliary import _duration
 from ._rgxs import _VideoPatterns as rgx
 from typing import List
 
@@ -45,7 +44,7 @@ class VideoBulk:
     @property
     def durations(self) -> List[float]:
         temp = [rgx.duration.findall(data) for data in self._sources]
-        return [_duration(int(int(item[0]) / 1000)) if item else None for item in temp]
+        return [int(item[0]) / 1000 if item else None for item in temp]
 
     @property
     def upload_dates(self) -> List[str]:

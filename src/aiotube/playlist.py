@@ -1,6 +1,6 @@
 import re
 from ._threads import _Thread
-from .auxiliary import _filter
+from .utils import filter
 from .videobulk import VideoBulk
 from ._http import _get_playlist_data
 from ._rgxs import _PlaylistPatterns as rgx
@@ -49,7 +49,7 @@ class Playlist:
 
         raw = _get_playlist_data(self.id)
         videos = rgx.video_id.findall(raw)
-        return VideoBulk(_filter(iterable=videos))
+        return VideoBulk(filter(iterable=videos))
 
     @property
     def thumbnail(self):
@@ -78,7 +78,7 @@ class Playlist:
         return {
             'name': data[0],
             'video_count': data[1],
-            'videos': _filter(rgx.video_id.findall(raw)),
+            'videos': filter(rgx.video_id.findall(raw)),
             'url': f'https://www.youtube.com/playlist?list={self.id}',
             'thumbnail': data[2]
         }

@@ -4,7 +4,7 @@ from urllib.error import HTTPError, URLError
 from .errors import TooManyRequests, InvalidURL, BadURL, AIOError
 
 
-__all__ = ['_src', '_filter', '_duration', '_parser']
+__all__ = ['filter', 'duration', 'parser']
 
 
 def create_http_pool(pool_size=1):
@@ -31,7 +31,7 @@ def _src(url: str):
         raise AIOError(f'{e!r}')
 
 
-def _filter(iterable: list, limit: int = None) -> list:
+def filter(iterable: list, limit: int = None) -> list:
     """
     Restricts element repetition in iterable
     :param int limit: number of desired elements
@@ -45,20 +45,8 @@ def _filter(iterable: list, limit: int = None) -> list:
             return converted[:-len(converted) + lim]
         else:
             return converted
-    else:
-        return []
+    return []
 
 
-def _duration(seconds: int):
-    """
-    :param seconds: duration to be converted
-    :return: a duration string with 00h 00m 00s format
-    """
-    dur_hour = int(seconds // 3600)
-    dur_min = int((seconds % 3600) // 60)
-    dur_sec = int(seconds - (3600 * dur_hour) - (60 * dur_min))
-    return f'{dur_hour}h {dur_min}m {dur_sec}s'
-
-
-def _parser(kw: str):
+def parser(kw: str):
     return kw.replace(" ", '+')
