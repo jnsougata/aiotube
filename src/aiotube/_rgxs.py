@@ -5,6 +5,7 @@ class _ChannelPatterns:
     name = re.compile('channelMetadataRenderer\":{\"title\":\"(.*?)\"')
     id = re.compile('channelId\":\"(.*?)\"')
     verified = re.compile('"label":"Verified"')
+    check_live = re.compile('{"text":"LIVE"}')
     live = re.compile("thumbnailOverlays\":\[(.*?)]")
     video_id = re.compile('videoId\":\"(.*?)\"')
     uploads = re.compile("gridVideoRenderer\":{\"videoId\":\"(.*?)\"")
@@ -26,7 +27,5 @@ class _ChannelPatterns:
     upcoming = re.compile("gridVideoRenderer\":{\"videoId\":\"(.*?)\"")
 
 
-
-
-
-
+class _VideoPatterns:
+    pass

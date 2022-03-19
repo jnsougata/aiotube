@@ -1,7 +1,7 @@
 from aiotube import Channel
 
 
-d = Channel('UC47rNmkDcNgbOcM-2BwzJTQ').all_upcoming
+d = Channel('UCbcEaY3QGVt4e5IifLxW2DA').uploads(limit=30).titles
 print(d)
 
 

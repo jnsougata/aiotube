@@ -1,10 +1,15 @@
-import urllib.request
-from urllib.error import HTTPError, URLError
+import urllib3
 from collections import OrderedDict
+from urllib.error import HTTPError, URLError
 from .errors import TooManyRequests, InvalidURL, BadURL, AIOError
 
 
 __all__ = ['_src', '_filter', '_duration', '_parser']
+
+
+def create_http_pool(pool_size=1):
+    http = urllib3.PoolManager(num_pools=pool_size)
+    return http
 
 
 def _src(url: str):
@@ -12,9 +17,9 @@ def _src(url: str):
     :param url: url to be requested
     :return: the requested page
     """
+    http = create_http_pool()
     try:
-        with urllib.request.urlopen(url) as resp:
-            return resp.read().decode()
+        return http.request('GET', url).data.decode('utf-8')
     except HTTPError as error:
         if error.code == 404:
             raise InvalidURL('can not find anything the requested url')
@@ -22,8 +27,8 @@ def _src(url: str):
             raise TooManyRequests('sending too many requests in a short period of time')
     except URLError:
         raise BadURL('bad url format used')
-    except Exception as error:
-        raise AIOError(f'{error}')
+    except Exception as e:
+        raise AIOError(f'{e!r}')
 
 
 def _filter(iterable: list, limit: int = None) -> list:
