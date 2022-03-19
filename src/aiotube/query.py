@@ -1,11 +1,12 @@
-import re
+from .auxiliary import _filter
 from .video import Video
 from .channel import Channel
 from .playlist import Playlist
 from .videobulk import _VideoBulk
 from .channelbulk import _ChannelBulk
 from .playlistbulk import _PlaylistBulk
-from .auxiliary import _parser, _filter, _src
+from ._rgxs import _QueryPatterns as rgx
+from ._http import _find_videos, _find_channels, _find_playlists
 
 
 class Search:
@@ -18,8 +19,7 @@ class Search:
         """
         :return: < video object > regarding the query
         """
-        raw = _src(f'https://www.youtube.com/results?search_query={_parser(keywords)}&sp=EgIQAQ%253D%253D')
-        video_ids = re.findall(r"\"videoId\":\"(.*?)\"", raw)
+        video_ids = rgx.video_id.findall(_find_videos(keywords))
         return Video(video_ids[0]) if video_ids else None
 
     @staticmethod
@@ -27,9 +27,16 @@ class Search:
         """
         :return: < channel object > regarding the query
         """
-        raw = _src(f'https://www.youtube.com/results?search_query={_parser(keywords)}&sp=EgIQAg%253D%253D')
-        channel_ids = re.findall(r"{\"channelId\":\"(.*?)\"", raw)
+        channel_ids = rgx.channel_id.findall(_find_channels(keywords))
         return Channel(channel_ids[0]) if channel_ids else None
+
+    @staticmethod
+    def playlist(keywords: str):
+        """
+        :return: < playlist object > regarding the query
+        """
+        playlist_ids = rgx.playlist_id.findall(_find_playlists(keywords))
+        return Playlist(found[0]) if found else None
 
     @staticmethod
     def videos(keywords: str, limit: int = 20):
@@ -38,8 +45,7 @@ class Search:
         :param int limit: total number of videos to be searched
         :return: list of < video object > of each video regarding the query (consider limit)
         """
-        raw = _src(f'https://www.youtube.com/results?search_query={_parser(keywords)}&sp=EgIQAQ%253D%253D')
-        raw_ids = re.findall(r"\"videoId\":\"(.*?)\"", raw)
+        video_ids = rgx.video_id.findall(_find_videos(keywords))
         pure_list = _filter(limit=limit, iterable=raw_ids)
         return _VideoBulk(pure_list) if pure_list else None
 
@@ -50,19 +56,9 @@ class Search:
         :param int limit: total number of channels to be searched
         :return: list of < channel object > of each video regarding the query (consider limit)
         """
-        raw = _src(f'https://www.youtube.com/results?search_query={_parser(keywords)}&sp=EgIQAg%253D%253D')
-        raw_ids = re.findall(r"{\"channelId\":\"(.*?)\"", raw)
+        channel_ids = rgx.channel_id.findall(_find_channels(keywords))
         pure_list = _filter(limit=limit, iterable=raw_ids)
         return _ChannelBulk(pure_list) if pure_list else None
-
-    @staticmethod
-    def playlist(keywords: str):
-        """
-        :return: < playlist object > regarding the query
-        """
-        raw = _src(f'https://www.youtube.com/results?search_query={_parser(keywords)}&sp=EgIQAw%253D%253D')
-        found = re.findall(r"playlistId\":\"(.*?)\"", raw)
-        return Playlist(found[0]) if found else None
 
     @staticmethod
     def playlists(keywords: str, limit: int = 20):
@@ -71,7 +67,6 @@ class Search:
         :param int limit: total playlists be searched
         :return: list of < playlist object > of each playlist regarding the query (consider limit)
         """
-        raw = _src(f'https://www.youtube.com/results?search_query={_parser(keywords)}&sp=EgIQAw%253D%253D')
-        found = re.findall(r"playlistId\":\"(.*?)\"", raw)
-        pure = _filter(limit=limit, iterable=found)
-        return _PlaylistBulk(pure) if pure else None
+        playlist_ids = rgx.playlist_id.findall(_find_playlists(keywords))
+        pure_list = _filter(limit=limit, iterable=found)
+        return _PlaylistBulk(pure_list) if pure_list else None

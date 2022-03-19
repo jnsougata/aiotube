@@ -49,3 +49,9 @@ class _PlaylistPatterns:
 
 class _ExtraPatterns:
     video_id = re.compile("videoId\":\"(.*?)\"")
+
+
+class _QueryPatterns:
+    channel_id = re.compile("channelId\":\"(.*?)\"")
+    video_id = re.compile("videoId\":\"(.*?)\"")
+    playlist_id = re.compile("playlistId\":\"(.*?)\"")
