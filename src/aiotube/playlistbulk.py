@@ -22,8 +22,8 @@ class PlaylistBulk:
     @property
     def _sources(self):
 
-        def fetch_bulk_source(url):
-            return _get_playlist_data(url)
+        def fetch_bulk_source(playlist_id):
+            return _get_playlist_data(playlist_id)
 
         return _Thread.run(fetch_bulk_source, self.ids)
 

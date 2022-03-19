@@ -12,8 +12,8 @@ class VideoBulk:
     @property
     def _sources(self):
 
-        def fetch_bulk_source(url):
-            return _get_video_data(url)
+        def fetch_bulk_source(video_id):
+            return _get_video_data(video_id)
 
         return _Thread.run(fetch_bulk_source, self.ids)
 
