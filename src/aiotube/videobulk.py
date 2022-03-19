@@ -15,7 +15,7 @@ class VideoBulk:
         def fetch_bulk_source(url):
             return _get_video_data(url)
 
-        return _Thread.run(fetch_bulk_source, self.urls)
+        return _Thread.run(fetch_bulk_source, self.ids)
 
     @property
     def ids(self) -> List[str]:
@@ -28,7 +28,8 @@ class VideoBulk:
 
     @property
     def titles(self) -> List[str]:
-        return [rgx.title.findall(data)[0] for data in self._sources]
+        temp = [rgx.title.findall(data) for data in self._sources]
+        return [item[0] if item else None for item in temp]
 
     @property
     def views(self) -> List[str]:

@@ -117,7 +117,7 @@ class Channel:
         ids = filter(rgx.video_id.findall(raw))
         return VideoBulk(ids) if ids else None
 
-    def uploads(self, limit: int = 10) -> Optional[VideoBulk]:
+    def uploads(self, limit: int = 20) -> Optional[VideoBulk]:
         """
         :param int limit: number of videos user wants from channel's latest upload
         :return: a < bulk video obj > of latest uploaded videos (consider limit)
