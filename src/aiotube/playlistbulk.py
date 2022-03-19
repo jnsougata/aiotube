@@ -24,11 +24,12 @@ class _PlaylistBulk:
         def fetch_bulk_source(url):
             return _get_playlist_data(url)
 
-        return _Thread.run(fetch_bulk_source, self.urls)
+        return _Thread.run(fetch_bulk_source, self.ids)
 
     @property
     def names(self):
-        return [rgx.name.findall(data)[0] for data in self._sources]
+        temp = [rgx.name.findall(data) for data in self._sources]
+        return [item[0] if item else None for item in temp]
 
     @property
     def video_counts(self):

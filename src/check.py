@@ -1,6 +1,6 @@
 from aiotube import Channel, Video, Playlist, Extras, Search
 
-channels = Search.playlists("YouTube").video_ids
+channels = Search.playlists("spacex", limit=5).video_ids
 print(channels)
 
 
