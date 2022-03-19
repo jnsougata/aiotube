@@ -1,9 +1,7 @@
-from aiotube import Channel, Video, Playlist
+from aiotube import Channel, Video, Playlist, Extras
 
 
-d = Playlist('PLbQZEemhjLgM443axnsL6s1e_LhUt-SVU').url
-print(d)
-
+print(Extras.livestreams().likes)
 
 
 # UC47rNmkDcNgbOcM-2BwzJTQ

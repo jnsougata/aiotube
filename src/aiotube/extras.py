@@ -1,73 +1,74 @@
-import re
+from ._http import (
+    _get_trending_video,
+    _get_trending_songs,
+    _get_trending_gaming_videos,
+    _get_trending_news_feeds,
+    _get_trending_streams,
+    _get_trending_learning_videos,
+    _get_trending_sports_videos
+)
 from .video import Video
+from .auxiliary import _filter
 from .videobulk import _VideoBulk
-from .auxiliary import _filter, _src
+from ._rgxs import _ExtraPatterns as rgx
+
 
 
 class Extras:
 
-    def __init__(self):
-        pass
 
-    @property
-    def trending(self):
+    @staticmethod
+    def trending():
         """
         :return: < video object > of #1 on trending video
         """
-        raw = _src(f'https://www.youtube.com/feed/trending')
-        data = re.findall(r"videoId\":\"(.*?)\"", raw)
+        data = rgx.video_id.findall(_get_trending_video())
         return Video(data[0]) if data else None
 
-    @property
-    def music(self):
+    @staticmethod
+    def music():
         """
         :return: list of < video object > of trending music videos
         """
-        raw = _src(f'https://www.youtube.com/feed/music')
-        data = re.findall(r"videoId\":\"(.*?)\"", raw)
+        data = rgx.video_id.findall(_get_trending_songs())
         return _VideoBulk(_filter(data)) if data else None
 
-    @property
-    def gaming(self):
+    @staticmethod
+    def gaming():
         """
         :return: list of < video object > of trending gaming videos
         """
-        raw = _src(f'https://www.youtube.com/gaming')
-        data = re.findall(r"videoId\":\"(.*?)\"", raw)
+        data = rgx.video_id.findall(_get_trending_gaming_videos())
         return _VideoBulk(_filter(data)) if data else None
 
-    @property
-    def news(self):
+    @staticmethod
+    def news():
         """
         :return: list of < video object > of trending news videos
         """
-        raw = _src(f'https://www.youtube.com/news')
-        data = re.findall(r"videoId\":\"(.*?)\"", raw)
+        data = rgx.video_id.findall(_get_trending_news_feeds())
         return _VideoBulk(_filter(data)) if data else None
 
-    @property
-    def livestream(self):
+    @staticmethod
+    def livestreams():
         """
         :return: list of < video object > of trending livestreams
         """
-        raw = _src(f'https://www.youtube.com/live')
-        data = re.findall(r"videoId\":\"(.*?)\"", raw)
+        data = rgx.video_id.findall(_get_trending_streams())
         return _VideoBulk(_filter(data)) if data else None
 
-    @property
-    def learning(self):
+    @staticmethod
+    def learning():
         """
         :return: list of < video object > of trending educational videos
         """
-        raw = _src(f'https://www.youtube.com/learning')
-        data = re.findall(r"videoId\":\"(.*?)\"", raw)
+        data = rgx.video_id.findall(_get_trending_learning_videos())
         return _VideoBulk(_filter(data)) if data else None
 
-    @property
-    def sports(self):
+    @staticmethod
+    def sports():
         """
         :return: list of < video object > of trending sports videos
         """
-        raw = _src(f'https://www.youtube.com/sports')
-        data = re.findall(r"videoId\":\"(.*?)\"", raw)
+        data = rgx.video_id.findall(_get_trending_sports_videos())
         return _VideoBulk(_filter(data)) if data else None

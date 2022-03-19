@@ -45,3 +45,7 @@ class _PlaylistPatterns:
     video_count = re.compile("stats\":\[{\"runs\":\[{\"text\":\"(.*?)\"")
     video_id = re.compile("videoId\":\"(.*?)\"")
     thumbnail = re.compile("og:image\" content=\"(.*?)\?")
+
+
+class _ExtraPatterns:
+    video_id = re.compile("videoId\":\"(.*?)\"")
