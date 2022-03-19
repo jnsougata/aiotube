@@ -29,15 +29,15 @@ class _ChannelPatterns:
 
 class _VideoPatterns:
     title = re.compile("\"title\":\"(.*?)\"")
-    views = re.compile("\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"")
-    likes = re.compile("toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) ")
-    thumbnail = re.compile("playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\"")
     duration = re.compile("approxDurationMs\":\"(.*?)\"")
     upload_date = re.compile("uploadDate\":\"(.*?)\"")
     author_id = re.compile("channelIds\":\[\"(.*?)\"")
     description = re.compile("shortDescription\":\"(.*)\",\"isCrawlable")
     tags = re.compile("<meta name=\"keywords\" content=\"(.*?)\">")
     is_streamed = re.compile("simpleText\":\"Streamed live")
+    views = re.compile("\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"")
+    likes = re.compile("toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) ")
+    thumbnail = re.compile("playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\"")
 
 
 class _PlaylistPatterns:
