@@ -12,8 +12,6 @@ from ._http import _find_videos, _find_channels, _find_playlists
 
 class Search:
 
-    def __init__(self):
-        pass
 
     @staticmethod
     def video(keywords: str) -> Optional[Video]:
