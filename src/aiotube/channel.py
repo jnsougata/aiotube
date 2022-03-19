@@ -7,7 +7,6 @@ from ._http import (
     get_video_count,
     get_upcoming_videos
 )
-
 from .live import Live
 from .video import Video
 from ._threads import _Thread
@@ -225,8 +224,10 @@ class Channel:
             data = pattern.findall(raw)
             return data[0] if data else None
 
-        patterns = [rgx.name, rgx.subscribers, rgx.views, rgx.creation,
-                    rgx.country, rgx.custom_url, rgx.avatar, rgx.banner, rgx.id]
+        patterns = [
+            rgx.name, rgx.subscribers, rgx.views, rgx.creation,
+            rgx.country, rgx.custom_url, rgx.avatar, rgx.banner, rgx.id
+        ]
 
         data = _Thread.run(extract, patterns)
 

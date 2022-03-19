@@ -1,6 +1,9 @@
 import re
+from ._threads import _Thread
+from .auxiliary import _filter
 from .videobulk import _VideoBulk
-from .auxiliary import _src, _filter
+from ._http import _get_playlist_data
+from ._rgxs import _PlaylistPatterns as rgx
 
 
 class Playlist:
@@ -18,9 +21,9 @@ class Playlist:
         """
         :return: the name of the playlist
         """
-        raw = _src(f'https://www.youtube.com/playlist?list={self.id}')
-        name_data = re.findall(r"{\"title\":\"(.*?)\"", raw)
-        return name_data[0] if name_data else None
+        raw = _get_playlist_data(self.id)
+        names = rgx.name.findall(raw)
+        return names[0] if names else None
 
     @property
     def url(self):
@@ -34,53 +37,49 @@ class Playlist:
         """
         :return: total number of videos in that playlist
         """
-        raw = _src(f'https://www.youtube.com/playlist?list={self.id}')
-        video_count = re.findall(r"stats\":\[{\"runs\":\[{\"text\":\"(.*?)\"", raw)
+        raw = _get_playlist_data(self.id)
+        video_count = rgx.video_count.findall(raw)
         return video_count[0] if video_count else None
 
-    def videos(self, limit: int):
+    @property
+    def videos(self):
         """
-        :param int limit: number of videos the user want from the playlist
         :return: list of < video objects > for each video in the playlist (consider limit)
         """
 
-        raw = _src(f'https://www.youtube.com/playlist?list={self.id}')
-        videos = re.findall(r"videoId\":\"(.*?)\"", raw)
-        pure = _filter(limit=limit, iterable=videos)
-        return _VideoBulk(pure)
+        raw = _get_playlist_data(self.id)
+        videos = rgx.video_id.findall(raw)
+        return _VideoBulk(_filter(iterable=videos))
 
     @property
     def thumbnail(self):
         """
         :return: url of the thumbnail of the playlist
         """
-        raw = _src(f'https://www.youtube.com/playlist?list={self.id}')
-        thumbnails = re.findall(r"og:image\" content=\"(.*?)\?", raw)
+        raw = _get_playlist_data(self.id)
+        thumbnails = rgx.thumbnail.findall(raw)
         return thumbnails[0] if thumbnails else None
     
     @property
     def info(self):
         """
         :return: a dict containing playlist info
-        dict = {
-                'name': -> str,
-                'url': -> str,
-                'video_count': -> int,
-                'videos': -> bulk,
-                'thumbnail': -> str,
-            }
         """
-        raw = _src(f'https://www.youtube.com/playlist?list={self.id}')
-        name_data = re.findall(r"{\"title\":\"(.*?)\"", raw)
-        video_count_data = re.findall(r"stats\":\[{\"runs\":\[{\"text\":\"(.*?)\"", raw)
-        thumbnails = re.findall(r"og:image\" content=\"(.*?)\?", raw)
+        raw = _get_playlist_data(self.id)
+
+        def _get_data(pattern):
+            data = pattern.findall(raw)
+            return data[0] if data else None
+
+        patterns = [rgx.name, rgx.video_count, rgx.thumbnail]
+
+        data = _Thread.run(_get_data, patterns)
 
         return {
-
-            'name': name_data[0] if len(name_data) != 0 else None,
-            'video_count': video_count_data[0] if video_count_data else None,
-            'videos': _filter(re.findall(r"videoId\":\"(.*?)\"", raw)),
-            'thumbnail': thumbnails[0] if len(thumbnails) != 0 else None,
-            'url': f'https://www.youtube.com/playlist?list={self.id}'
+            'name': data[0],
+            'video_count': data[1],
+            'videos': _filter(rgx.video_id.findall(raw)),
+            'url': f'https://www.youtube.com/playlist?list={self.id}',
+            'thumbnail': data[2]
         }
         

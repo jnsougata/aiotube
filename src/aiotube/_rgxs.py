@@ -28,4 +28,20 @@ class _ChannelPatterns:
 
 
 class _VideoPatterns:
-    pass
+    title = re.compile("\"title\":\"(.*?)\"")
+    views = re.compile("\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"")
+    likes = re.compile("toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) ")
+    thumbnail = re.compile("playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\"")
+    duration = re.compile("approxDurationMs\":\"(.*?)\"")
+    upload_date = re.compile("uploadDate\":\"(.*?)\"")
+    author_id = re.compile("channelIds\":\[\"(.*?)\"")
+    description = re.compile("shortDescription\":\"(.*)\",\"isCrawlable")
+    tags = re.compile("<meta name=\"keywords\" content=\"(.*?)\">")
+    is_streamed = re.compile("simpleText\":\"Streamed live")
+
+
+class _PlaylistPatterns:
+    name = re.compile("{\"title\":\"(.*?)\"")
+    video_count = re.compile("stats\":\[{\"runs\":\[{\"text\":\"(.*?)\"")
+    video_id = re.compile("videoId\":\"(.*?)\"")
+    thumbnail = re.compile("og:image\" content=\"(.*?)\?")

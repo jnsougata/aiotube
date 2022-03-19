@@ -35,3 +35,13 @@ def get_video_count(channel_id: str) -> str:
     url = f'https://www.youtube.com/results?search_query={channel_id}&sp=EgIQAg%253D%253D'
     return _src(url)
 
+
+def _get_video_data(video_id: str) -> str:
+    url = f'https://www.youtube.com/watch?v={video_id}'
+    return _src(url)
+
+
+def _get_playlist_data(playlist_id: str) -> str:
+    url = 'https://www.youtube.com/playlist?list=' + playlist_id
+    return _src(url)
+

@@ -1,7 +1,7 @@
-from aiotube import Channel
+from aiotube import Channel, Video, Playlist
 
 
-d = Channel('UCbcEaY3QGVt4e5IifLxW2DA').uploads(limit=30).titles
+d = Playlist('PLbQZEemhjLgM443axnsL6s1e_LhUt-SVU').url
 print(d)
 
 
