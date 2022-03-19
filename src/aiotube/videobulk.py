@@ -49,7 +49,7 @@ class VideoBulk:
 
     @property
     def upload_dates(self) -> List[str]:
-        temp = [rgx.upload_date.findall(pattern, item) for item in self._sources]
+        temp = [rgx.upload_date.findall(data) for data in self._sources]
         return [item[0] if item else None for item in temp]
 
     @property

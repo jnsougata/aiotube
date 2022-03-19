@@ -8,7 +8,7 @@ from typing import List, Optional, Dict, Any
 
 class Playlist:
 
-    HEAD = 'https://www.youtube.com/playlist?list='
+    __HEAD = 'https://www.youtube.com/playlist?list='
 
     def __init__(self, playlist_id: str):
         """
@@ -82,7 +82,7 @@ class Playlist:
             'name': data[0],
             'video_count': data[1],
             'videos': filter(rgx.video_id.findall(raw)),
-            'url': self.HEAD + self.id,
+            'url': self.__HEAD + self.id,
             'thumbnail': data[2]
         }
         

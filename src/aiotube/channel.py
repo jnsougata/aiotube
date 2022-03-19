@@ -21,19 +21,19 @@ from ._rgxs import _ChannelPatterns as rgx
 
 class Channel:
 
-    HEAD = 'https://www.youtube.com/channel/'
-    CUSTOM = 'https://www.youtube.com/c/'
+    __HEAD = 'https://www.youtube.com/channel/'
+    __CUSTOM = 'https://www.youtube.com/c/'
 
     def __init__(self, channel_id: str):
         """
         :param str channel_id: any of channel id, url , custom url
         """
         if channel_id.startswith('UC'):
-            self._url = self.HEAD + channel_id
+            self._url = self.__HEAD + channel_id
         elif channel_id.startswith('http'):
             self._url = channel_id
         else:
-            self._url = self.CUSTOM + channel_id
+            self._url = self.__CUSTOM + channel_id
 
         self._channel_id = channel_id
 
@@ -61,7 +61,7 @@ class Channel:
 
     @property
     def url(self) -> str:
-        return self.HEAD + self.id
+        return self.__HEAD + self.id
 
     @property
     def id(self) -> str:

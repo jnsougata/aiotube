@@ -6,6 +6,8 @@ from typing import List
 
 class ChannelBulk:
 
+    __HEAD = 'https://www.youtube.com/channel/'
+
     def __init__(self, iterable: list):
         self._channel_ids = iterable
 
@@ -15,7 +17,7 @@ class ChannelBulk:
 
     @property
     def urls(self) -> List[str]:
-        return [f'https://www.youtube.com/channel/' + channel_id for channel_id in self._channel_ids]
+        return [self.__HEAD + channel_id for channel_id in self._channel_ids]
     
     @property
     def _sources(self):

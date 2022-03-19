@@ -6,7 +6,7 @@ from typing import List, Optional, Dict, Any
 
 class Video:
 
-    HEAD = 'https://www.youtube.com/watch?v='
+    __HEAD = 'https://www.youtube.com/watch?v='
 
     def __init__(self, video_id: str):
 
@@ -18,11 +18,11 @@ class Video:
         elif 'youtu.be/' in video_id:
             ids = video_id.split('/')
             self._id = ids[-1]
-            self._url = self.HEAD + self._id
+            self._url = self.__HEAD + self._id
 
         else:
             self._id = video_id
-            self._url = self.HEAD + self._id
+            self._url = self.__HEAD + self._id
 
     @property
     def url(self) -> str:
