@@ -1,6 +1,6 @@
 from aiotube import Channel, Video, Playlist, Extras, Search
 
-channels = Search.channels("YouTube").live_nows
+channels = Search.playlists("YouTube").video_ids
 print(channels)
 
 
