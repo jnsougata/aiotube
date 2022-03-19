@@ -3,6 +3,7 @@ from ._http import _get_video_data
 from ._rgxs import _VideoPatterns as rgx
 from typing import List, Optional, Dict, Any
 
+
 class Video:
 
     HEAD = 'https://www.youtube.com/watch?v='
