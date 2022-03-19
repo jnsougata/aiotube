@@ -163,9 +163,9 @@ class Video:
 
             'title': ls[0],
             'id': self._id,
-            'views': ls[1][:-6],
+            'views': ls[1][:-6] if ls[1] else None,
             'likes': ls[2],
-            'duration': int(ls[3]) / 1000,
+            'duration': int(ls[3]) / 1000 if ls[3] else None,
             'author': ls[4],
             'upload_date': ls[5],
             'url': self._url,

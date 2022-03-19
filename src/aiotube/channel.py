@@ -6,6 +6,7 @@ from urllib.parse import unquote
 from .videobulk import _VideoBulk
 from .auxiliary import _filter, _src
 from .playlistbulk import _PlaylistBulk
+from ._rgxs import _ChannelPatterns as rgx
 
 
 class Channel:
@@ -36,7 +37,7 @@ class Channel:
         :return: channel's name or None
         """
         raw = _src(f'{self._url}/about')
-        name = re.findall("channelMetadataRenderer\":{\"title\":\"(.*?)\"", raw)
+        name = rgx.name.findall(raw)
         return name[0] if name else None
 
     @property
@@ -57,9 +58,8 @@ class Channel:
         :return: the id of the channel
         """
         raw = _src(f'{self._url}/about')
-        _id = re.search(r"\"channelId\":\"(.*?)\"", raw)
-        if _id:
-            return _id.group().replace('"', '').replace('channelId:', '')
+        id = rgx.id.findall(raw)
+        return id[0] if id else None
 
     @property
     def verified(self):
@@ -67,16 +67,16 @@ class Channel:
         :return: bool i.e. True if channel is verified else False
         """
         raw = _src(f'{self._url}/about')
-        is_verified = re.search(r'label":"Verified', raw)
+        is_verified = rgx.verified.search(raw)
         return True if is_verified else False
 
     @property
     def live(self):
         """
-        :return: Bool of channel's Live Status
+        :return: channel's Live Status
         """
         raw = _src(f'{self._url}/videos?view=2&live_view=501')
-        check = re.findall("thumbnailOverlays\":\[(.*?)]", raw)
+        check = rgx.live.findall(raw)
         return '{"text":"LIVE"}' in check[0] if check else False
 
     @property
@@ -85,10 +85,10 @@ class Channel:
         :return: channel's ongoing  livestream url
         """
         raw = _src(f'{self._url}/videos?view=2&live_view=501')
-        check = re.findall("thumbnailOverlays\":\[(.*?)]", raw)
+        check = rgx.live.findall(raw)
         if check and '{"text":"LIVE"}' in check[0]:
-            id_ = _filter(re.findall(r"videoId\":\"(.*?)\"", raw))[0]
-            return Live(id_)
+            video_id = _filter(rgx.video_id.findall(raw))[0]
+            return Live(video_id)
 
     @property
     def livestreams(self) -> list:
@@ -97,8 +97,7 @@ class Channel:
         """
         raw = _src(f'{self._url}/videos?view=2&live_view=501')
         if '{"text":" watching"}' in raw:
-            ids = _filter(re.findall(r"\"videoId\":\"(.*?)\"", raw))
-            return [Live(id_) for id_ in ids]
+            return _filter(rgx.video_id.findall(raw))
 
     @property
     def old_streams(self):
@@ -106,7 +105,7 @@ class Channel:
         :return: channel's old livestream urls
         """
         raw = _src(f'{self._url}/videos?view=2&live_view=503')
-        ids = _filter(re.findall(r"videoId\":\"(.*?)\"", raw))
+        ids = _filter(rgx.video_id.findall(raw))
         return _VideoBulk(ids)
 
     def uploads(self, limit: int = None):
@@ -115,7 +114,7 @@ class Channel:
         :return: a < bulk video obj > of latest uploaded videos (consider limit)
         """
         raw = _src(f'{self._url}/videos?view=0&sort=dd&flow=grid')
-        videos = _filter(re.findall(r"\"gridVideoRenderer\":{\"videoId\":\"(.*?)\"", raw), limit)
+        videos = _filter(rgx.uploads.findall(raw), limit)
         return _VideoBulk(videos) if videos else None
 
     @property
@@ -124,9 +123,8 @@ class Channel:
         :return: Channel's most recent video in Video Object form
         """
         raw = _src(f'{self._url}/videos?view=0&sort=dd&flow=grid')
-        any_video = re.findall(r"videoId\":\"(.*?)\"", raw)
-        if any_video:
-            return Video(any_video[0])
+        any_video = rgx.video_id.findall(raw)
+        return Video(any_video[0]) if any_video else None
 
     @property
     def subscribers(self):
@@ -134,7 +132,7 @@ class Channel:
         :return: total number of subscribers the channel has or None
         """
         raw = _src(f'{self._url}/about')
-        subs = re.findall("}},\"simpleText\":\"(.*?) ", raw)
+        subs = rgx.subscribers.findall(raw)
         return subs[0] if subs else None
 
     @property
@@ -143,11 +141,8 @@ class Channel:
         :return: total number of views the channel got or None
         """
         raw = _src(f'{self._url}/about')
-        view_list = re.findall(
-            r"\"viewCountText\":{\"simpleText\":\"(.*?)\"}", raw
-        )
-        if view_list:
-            return view_list[0].split(' ')[0]
+        views = rgx.views.findall(raw)
+        return views[0].split(' ')[0] if views else None
 
     @property
     def created_at(self):
@@ -155,10 +150,8 @@ class Channel:
         :return: the channel creation date or None
         """
         raw = _src(f'{self._url}/about')
-        join_list = re.findall(
-            r"{\"text\":\"Joined \"},{\"text\":\"(.*?)\"}", raw
-        )
-        return join_list[0] if join_list else None
+        joined_on = rgx.creation.findall(raw)
+        return joined_on[0] if joined_on else None
 
     @property
     def country(self):
@@ -166,10 +159,8 @@ class Channel:
         :return: the name of the country from where the channel is or None
         """
         raw = _src(f'{self._url}/about')
-        country_list = re.findall(
-            r"\"country\":{\"simpleText\":\"(.*?)\"}", raw
-        )
-        return country_list[0] if country_list else None
+        country = rgx.country.findall(raw)
+        return country[0] if country else None
 
     @property
     def custom_url(self):
@@ -177,11 +168,9 @@ class Channel:
         :return: the custom _url of the channel or None
         """
         raw = _src(f'{self._url}/about')
-        custom_list = re.findall(r"\"canonicalChannelUrl\":\"(.*?)\"", raw)
-        custom_url = custom_list[0] if custom_list else None
-        if custom_url:
-            if '/channel/' not in custom_url:
-                return custom_url
+        custom_urls = rgx.custom_url.findall(raw)
+        if custom_urls and '/channel/' not in custom_urls[0]:
+            return custom_urls[0]
 
     @property
     def description(self):
@@ -189,8 +178,8 @@ class Channel:
         :return: the existing description of the channel
         """
         raw = _src(f'{self._url}/about')
-        desc_list = re.findall(r"{\"description\":{\"simpleText\":\"(.*?)\"}", raw)
-        return desc_list[0].replace('\\n', '  ') if desc_list else None
+        description = rgx.description.findall(raw)
+        return description[0].replace('\\n', '\n') if description else None
 
     @property
     def avatar(self):
@@ -198,8 +187,8 @@ class Channel:
         :return: logo / avatar url of the channel
         """
         raw = _src(f'{self._url}/about')
-        data = re.findall("height\":88},{\"url\":\"(.*?)\"", raw)
-        return data[0] if data else None
+        av = rgx.avatar.findall(raw)
+        return av[0] if av else None
 
     @property
     def banner(self):
@@ -207,8 +196,8 @@ class Channel:
         :return: banner url of the channel
         """
         raw = _src(f'{self._url}/about')
-        data = re.findall(r"width\":1280,\"height\":351},{\"url\":\"(.*?)\"", raw)
-        return data[0] if data else None
+        banner = rgx.banner.findall(raw)
+        return banner[0] if banner else None
 
     @property
     def playlists(self):
@@ -216,8 +205,8 @@ class Channel:
         :return: a list of < playlist object > for each public playlist the channel has
         """
         raw = _src(f'{self._url}/playlists')
-        id_list = re.findall(r"{\"url\":\"/playlist\?list=(.*?)\"", raw)
-        return _PlaylistBulk(_filter(id_list)) if id_list else None
+        playlists = rgx.playlists.findall(raw)
+        return _PlaylistBulk(_filter(playlists)) if playlists else None
 
     @property
     def info(self):
@@ -231,7 +220,6 @@ class Channel:
             return data[0] if data else None
 
         patterns = [
-
             "channelMetadataRenderer\":{\"title\":\"(.*?)\"",
             "}},\"simpleText\":\"(.*?) ",
             "\"viewCountText\":{\"simpleText\":\"(.*?)\"}",
@@ -241,7 +229,6 @@ class Channel:
             "height\":88},{\"url\":\"(.*?)\"",
             "width\":1280,\"height\":351},{\"url\":\"(.*?)\"",
             "channelId\":\"(.*?)\""
-
         ]
 
         ls = _Thread.run(extract, patterns)
@@ -274,12 +261,9 @@ class Channel:
         """
         # TODO: reduce the number of requests to 1
         raw = _src(f'https://www.youtube.com/results?search_query={self.id}&sp=EgIQAg%253D%253D')
-        counts = re.findall('videoCountText\":{\"runs\":\[{\"text\":(.*?)}', raw)
-        print(counts)
-        count_string = counts[0].replace(',', '').replace('"', '') if counts else None
+        counts = rgx.video_count.findall(raw)
         # handling channel with single digit video count
-        if count_string:
-            return int(count_string.split()[0])
+        return counts[0].replace(',', '').replace('"', '').split()[0] if counts else None
 
     @property
     def links(self) -> list:
@@ -287,24 +271,37 @@ class Channel:
         :return: a list of social media links added to the channel
         """
         raw = _src(f'{self._url}/about')
-        bad_links = re.findall('q=https%3A%2F%2F(.*?)"', raw)
-        filtered = ['https://' + unquote(link) for link in list(set(bad_links))]
-        return filtered if filtered else None
+        bad_links = rgx.links.findall(raw)
+        return ['https://' + unquote(link) for link in list(set(bad_links))] if bad_links else None
 
     @property
     def recent_uploaded(self):
         raw = _src(f'{self._url}/videos?view=0&sort=dd&flow=grid')
-        block_data = re.findall('gridVideoRenderer\":{(.*?)\"navigationEndpoint', raw)
-        filtered = [data for data in block_data if 'simpleText":"Streamed' not in data]
-        more = [data for data in filtered if '{"text":" watching"}]' not in data]
-        if more:
-            return Video(re.findall('videoId\":\"(.*?)\"', more[0])[0])
+        chunk = rgx.upload_chunk.findall(raw)
+        fl_1 = [data for data in chunk if not rgx.upload_chunk_fl_1.search(data)]
+        fl_2 = [data for data in fl_1 if not rgx.upload_chunk_fl_2.search(data)]
+        return Video(rgx.video_id.findall(fl_2[0])[0]) if fl_2 else None
 
     @property
     def recent_streamed(self):
         raw = _src(f'{self._url}/videos?view=0&sort=dd&flow=grid')
-        block_data = re.findall('gridVideoRenderer\":{(.*?)\"navigationEndpoint', raw)
-        filtered = [data for data in block_data if 'simpleText":"Streamed' in data]
-        more = [data for data in filtered if '{"text":" watching"}]' not in data]
-        if more:
-            return Video(re.findall('videoId\":\"(.*?)\"', more[0])[0])
+        chunk = rgx.upload_chunk.findall(raw)
+        fl_1 = [data for data in chunk if rgx.upload_chunk_fl_1.search(data)]
+        fl_2 = [data for data in fl_1 if not rgx.upload_chunk_fl_2.search(data)]
+        return Video(rgx.video_id.findall(fl_2[0])[0]) if fl_2 else None
+
+    @property
+    def upcoming(self):
+        raw = _src(f'{self._url}/videos?view=2&live_view=502')
+        if rgx.upcoming_check.search(raw):
+            upcoming = rgx.upcoming.findall(raw)
+            return Video(upcoming[0]) if upcoming else None
+        return None
+
+    @property
+    def all_upcoming(self):
+        raw = _src(f'{self._url}/videos?view=2&live_view=502')
+        if rgx.upcoming_check.search(raw):
+            video_ids = rgx.upcoming.findall(raw)
+            return video_ids
+        return None
