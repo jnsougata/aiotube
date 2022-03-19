@@ -29,7 +29,8 @@ class ChannelBulk:
         
     @property
     def names(self) -> List[str]:
-        return [rgx.name.findall(data)[0] for data in self._sources]
+        temp = [rgx.name.findall(data) for data in self._sources]
+        return [item[0] if item else None for item in temp]
 
     @property
     def subscribers(self) -> List[str]:
