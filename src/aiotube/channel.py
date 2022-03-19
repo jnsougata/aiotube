@@ -11,9 +11,9 @@ from .live import Live
 from .video import Video
 from ._threads import _Thread
 from urllib.parse import unquote
-from .videobulk import _VideoBulk
+from .videobulk import VideoBulk
 from .auxiliary import _filter, _src
-from .playlistbulk import _PlaylistBulk
+from .playlistbulk import PlaylistBulk
 from ._rgxs import _ChannelPatterns as rgx
 
 
@@ -111,7 +111,7 @@ class Channel:
         """
         raw = _get_old_streams(self._url)
         ids = _filter(rgx.video_id.findall(raw))
-        return _VideoBulk(ids)
+        return VideoBulk(ids)
 
     def uploads(self, limit: int = 10):
         """
@@ -120,7 +120,7 @@ class Channel:
         """
         raw = _get_uploads_data(self._url)
         videos = _filter(rgx.uploads.findall(raw), limit)
-        return _VideoBulk(videos) if videos else None
+        return VideoBulk(videos) if videos else None
 
     @property
     def latest(self):
@@ -211,7 +211,7 @@ class Channel:
         """
         raw = _get_channel_playlists(self._url)
         playlists = rgx.playlists.findall(raw)
-        return _PlaylistBulk(_filter(playlists)) if playlists else None
+        return PlaylistBulk(_filter(playlists)) if playlists else None
 
     @property
     def info(self):

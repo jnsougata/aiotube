@@ -1,7 +1,7 @@
 import re
 from ._threads import _Thread
 from .auxiliary import _filter
-from .videobulk import _VideoBulk
+from .videobulk import VideoBulk
 from ._http import _get_playlist_data
 from ._rgxs import _PlaylistPatterns as rgx
 
@@ -49,7 +49,7 @@ class Playlist:
 
         raw = _get_playlist_data(self.id)
         videos = rgx.video_id.findall(raw)
-        return _VideoBulk(_filter(iterable=videos))
+        return VideoBulk(_filter(iterable=videos))
 
     @property
     def thumbnail(self):

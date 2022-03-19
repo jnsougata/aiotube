@@ -2,9 +2,9 @@ from .auxiliary import _filter
 from .video import Video
 from .channel import Channel
 from .playlist import Playlist
-from .videobulk import _VideoBulk
-from .channelbulk import _ChannelBulk
-from .playlistbulk import _PlaylistBulk
+from .videobulk import VideoBulk
+from .channelbulk import ChannelBulk
+from .playlistbulk import PlaylistBulk
 from ._rgxs import _QueryPatterns as rgx
 from ._http import _find_videos, _find_channels, _find_playlists
 
@@ -39,7 +39,7 @@ class Search:
         return Playlist(found[0]) if found else None
 
     @staticmethod
-    def videos(keywords: str, limit: int = 20) -> _VideoBulk:
+    def videos(keywords: str, limit: int = 20) -> VideoBulk:
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total number of videos to be searched
@@ -47,10 +47,10 @@ class Search:
         """
         video_ids = rgx.video_id.findall(_find_videos(keywords))
         pure_list = _filter(limit=limit, iterable=video_ids)
-        return _VideoBulk(pure_list) if pure_list else None
+        return VideoBulk(pure_list) if pure_list else None
 
     @staticmethod
-    def channels(keywords: str, limit: int = 20) -> _ChannelBulk:
+    def channels(keywords: str, limit: int = 20) -> ChannelBulk:
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total number of channels to be searched
@@ -58,10 +58,10 @@ class Search:
         """
         channel_ids = rgx.channel_id.findall(_find_channels(keywords))
         pure_list = _filter(limit=limit, iterable=channel_ids)
-        return _ChannelBulk(pure_list) if pure_list else None
+        return ChannelBulk(pure_list) if pure_list else None
 
     @staticmethod
-    def playlists(keywords: str, limit: int = 20) -> _PlaylistBulk:
+    def playlists(keywords: str, limit: int = 20) -> PlaylistBulk:
         """
         :param str keywords: query to be searched on YouTube
         :param int limit: total playlists be searched
@@ -69,4 +69,4 @@ class Search:
         """
         playlist_ids = rgx.playlist_id.findall(_find_playlists(keywords))
         pure_list = _filter(limit=limit, iterable=playlist_ids)
-        return _PlaylistBulk(pure_list) if pure_list else None
+        return PlaylistBulk(pure_list) if pure_list else None

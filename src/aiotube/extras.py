@@ -9,7 +9,7 @@ from ._http import (
 )
 from .video import Video
 from .auxiliary import _filter
-from .videobulk import _VideoBulk
+from .videobulk import VideoBulk
 from ._rgxs import _ExtraPatterns as rgx
 
 
@@ -31,7 +31,7 @@ class Extras:
         :return: list of < video object > of trending music videos
         """
         data = rgx.video_id.findall(_get_trending_songs())
-        return _VideoBulk(_filter(data)) if data else None
+        return VideoBulk(_filter(data)) if data else None
 
     @staticmethod
     def gaming():
@@ -39,7 +39,7 @@ class Extras:
         :return: list of < video object > of trending gaming videos
         """
         data = rgx.video_id.findall(_get_trending_gaming_videos())
-        return _VideoBulk(_filter(data)) if data else None
+        return VideoBulk(_filter(data)) if data else None
 
     @staticmethod
     def news():
@@ -47,7 +47,7 @@ class Extras:
         :return: list of < video object > of trending news videos
         """
         data = rgx.video_id.findall(_get_trending_news_feeds())
-        return _VideoBulk(_filter(data)) if data else None
+        return VideoBulk(_filter(data)) if data else None
 
     @staticmethod
     def livestreams():
@@ -55,7 +55,7 @@ class Extras:
         :return: list of < video object > of trending livestreams
         """
         data = rgx.video_id.findall(_get_trending_streams())
-        return _VideoBulk(_filter(data)) if data else None
+        return VideoBulk(_filter(data)) if data else None
 
     @staticmethod
     def learning():
@@ -63,7 +63,7 @@ class Extras:
         :return: list of < video object > of trending educational videos
         """
         data = rgx.video_id.findall(_get_trending_learning_videos())
-        return _VideoBulk(_filter(data)) if data else None
+        return VideoBulk(_filter(data)) if data else None
 
     @staticmethod
     def sports():
@@ -71,4 +71,4 @@ class Extras:
         :return: list of < video object > of trending sports videos
         """
         data = rgx.video_id.findall(_get_trending_sports_videos())
-        return _VideoBulk(_filter(data)) if data else None
+        return VideoBulk(_filter(data)) if data else None

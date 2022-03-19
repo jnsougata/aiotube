@@ -2,9 +2,10 @@ from ._http import _get_video_data
 from ._threads import _Thread
 from .auxiliary import _duration
 from ._rgxs import _VideoPatterns as rgx
+from typing import List
 
 
-class _VideoBulk:
+class VideoBulk:
 
     def __init__(self, iterable: list):
         self._video_ids = iterable
@@ -18,55 +19,55 @@ class _VideoBulk:
         return _Thread.run(fetch_bulk_source, self.urls)
 
     @property
-    def ids(self):
+    def ids(self) -> List[str]:
         return self._video_ids
 
     @property
-    def urls(self):
+    def urls(self) -> List[str]:
         head = 'https://www.youtube.com/watch?v='
         return [head + video_id for video_id in self._video_ids]
 
     @property
-    def titles(self):
+    def titles(self) -> List[str]:
         return [rgx.title.findall(data)[0] for data in self._sources]
 
     @property
-    def views(self):
+    def views(self) -> List[str]:
         temp = [rgx.views.findall(data) for data in self._sources]
         return [item[0][:-6] if item else None for item in temp]
 
     @property
-    def likes(self):
+    def likes(self) -> List[str]:
         temp = [rgx.likes.findall(data) for data in self._sources]
         return [item[0] if item else None for item in temp]
 
 
     @property
-    def durations(self):
+    def durations(self) -> List[float]:
         temp = [rgx.duration.findall(data) for data in self._sources]
         return [_duration(int(int(item[0]) / 1000)) if item else None for item in temp]
 
     @property
-    def upload_dates(self):
+    def upload_dates(self) -> List[str]:
         temp = [rgx.upload_date.findall(pattern, item) for item in self._sources]
         return [item[0] if item else None for item in temp]
 
     @property
-    def authors(self):
+    def authors(self) -> List[str]:
         temp = [rgx.author_id.findall(data) for data in self._sources]
         return [item[0] if item else None for item in temp]
 
     @property
-    def descriptions(self):
+    def descriptions(self) -> List[str]:
         temp = [rgx.description.findall(data) for data in self._sources]
         return [item[0].replace('\\n', '\n') if item else None for item in temp]
 
     @property
-    def thumbnails(self):
+    def thumbnails(self) -> List[str]:
         temp = [rgx.thumbnail.findall(data) for data in self._sources]
         return [item[0] if item else None for item in temp]
 
     @property
-    def tags(self):
+    def tags(self) -> List[List[str]]:
         temp = [rgx.tags.findall(data) for data in self._sources]
         return [item[0].split(',') if item else None for item in temp]
