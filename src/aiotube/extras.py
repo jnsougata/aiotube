@@ -11,6 +11,7 @@ from .video import Video
 from .utils import filter
 from .videobulk import VideoBulk
 from ._rgxs import _ExtraPatterns as rgx
+from typing import Optional
 
 
 
@@ -18,7 +19,7 @@ class Extras:
 
 
     @staticmethod
-    def trending():
+    def trending() -> Optional[Video]:
         """
         :return: < video object > of #1 on trending video
         """
@@ -26,7 +27,7 @@ class Extras:
         return Video(data[0]) if data else None
 
     @staticmethod
-    def music():
+    def music() -> Optional[VideoBulk]:
         """
         :return: list of < video object > of trending music videos
         """
@@ -34,7 +35,7 @@ class Extras:
         return VideoBulk(filter(data)) if data else None
 
     @staticmethod
-    def gaming():
+    def gaming() -> Optional[VideoBulk]:
         """
         :return: list of < video object > of trending gaming videos
         """
@@ -42,7 +43,7 @@ class Extras:
         return VideoBulk(filter(data)) if data else None
 
     @staticmethod
-    def news():
+    def news() -> Optional[VideoBulk]:
         """
         :return: list of < video object > of trending news videos
         """
@@ -50,7 +51,7 @@ class Extras:
         return VideoBulk(filter(data)) if data else None
 
     @staticmethod
-    def livestreams():
+    def livestreams() -> Optional[VideoBulk]:
         """
         :return: list of < video object > of trending livestreams
         """
@@ -58,7 +59,7 @@ class Extras:
         return VideoBulk(filter(data)) if data else None
 
     @staticmethod
-    def learning():
+    def learning() -> Optional[VideoBulk]:
         """
         :return: list of < video object > of trending educational videos
         """
@@ -66,7 +67,7 @@ class Extras:
         return VideoBulk(filter(data)) if data else None
 
     @staticmethod
-    def sports():
+    def sports() -> Optional[VideoBulk]:
         """
         :return: list of < video object > of trending sports videos
         """
