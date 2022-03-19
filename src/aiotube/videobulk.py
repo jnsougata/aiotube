@@ -58,18 +58,15 @@ class _VideoBulk:
 
     @property
     def descriptions(self):
-        pattern = r"shortDescription\":\"(.*)\",\"isCrawlable"
-        temp = [re.findall(pattern, item) for item in self._sources]
-        return [item[0].replace('\\n', ' ') if item else None for item in temp]
+        temp = [rgx.description.findall(data) for data in self._sources]
+        return [item[0].replace('\\n', '\n') if item else None for item in temp]
 
     @property
     def thumbnails(self):
-        pattern = r"playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\""
-        temp = [re.findall(pattern, item) for item in self._sources]
+        temp = [rgx.thumbnail.findall(data) for data in self._sources]
         return [item[0] if item else None for item in temp]
 
     @property
     def tags(self):
-        pattern = r"<meta name=\"keywords\" content=\"(.*?)\">"
-        temp = [re.findall(pattern, item) for item in self._sources]
+        temp = [rgx.tags.findall(data) for data in self._sources]
         return [item[0].split(',') if item else None for item in temp]
