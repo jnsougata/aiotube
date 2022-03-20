@@ -21,6 +21,10 @@ class Playlist:
 
         self.__playlist_data = _get_playlist_data(self.id)
 
+    def __repr__(self):
+        return f'<Playlist ID={self.id}>'
+
+
     @property
     def name(self) -> Optional[str]:
         """

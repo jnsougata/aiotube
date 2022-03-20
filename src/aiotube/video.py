@@ -26,6 +26,11 @@ class Video:
 
         self.__video_data = _get_video_data(self._id)
 
+    def __repr__(self):
+        if self.id:
+            return f'<Video ID={self.id}>'
+        return f'<Invalid Video Object>'
+
     @property
     def url(self) -> str:
         return self._url

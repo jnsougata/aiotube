@@ -39,10 +39,9 @@ class Channel:
         self.__raw_about = _get_channel_about(self._url)
 
     def __repr__(self):
-        if self.name:
-            return f'<Channel | {self.name}>'
-        else:
-            f'<Invalid ! ChannelObject>'
+        if self.id:
+            return f'<Channel ID={self.id}>'
+        return '<Invalid Channel Object>'
 
     @property
     def name(self) -> Optional[str]:
