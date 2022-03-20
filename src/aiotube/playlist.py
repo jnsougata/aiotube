@@ -19,13 +19,14 @@ class Playlist:
         else:
             self.id = playlist_id
 
+        self.__playlist_data = _get_playlist_data(self.id)
+
     @property
     def name(self) -> Optional[str]:
         """
         :return: the name of the playlist
         """
-        raw = _get_playlist_data(self.id)
-        names = rgx.name.findall(raw)
+        names = rgx.name.findall(self.__playlist_data)
         return names[0] if names else None
 
     @property
@@ -40,8 +41,7 @@ class Playlist:
         """
         :return: total number of videos in that playlist
         """
-        raw = _get_playlist_data(self.id)
-        video_count = rgx.video_count.findall(raw)
+        video_count = rgx.video_count.findall(self.__playlist_data)
         return video_count[0] if video_count else None
 
     @property
@@ -50,8 +50,7 @@ class Playlist:
         :return: list of < video objects > for each video in the playlist (consider limit)
         """
 
-        raw = _get_playlist_data(self.id)
-        videos = rgx.video_id.findall(raw)
+        videos = rgx.video_id.findall(self.__playlist_data)
         return VideoBulk(filter(iterable=videos))
 
     @property
@@ -59,8 +58,7 @@ class Playlist:
         """
         :return: url of the thumbnail of the playlist
         """
-        raw = _get_playlist_data(self.id)
-        thumbnails = rgx.thumbnail.findall(raw)
+        thumbnails = rgx.thumbnail.findall(self.__playlist_data)
         return thumbnails[0] if thumbnails else None
     
     @property
@@ -68,10 +66,9 @@ class Playlist:
         """
         :return: a dict containing playlist info
         """
-        raw = _get_playlist_data(self.id)
 
         def _get_data(pattern):
-            data = pattern.findall(raw)
+            data = pattern.findall(self.__playlist_data)
             return data[0] if data else None
 
         patterns = [rgx.name, rgx.video_count, rgx.thumbnail]
