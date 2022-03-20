@@ -24,6 +24,8 @@ class Video:
             self._id = video_id
             self._url = self.__HEAD + self._id
 
+        self.__video_data = _get_video_data(self._id)
+
     @property
     def url(self) -> str:
         return self._url
@@ -37,8 +39,7 @@ class Video:
         """
         :return: the title of the video
         """
-        raw = _get_video_data(self._id)
-        data = rgx.title.findall(raw)
+        data = rgx.title.findall(self.__video_data)
         return data[0] if data else None
 
     @property
@@ -46,8 +47,7 @@ class Video:
         """
         :return: total views the video got so far
         """
-        raw = _get_video_data(self._id)
-        data = rgx.views.findall(raw)
+        data = rgx.views.findall(self.__video_data)
         return data[0][:-6] if data else None
 
     @property
@@ -55,8 +55,7 @@ class Video:
         """
         :return: total likes the video got so far
         """
-        raw = _get_video_data(self._id)
-        data = rgx.likes.findall(raw)
+        data = rgx.likes.findall(self.__video_data)
         return data[0] if data else None
 
     @property
@@ -64,8 +63,7 @@ class Video:
         """
         :return: total duration of  the video in seconds
         """
-        raw = _get_video_data(self._id)
-        data = rgx.duration.findall(raw)
+        data = rgx.duration.findall(self.__video_data)
         return int(data[0]) / 1000 if data else None
 
     @property
@@ -73,8 +71,7 @@ class Video:
         """
         :return: the date on which the video has been uploaded
         """
-        raw = _get_video_data(self._id)
-        data = rgx.upload_date.findall(raw)
+        data = rgx.upload_date.findall(self.__video_data)
         return data[0] if data else None
 
     @property
@@ -82,8 +79,7 @@ class Video:
         """
         :return: the id of the channel from which the video belongs
         """
-        raw = _get_video_data(self._id)
-        data = rgx.author_id.findall(raw)
+        data = rgx.author_id.findall(self.__video_data)
         return data[0] if data else None
 
     @property
@@ -91,8 +87,7 @@ class Video:
         """
         :return: description provided with the video
         """
-        raw = _get_video_data(self._id)
-        data = rgx.description.findall(raw)
+        data = rgx.description.findall(self.__video_data)
         return data[0].replace('\\n', '\n') if data else None
 
     @property
@@ -100,8 +95,7 @@ class Video:
         """
         :return: _url of the thumbnail of the video
         """
-        raw = _get_video_data(self._id)
-        data = rgx.thumbnail.findall(raw)
+        data = rgx.thumbnail.findall(self.__video_data)
         return data[0] if data else None
 
     @property
@@ -109,13 +103,12 @@ class Video:
         """
         :return: list of tags used in video meta-data
         """
-        raw = _get_video_data(self._id)
-        data = rgx.tags.findall(raw)
+        data = rgx.tags.findall(self.__video_data)
         return data[0].split(',') if data else None
 
     @property
     def streamed(self) -> bool:
-        if rgx.is_streamed.search(_get_video_data(self._id)):
+        if rgx.is_streamed.search(self.__video_data):
             return True
         return False
 
@@ -124,11 +117,10 @@ class Video:
         """
         :return: dict containing the whole info of the video
         """
-        raw = _get_video_data(self._id)
 
         def _get_data(pattern):
-            data = pattern.findall(raw)
-            return data[0] if len(data) > 0 else None
+            data = pattern.findall(self.__video_data)
+            return data[0] if data else None
 
         patterns = [
             rgx.title, rgx.views, rgx.likes, rgx.duration, rgx.author_id,

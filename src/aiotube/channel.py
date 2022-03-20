@@ -36,6 +36,7 @@ class Channel:
             self._url = self.__CUSTOM + channel_id
 
         self._channel_id = channel_id
+        self.__raw_about = _get_channel_about(self._url)
 
     def __repr__(self):
         if self.name:
@@ -48,7 +49,7 @@ class Channel:
         """
         :return: channel's name or None
         """
-        name = rgx.name.findall(_get_channel_about(self._url))
+        name = rgx.name.findall(self.__raw_about)
         return name[0] if name else None
 
     @property
@@ -68,7 +69,7 @@ class Channel:
         """
         :return: the id of the channel
         """
-        channel_id = rgx.id.findall(_get_channel_about(self._url))
+        channel_id = rgx.id.findall(self.__raw_about)
         return channel_id[0] if channel_id else None
 
     @property
@@ -76,7 +77,7 @@ class Channel:
         """
         :return: bool i.e. True if channel is verified else False
         """
-        is_verified = rgx.verified.search(_get_channel_about(self._url))
+        is_verified = rgx.verified.search(self.__raw_about)
         return True if is_verified else False
 
     @property
@@ -140,8 +141,7 @@ class Channel:
         """
         :return: total number of subscribers the channel has or None
         """
-        raw = _get_channel_about(self._url)
-        subs = rgx.subscribers.findall(raw)
+        subs = rgx.subscribers.findall(self.__raw_about)
         return subs[0] if subs else None
 
     @property
@@ -149,8 +149,7 @@ class Channel:
         """
         :return: total number of views the channel got or None
         """
-        raw = _get_channel_about(self._url)
-        views = rgx.views.findall(raw)
+        views = rgx.views.findall(self.__raw_about)
         return views[0].split(' ')[0] if views else None
 
     @property
@@ -158,8 +157,7 @@ class Channel:
         """
         :return: the channel creation date or None
         """
-        raw = _get_channel_about(self._url)
-        joined_on = rgx.creation.findall(raw)
+        joined_on = rgx.creation.findall(self.__raw_about)
         return joined_on[0] if joined_on else None
 
     @property
@@ -167,8 +165,7 @@ class Channel:
         """
         :return: the name of the country from where the channel is or None
         """
-        raw = _get_channel_about(self._url)
-        country = rgx.country.findall(raw)
+        country = rgx.country.findall(self.__raw_about)
         return country[0] if country else None
 
     @property
@@ -176,8 +173,7 @@ class Channel:
         """
         :return: the custom _url of the channel or None
         """
-        raw = _get_channel_about(self._url)
-        custom_urls = rgx.custom_url.findall(raw)
+        custom_urls = rgx.custom_url.findall(self.__raw_about)
         if custom_urls and '/channel/' not in custom_urls[0]:
             return custom_urls[0]
 
@@ -186,8 +182,7 @@ class Channel:
         """
         :return: the existing description of the channel
         """
-        raw = _get_channel_about(self._url)
-        description = rgx.description.findall(raw)
+        description = rgx.description.findall(self.__raw_about)
         return description[0].replace('\\n', '\n') if description else None
 
     @property
@@ -195,8 +190,7 @@ class Channel:
         """
         :return: logo / avatar url of the channel
         """
-        raw = _get_channel_about(self._url)
-        av = rgx.avatar.findall(raw)
+        av = rgx.avatar.findall(self.__raw_about)
         return av[0] if av else None
 
     @property
@@ -204,8 +198,7 @@ class Channel:
         """
         :return: banner url of the channel
         """
-        raw = _get_channel_about(self._url)
-        banner = rgx.banner.findall(raw)
+        banner = rgx.banner.findall(self.__raw_about)
         return banner[0] if banner else None
 
     @property
@@ -222,10 +215,9 @@ class Channel:
         """
         :return: a dict containing channel info like subscribers, views, etc.
         """
-        raw = _get_channel_about(self._url)
 
         def extract(pattern):
-            data = pattern.findall(raw)
+            data = pattern.findall(self.__raw_about)
             return data[0] if data else None
 
         patterns = [
@@ -275,8 +267,7 @@ class Channel:
         """
         :return: a list of social media links added to the channel
         """
-        raw = _get_channel_about(self._url)
-        bad_links = rgx.links.findall(raw)
+        bad_links = rgx.links.findall(self.__raw_about)
         return ['https://' + unquote(link) for link in list(set(bad_links))] if bad_links else None
 
     @property
