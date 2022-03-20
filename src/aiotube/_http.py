@@ -1,4 +1,4 @@
-from .utils import _src, create_http_pool, parser
+from .utils import _src, parser
 
 
 def _get_channel_about(head: str) -> str:

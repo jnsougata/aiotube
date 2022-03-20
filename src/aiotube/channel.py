@@ -35,7 +35,7 @@ class Channel:
         else:
             self._url = self.__CUSTOM + channel_id
 
-        self._channel_id = channel_id
+        self.__given_id = channel_id
         self.__raw_about = _get_channel_about(self._url)
 
     def __repr__(self):
@@ -80,12 +80,12 @@ class Channel:
         return True if is_verified else False
 
     @property
-    def live(self) -> list:
+    def live(self) -> bool:
         """
         :return: channel's Live Status
         """
         check = rgx.live.findall(_get_channel_live_data(self._url))
-        return rgx.check_live.search(check[0]) if check else False
+        return True if rgx.check_live.search(check[0]) else False
 
     @property
     def livestream(self) -> Live:
@@ -252,8 +252,8 @@ class Channel:
         """
         :return: the number of videos in the channel
         """
-        if self._channel_id.startswith('UC'):
-            q_term = self._channel_id
+        if self.__given_id.startswith('UC'):
+            q_term = self.__given_id
         else:
             q_term = self.id
 

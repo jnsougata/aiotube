@@ -1,25 +1,16 @@
-import urllib3
+from urllib.request import urlopen
 from collections import OrderedDict
 from urllib.error import HTTPError, URLError
 from .errors import TooManyRequests, InvalidURL, BadURL, AIOError
 
 
-__all__ = ['filter', 'duration', 'parser']
-
-
-def create_http_pool(pool_size=1):
-    http = urllib3.PoolManager(num_pools=pool_size)
-    return http
+__all__ = ['filter', 'parser']
 
 
 def _src(url: str):
-    """
-    :param url: url to be requested
-    :return: the requested page
-    """
-    http = create_http_pool()
+
     try:
-        return http.request('GET', url).data.decode('utf-8')
+        return urlopen(url).read().decode()
     except HTTPError as error:
         if error.code == 404:
             raise InvalidURL('can not find anything the requested url')
