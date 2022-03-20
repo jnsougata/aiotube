@@ -7,13 +7,13 @@ from .errors import TooManyRequests, InvalidURL, BadURL, AIOError
 __all__ = ['filter', 'parser']
 
 
-def _src(url: str):
+def _fetch_webpage(url: str):
 
     try:
         return urlopen(url).read().decode()
     except HTTPError as error:
         if error.code == 404:
-            raise InvalidURL('can not find anything the requested url')
+            raise InvalidURL('can not find anything with the requested url')
         if error.code == 429:
             raise TooManyRequests('sending too many requests in a short period of time')
     except URLError:
