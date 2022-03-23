@@ -28,3 +28,4 @@ from .video import Video
 from .playlist import Playlist
 from .query import Search
 from .extras import Extras
+from .errors import *

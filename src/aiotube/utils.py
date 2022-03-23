@@ -11,13 +11,13 @@ def _fetch_webpage(url: str):
 
     try:
         return urlopen(url).read().decode()
-    except HTTPError as error:
-        if error.code == 404:
+    except HTTPError as e:
+        if e.code == 404:
             raise InvalidURL('can not find anything with the requested url')
-        if error.code == 429:
-            raise TooManyRequests('sending too many requests in a short period of time')
+        if e.code == 429:
+            raise TooManyRequests('you are being ratelimited for sending too many requests')
     except URLError:
-        raise BadURL('bad url format used')
+        raise BadURL('url do not match any supported format')
     except Exception as e:
         raise AIOError(f'{e!r}')
 
