@@ -12,9 +12,6 @@ class Upcoming(Video):
     def duration(self) -> float:
         return 0.0
 
-    def streamed(self) -> bool:
-        return True
-
     def views(self) -> Optional[str]:
         return None
 

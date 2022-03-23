@@ -28,14 +28,15 @@ class _ChannelPatterns:
 
 
 class _VideoPatterns:
-    title = re.compile("\"title\":\"(.*?)\"")
+    title = re.compile("title\":\"(.*?)\"")
     duration = re.compile("approxDurationMs\":\"(.*?)\"")
     upload_date = re.compile("uploadDate\":\"(.*?)\"")
     author_id = re.compile("channelIds\":\[\"(.*?)\"")
     description = re.compile("shortDescription\":\"(.*)\",\"isCrawlable")
     tags = re.compile("<meta name=\"keywords\" content=\"(.*?)\">")
     is_streamed = re.compile("simpleText\":\"Streamed live")
-    views = re.compile("\"videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"")
+    is_premiered = re.compile("dateText\":{\"simpleText\":\"Premiered")
+    views = re.compile("videoViewCountRenderer\":{\"viewCount\":{\"simpleText\":\"(.*?)\"")
     likes = re.compile("toggledText\":{\"accessibility\":{\"accessibilityData\":{\"label\":\"(.*?) ")
     thumbnail = re.compile("playerMicroformatRenderer\":{\"thumbnail\":{\"thumbnails\":\[{\"url\":\"(.*?)\"")
 

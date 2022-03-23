@@ -40,7 +40,7 @@ class Channel:
 
     def __repr__(self):
         if self.id:
-            return f'<Channel ID={self.id}>'
+            return f'<Channel {self.url}>'
         return '<Invalid Channel Object>'
 
     @property

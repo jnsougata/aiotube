@@ -28,7 +28,7 @@ class Video:
 
     def __repr__(self):
         if self.id:
-            return f'<Video ID={self.id}>'
+            return f'<Video {self.url}>'
         return f'<Invalid Video Object>'
 
     @property
@@ -114,6 +114,12 @@ class Video:
     @property
     def streamed(self) -> bool:
         if rgx.is_streamed.search(self.__video_data):
+            return True
+        return False
+
+    @property
+    def premiered(self) -> bool:
+        if rgx.is_premiered.search(self.__video_data):
             return True
         return False
 
