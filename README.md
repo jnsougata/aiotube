@@ -14,7 +14,7 @@
    
  - **Create an instance of YouTube Channel:** 
    - 
-     - `channel = Channel(Channel ID / URL / Custom URL) `    
+     - `channel = Channel(Channel ID / URL / Custom URL/Custom ID)`    
             
      - **Method:**
         - `uploads(limit: int)`       
@@ -43,6 +43,8 @@
        - `avatar` Returns the **avatar url** of the channel or **None**       
        - `banner` Returns the **banner url** of the channel or **None**  
        - `description` Returns channel's short **description** or **None**
+       - `upcoming` Returns **upcoming video (obj)** of the channel or **None**
+       - `all_upcoming` Returns a **list of video ids** of all upcoming videos or **None**
 
  - **Get YouTube Search Results:**
    - 

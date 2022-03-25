@@ -243,8 +243,8 @@ class Channel:
             'country': data[4],
             'url': self._url,
             'custom_url': curl,
-            'avatar_url': data[6],
-            'banner_url': data[7]
+            'avatar': data[6],
+            'banner': data[7]
         }
 
     @property
