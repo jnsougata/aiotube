@@ -26,7 +26,7 @@ class Channel:
 
     def __init__(self, channel_id: str):
         """
-        :param str channel_id: any of channel id, url , custom url
+        :param str channel_id: any of channel id, custom id, url , custom url
         """
         if channel_id.startswith('UC'):
             self._url = self.__HEAD + channel_id
