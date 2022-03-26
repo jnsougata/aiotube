@@ -188,3 +188,18 @@ Playlist
    "videos", "VideoBulk", "VideoBulk object of the videos in the playlist"
    "thumbnail", "str", "url of the thumbnail of the playlist"
    "info", "Dict[str, Any]", "dictionary of all basic info about the playlist"
+
+
+Search
+~~~~~~~~
+.. csv-table::
+   :header: "Method", "Return Type", "Description"
+   :widths: 80, 80, 100
+
+   "channel(name: str)", "Channel", "Channel object of the channel with the given keywords"
+   "video(name: str)", "Video", "Video object of the video with the given keywords"
+   "playlist(name: str)", "Playlist", "Playlist object of the playlist with the given keywords"
+   "channels(name: str, limit: int)", "ChannelBulk", "ChannelBulk object of the channels with the given keywords"
+   "videos(name: str, limit: int)", "VideoBulk", "VideoBulk object of the videos with the given keywords"
+   "playlists(name: str, limit: int)", "PlaylistBulk", "PlaylistBulk object of the playlists with the given keywords"
+
