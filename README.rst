@@ -105,15 +105,14 @@ Usage
 
 Channel
 ~~~~~~~
-
 .. csv-table::
-   :header: "Method", "Return Type", "Functionality"
+   :header: "Method", "Return Type", "Description"
    :widths: 80, 80, 100
 
-   "uploads(limit: int)", "VideoBulk", "VideoBulk object of videos uploaded by the channel (sorted by date)"
+   "uploads(limit: int)", "VideoBulk", "VideoBulk object of videos uploaded by the channel"
 
 .. csv-table::
-   :header: "Attribute", "Return Type", "Functionality"
+   :header: "Attribute", "Return Type", "Description"
    :widths: 80, 80, 100
 
    "id", "str", "unique id of the channel"
@@ -141,3 +140,40 @@ Channel
    "upcoming", "Upcoming", "Upcoming object of the upcoming video of the channel"
    "all_upcoming", "list", "list of upcoming video ids of the channel"
    "playlists", "PlaylistBulk", "PlaylistBulk object of the playlists of the channel"
+
+
+Video
+~~~~~
+.. csv-table::
+   :header: "Attribute", "Return Type", "Description"
+   :widths: 80, 80, 100
+
+   "id", "str", "unique id of the video"
+   "title", "str", "title of the video"
+   "url", "str", "url of the video"
+   "description", "str", "description of the video"
+   "views", "str", "total number of views of the video"
+   "likes", "str", "number of likes of the video"
+   "duration", "float", "duration of the video in seconds"
+   "thumbnail", "str", "url of the thumbnail of the video"
+   "upload_date", "str", "date of the video upload"
+   "author", "str", "id of the channel where the video was uploaded"
+   "tags", "list[str]", "list of tags of the video"
+   "info", "dict", "dictionary of all basic info about the video"
+   "premiered", "bool", "whether the video was premiere or not"
+   "streamed", "bool", "whether the video was streamed or not"
+
+
+Playlist
+~~~~~~~~
+.. csv-table::
+   :header: "Attribute", "Return Type", "Description"
+   :widths: 80, 80, 100
+
+   "id", "str", "unique id of the playlist"
+   "name", "str", "name of the playlist"
+   "url", "str", "url of the playlist"
+   "video_count", "str", "number of videos in the playlist"
+   "videos", "VideoBulk", "VideoBulk object of the videos in the playlist"
+   "thumbnail", "str", "url of the thumbnail of the playlist"
+   "info", "dict", "dictionary of all basic info about the playlist"
