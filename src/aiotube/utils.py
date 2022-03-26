@@ -17,7 +17,7 @@ def _fetch_webpage(url: str):
         if e.code == 429:
             raise TooManyRequests('you are being ratelimited for sending too many requests')
     except URLError:
-        raise BadURL('url do not match any supported format')
+        raise BadURL('url does not match any supported format')
     except Exception as e:
         raise AIOError(f'{e!r}')
 
