@@ -6,6 +6,17 @@ A library to access YouTube Public Data without YouTubeAPI
 - `Discord <https://discord.gg/YAFGAaMrTC>`_
 - `GitHub <https://github.com/jnsougata/AioTube>`_
 
+Table of Contents
+=================
+- `Installation <#installing>`_
+- `Building <#build-from-source>`_
+- `Quick Start <#quick-start>`_
+- `Usage <#usage>`_
+- `Channel <#channel>`_
+- `Video <#video>`_
+- `Playlist <#playlist>`_
+
+
 Installing
 ----------
 
@@ -28,7 +39,7 @@ Build from source
 
     pip install git+https://github.com/jnsougata/aiotube
 
-Quick Examples
+Quick Start
 --------------
 
 .. code:: py
