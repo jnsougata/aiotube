@@ -21,6 +21,13 @@ Installing
     # Windows
     py -3 -m pip install -U aiotube
 
+Build from source
+-----------------
+
+.. code:: sh
+
+    pip install git+https://github.com/jnsougata/aiotube
+
 Quick Examples
 --------------
 
