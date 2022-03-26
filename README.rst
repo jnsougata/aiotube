@@ -105,6 +105,13 @@ Usage
 
 Channel
 ~~~~~~~
+
+.. csv-table::
+   :header: "Method", "Return Type", "Functionality"
+   :widths: 80, 80, 100
+
+   "uploads(limit: int)", "VideoBulk", "VideoBulk object of videos uploaded by the channel (sorted by date)"
+
 .. csv-table::
    :header: "Attribute", "Return Type", "Functionality"
    :widths: 80, 80, 100
@@ -134,9 +141,3 @@ Channel
    "upcoming", "Upcoming", "Upcoming object of the upcoming video of the channel"
    "all_upcoming", "list", "list of upcoming video ids of the channel"
    "playlists", "PlaylistBulk", "PlaylistBulk object of the playlists of the channel"
-
-
-
-
-
-
