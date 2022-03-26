@@ -203,3 +203,10 @@ Search
    "videos(name: str, limit: int)", "VideoBulk", "VideoBulk object of the videos with the given keywords"
    "playlists(name: str, limit: int)", "PlaylistBulk", "PlaylistBulk object of the playlists with the given keywords"
 
+Note on Bulk Objects
+~~~~~~~~~~~~~~~~~~~~
+- This objects are made for faster access to the data using threads.
+- Any **Bulk Object** is **not** iterable.
+- It almost has the same functionality as **Primary Object** (not always).
+- It holds the same attributes as **Primary Objects** but in plural form.
+- Upon applying a valid attribute, it will return all data in list form.
