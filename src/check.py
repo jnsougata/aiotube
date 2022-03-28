@@ -2,6 +2,6 @@ from aiotube import Channel, Video, Playlist, Extras, Search
 import time
 
 
-vid = Video('VXKAfeDEJd4')
+vid = Channel('UCh5HLPIDEDRAWocISKW_JKw')
 
-print(vid)
+print(vid.recent_uploaded.url)
