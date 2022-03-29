@@ -1,6 +1,6 @@
 from ._threads import _Thread
 from .utils import filter
-from .videobulk import VideoBulk
+from .videobulk import _VideoBulk
 from ._http import _get_playlist_data
 from ._rgxs import _PlaylistPatterns as rgx
 from typing import List, Optional, Dict, Any
@@ -49,13 +49,13 @@ class Playlist:
         return video_count[0] if video_count else None
 
     @property
-    def videos(self) -> VideoBulk:
+    def videos(self) -> _VideoBulk:
         """
         :return: list of < video objects > for each video in the playlist (consider limit)
         """
 
         videos = rgx.video_id.findall(self.__playlist_data)
-        return VideoBulk(filter(iterable=videos))
+        return _VideoBulk(filter(iterable=videos))
 
     @property
     def thumbnail(self) -> Optional[str]:

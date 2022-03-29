@@ -135,7 +135,8 @@ class Video:
 
         patterns = [
             rgx.title, rgx.views, rgx.likes, rgx.duration, rgx.author_id,
-            rgx.upload_date, rgx.thumbnail, rgx.tags, rgx.description
+            rgx.upload_date, rgx.thumbnail, rgx.tags, rgx.description,
+            rgx.is_streamed, rgx.is_premiered
         ]
 
         data = _Thread.run(_get_data, patterns)
@@ -151,5 +152,7 @@ class Video:
             'url': self._url,
             'thumbnail': data[6],
             'tags': data[7].split(','),
+            'streamed': True if data[9] else False,
+            'premiered': True if data[10] else False,
             'description': data[8].replace('\\n', '\n') if data[8] else None,
         }

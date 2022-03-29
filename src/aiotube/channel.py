@@ -12,10 +12,10 @@ from .live import Live
 from .video import Video
 from ._threads import _Thread
 from urllib.parse import unquote
-from .videobulk import VideoBulk
+from .videobulk import _VideoBulk
 from .utils import filter
 from .upcoming import Upcoming
-from .playlistbulk import PlaylistBulk
+from .playlistbulk import _PlaylistBulk
 from ._rgxs import _ChannelPatterns as rgx
 
 
@@ -114,22 +114,22 @@ class Channel:
             return filter(rgx.video_id.findall(raw))
 
     @property
-    def old_streams(self) -> Optional[VideoBulk]:
+    def old_streams(self) -> Optional[_VideoBulk]:
         """
         :return: channel's old livestream urls
         """
         raw = _get_old_streams(self._url)
         ids = filter(rgx.video_id.findall(raw))
-        return VideoBulk(ids) if ids else None
+        return _VideoBulk(ids) if ids else None
 
-    def uploads(self, limit: int = 20) -> Optional[VideoBulk]:
+    def uploads(self, limit: int = 20) -> Optional[_VideoBulk]:
         """
         :param int limit: number of videos user wants from channel's latest upload
         :return: a < bulk video obj > of latest uploaded videos (consider limit)
         """
         raw = _get_uploads_data(self._url)
         videos = filter(rgx.uploads.findall(raw), limit)
-        return VideoBulk(videos) if videos else None
+        return _VideoBulk(videos) if videos else None
 
     @property
     def latest(self) -> Optional[Video]:
@@ -206,13 +206,13 @@ class Channel:
         return banner[0] if banner else None
 
     @property
-    def playlists(self) -> Optional[PlaylistBulk]:
+    def playlists(self) -> Optional[_PlaylistBulk]:
         """
         :return: a list of < playlist object > for each public playlist the channel has
         """
         raw = _get_channel_playlists(self._url)
         playlists = rgx.playlists.findall(raw)
-        return PlaylistBulk(filter(playlists)) if playlists else None
+        return _PlaylistBulk(filter(playlists)) if playlists else None
 
     @property
     def info(self) -> Optional[Dict[str, any]]:
@@ -226,7 +226,8 @@ class Channel:
 
         patterns = [
             rgx.name, rgx.subscribers, rgx.views, rgx.creation,
-            rgx.country, rgx.custom_url, rgx.avatar, rgx.banner, rgx.id
+            rgx.country, rgx.custom_url, rgx.avatar, rgx.banner, rgx.id,
+            rgx.verified, rgx.description
         ]
 
         data = _Thread.run(extract, patterns)
@@ -242,14 +243,15 @@ class Channel:
             'name': data[0],
             'id': data[8],
             'subscribers': data[1],
-            'verified': self.verified,
+            'verified': True if data[9] else False,
             'views': views,
             'created_at': data[3],
             'country': data[4],
             'url': self._url,
             'custom_url': curl,
             'avatar': data[6],
-            'banner': data[7]
+            'banner': data[7],
+            'description': data[10].replace('\\n', '\n').replace('\n', ' ').replace('\\', ' ') if data[10] else None
         }
 
     @property

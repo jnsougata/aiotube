@@ -120,7 +120,7 @@ Channel
    :header: "Method", "Return Type", "Description"
    :widths: 80, 80, 100
 
-   "uploads(limit: int)", "VideoBulk", "VideoBulk object of videos uploaded by the channel"
+   "uploads(limit: int)", "Dict", "info dict of videos uploaded by the channel"
 
 .. csv-table::
    :header: "Attribute", "Return Type", "Description"
@@ -144,13 +144,13 @@ Channel
    "live", "bool", "whether the channel is live or not"
    "latest", "Video", "most latest video of the channel"
    "livestream", "Live", "Live object of the newest livestream"
-   "livestreams", "list", "list of occurring livestream ids of the channel"
-   "old_streams", "VideoBulk", "VideoBulk object of the old streams"
+   "livestreams", "List", "list of occurring livestream ids of the channel"
+   "old_streams", "Dict[str, Dict[str, Any]]", "info dict of the old streams"
    "recent_uploaded", "Video", "Video object of the most recently uploaded video"
    "recent_streamed", "Video", "Video object of the most recently streamed video"
    "upcoming", "Upcoming", "Upcoming object of the upcoming video of the channel"
-   "all_upcoming", "list", "list of upcoming video ids of the channel"
-   "playlists", "PlaylistBulk", "PlaylistBulk object of the playlists of the channel"
+   "all_upcoming", "List", "list of upcoming video ids of the channel"
+   "playlists", "Dict[str, Dict[str, Any]]", "info dict of the playlists of the channel"
 
 
 Video
@@ -185,7 +185,7 @@ Playlist
    "name", "str", "name of the playlist"
    "url", "str", "url of the playlist"
    "video_count", "str", "number of videos in the playlist"
-   "videos", "VideoBulk", "VideoBulk object of the videos in the playlist"
+   "videos", "Dict[str, Dict[str, Any]]", "info dict of the videos in the playlist"
    "thumbnail", "str", "url of the thumbnail of the playlist"
    "info", "Dict[str, Any]", "dictionary of all basic info about the playlist"
 
@@ -199,14 +199,6 @@ Search
    "channel(name: str)", "Channel", "Channel object of the channel with the given keywords"
    "video(name: str)", "Video", "Video object of the video with the given keywords"
    "playlist(name: str)", "Playlist", "Playlist object of the playlist with the given keywords"
-   "channels(name: str, limit: int)", "ChannelBulk", "ChannelBulk object of the channels with the given keywords"
-   "videos(name: str, limit: int)", "VideoBulk", "VideoBulk object of the videos with the given keywords"
-   "playlists(name: str, limit: int)", "PlaylistBulk", "PlaylistBulk object of the playlists with the given keywords"
-
-Note on Bulk Objects
-~~~~~~~~~~~~~~~~~~~~
-- This objects are made for faster access to the data using threads.
-- Any **Bulk Object** is **not** iterable.
-- It almost has the same functionality as **Primary Object** (not always).
-- It holds the same attributes as **Primary Objects** but in plural form.
-- Upon applying a valid attribute, it will return all data in list form.
+   "channels(name: str, limit: int)", "Dict[str, Dict[str, Any]]", "info dict of the channels with the given keywords"
+   "videos(name: str, limit: int)", "Dict[str, Dict[str, Any]]", "info dict of the videos with the given keywords"
+   "playlists(name: str, limit: int)", "Dict[str, Dict[str, Any]]", "info dict object of the playlists with the given keywords"

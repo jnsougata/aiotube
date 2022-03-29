@@ -1,10 +1,10 @@
 from ._threads import _Thread
 from ._http import _get_channel_about
 from ._rgxs import _ChannelPatterns as rgx
-from typing import List
+from typing import List, Optional, Dict, Any
 
 
-class ChannelBulk:
+class _ChannelBulk:
 
     __HEAD = 'https://www.youtube.com/channel/'
 
@@ -12,67 +12,55 @@ class ChannelBulk:
         self._channel_ids = iterable
         self.__bulk_data = self.__fetch_all
 
-    @property
-    def ids(self):
-        return self._channel_ids
 
-    @property
-    def urls(self) -> List[str]:
-        return [self.__HEAD + channel_id for channel_id in self._channel_ids]
-    
     @property
     def __fetch_all(self):
-        return _Thread.run(_get_channel_about, self.urls)
-        
-    @property
-    def names(self) -> List[str]:
-        temp = [rgx.name.findall(data) for data in self.__bulk_data]
-        return [item[0] if item else None for item in temp]
+        urls = [self.__HEAD + id for id in self._channel_ids]
+        return _Thread.run(_get_channel_about, urls)
 
-    @property
-    def subscribers(self) -> List[str]:
-        temp = [rgx.subscribers.findall(data) for data in self.__bulk_data]
-        return [item[0] if item else None for item in temp]
 
-    @property
-    def views(self) -> List[str]:
-        temp = [rgx.views.findall(data) for data in self.__bulk_data]
-        return [item[0][:-6] if item else None for item in temp]
+    def _gen_bulk(self):
+        bulk = {}
+        for src in self.__bulk_data:
+            __info__ = self._extract_info(src)
+            __id__ = __info__['id']
+            bulk[__id__] = self._extract_info(src)
+        return bulk
 
-    @property
-    def created_ats(self) -> List[str]:
-        temp = [rgx.creation.findall(data) for data in self.__bulk_data]
-        return [item[0] if item else None for item in temp]
-        
-    @property
-    def countries(self) -> List[str]:
-        temp = [rgx.country.findall(data) for data in self.__bulk_data]
-        return [item[0] if item else None for item in temp]
+    @staticmethod
+    def _extract_info(source: str) -> Optional[Dict[str, Dict[str, Any]]]:
 
-    @property
-    def custom_urls(self) -> List[str]:
-        temp = [rgx.custom_url.findall(data) for data in self.__bulk_data]
-        return [item[0] if '/channel/' not in item[0] else None for item in temp]
+        def extract(pattern):
+            data = pattern.findall(source)
+            return data[0] if data else None
 
-    @property
-    def descriptions(self) -> List[str]:
-        temp = [rgx.description.findall(data) for data in self.__bulk_data]
-        return [item[0].replace('\\n', '\n') if item else None for item in temp]
+        patterns = [
+            rgx.name, rgx.subscribers, rgx.views, rgx.creation,
+            rgx.country, rgx.custom_url, rgx.avatar, rgx.banner, rgx.id,
+            rgx.verified, rgx.description
+        ]
 
-    @property
-    def avatars(self) -> List[str]:
-        temp = [rgx.avatar.findall(data) for data in self.__bulk_data]
-        return [item[0] if item else None for item in temp]
+        data = _Thread.run(extract, patterns)
 
-    @property
-    def banners(self) -> List[str]:
-        temp = [rgx.banner.findall(data) for data in self.__bulk_data]
-        return [item[0] if item else None for item in temp]
+        if data[2]:
+            views = data[2].split(' ')[0]
+        else:
+            views = None
 
-    @property
-    def verifieds(self) -> List[bool]:
-        return [True if rgx.verified.search(data) else False for data in self.__bulk_data]
+        curl = data[5] if data[5] and '/channel/' not in data[5] else None
+        url = 'https://www.youtube.com/channel/' + data[8]
 
-    @property
-    def live_nows(self) -> List[bool]:
-        return [True if rgx.live.search(data) else False for data in self.__bulk_data]
+        return {
+            'name': data[0],
+            'id': data[8],
+            'verified': True if data[9] else False,
+            'subscribers': data[1],
+            'views': views,
+            'created_at': data[3],
+            'country': data[4],
+            'url': url,
+            'custom_url': curl,
+            'avatar': data[6],
+            'banner': data[7],
+            'description': data[10].replace('\\n', '\n').replace('\n', ' ').replace('\\', ' ') if data[10] else None
+        }

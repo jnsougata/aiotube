@@ -1,13 +1,14 @@
 from ._http import _get_video_data
 from ._threads import _Thread
 from ._rgxs import _VideoPatterns as rgx
-from typing import List
+from typing import List, Optional, Dict, Any
 
 
-class VideoBulk:
+class _VideoBulk:
 
     def __init__(self, iterable: list):
         self._video_ids = iterable
+        self.__source_data = self._sources
 
     @property
     def _sources(self):
@@ -15,59 +16,46 @@ class VideoBulk:
         def fetch_bulk_source(video_id):
             return _get_video_data(video_id)
 
-        return _Thread.run(fetch_bulk_source, self.ids)
-
-    @property
-    def ids(self) -> List[str]:
-        return self._video_ids
-
-    @property
-    def urls(self) -> List[str]:
-        head = 'https://www.youtube.com/watch?v='
-        return [head + video_id for video_id in self._video_ids]
-
-    @property
-    def titles(self) -> List[str]:
-        temp = [rgx.title.findall(data) for data in self._sources]
-        return [item[0] if item else None for item in temp]
-
-    @property
-    def views(self) -> List[str]:
-        temp = [rgx.views.findall(data) for data in self._sources]
-        return [item[0][:-6] if item else None for item in temp]
-
-    @property
-    def likes(self) -> List[str]:
-        temp = [rgx.likes.findall(data) for data in self._sources]
-        return [item[0] if item else None for item in temp]
+        return _Thread.run(fetch_bulk_source, self._video_ids)
 
 
-    @property
-    def durations(self) -> List[float]:
-        temp = [rgx.duration.findall(data) for data in self._sources]
-        return [int(item[0]) / 1000 if item else None for item in temp]
+    def _get_info(self, source: str) -> Dict[str, Any]:
+        """
+        :return: dict containing the whole info of the video
+        """
 
-    @property
-    def upload_dates(self) -> List[str]:
-        temp = [rgx.upload_date.findall(data) for data in self._sources]
-        return [item[0] if item else None for item in temp]
+        def _get_data(pattern):
+            data = pattern.findall(source)
+            return data[0] if data else None
 
-    @property
-    def authors(self) -> List[str]:
-        temp = [rgx.author_id.findall(data) for data in self._sources]
-        return [item[0] if item else None for item in temp]
+        patterns = [
+            rgx.title, rgx.views, rgx.likes, rgx.duration, rgx.author_id,
+            rgx.upload_date, rgx.thumbnail, rgx.tags, rgx.description,
+            rgx.is_streamed, rgx.is_premiered, rgx.video_id
+        ]
 
-    @property
-    def descriptions(self) -> List[str]:
-        temp = [rgx.description.findall(data) for data in self._sources]
-        return [item[0].replace('\\n', '\n') if item else None for item in temp]
+        data = _Thread.run(_get_data, patterns)
 
-    @property
-    def thumbnails(self) -> List[str]:
-        temp = [rgx.thumbnail.findall(data) for data in self._sources]
-        return [item[0] if item else None for item in temp]
+        return {
+            'title': data[0],
+            'id': data[11],
+            'views': data[1][:-6] if data[1] else None,
+            'likes': data[2],
+            'duration': int(data[3]) / 1000 if data[3] else None,
+            'author': data[4],
+            'upload_date': data[5],
+            'url': f'https://www.youtube.com/watch?v={data[11]}',
+            'thumbnail': data[6],
+            'tags': data[7].split(','),
+            'streamed': True if data[9] else False,
+            'premiered': True if data[10] else False,
+            'description': data[8].replace('\\n', '\n') if data[8] else None,
+        }
 
-    @property
-    def tags(self) -> List[List[str]]:
-        temp = [rgx.tags.findall(data) for data in self._sources]
-        return [item[0].split(',') if item else None for item in temp]
+    def _gen_bulk(self) -> Dict[str, Dict[str, Any]]:
+        bulk = {}
+        for src in self.__source_data:
+            __info__ = self._get_info(src)
+            __id__ = __info__['id']
+            bulk[__id__] = __info__
+        return bulk

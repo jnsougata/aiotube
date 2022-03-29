@@ -9,7 +9,7 @@ from ._http import (
 )
 from .video import Video
 from .utils import filter
-from .videobulk import VideoBulk
+from .videobulk import _VideoBulk
 from ._rgxs import _ExtraPatterns as rgx
 from typing import Optional
 
@@ -27,49 +27,49 @@ class Extras:
         return Video(data[0]) if data else None
 
     @staticmethod
-    def music() -> Optional[VideoBulk]:
+    def music() -> Optional[_VideoBulk]:
         """
         :return: list of < video object > of trending music videos
         """
         data = rgx.video_id.findall(_get_trending_songs())
-        return VideoBulk(filter(data)) if data else None
+        return _VideoBulk(filter(data)) if data else None
 
     @staticmethod
-    def gaming() -> Optional[VideoBulk]:
+    def gaming() -> Optional[_VideoBulk]:
         """
         :return: list of < video object > of trending gaming videos
         """
         data = rgx.video_id.findall(_get_trending_gaming_videos())
-        return VideoBulk(filter(data)) if data else None
+        return _VideoBulk(filter(data)) if data else None
 
     @staticmethod
-    def news() -> Optional[VideoBulk]:
+    def news() -> Optional[_VideoBulk]:
         """
         :return: list of < video object > of trending news videos
         """
         data = rgx.video_id.findall(_get_trending_news_feeds())
-        return VideoBulk(filter(data)) if data else None
+        return _VideoBulk(filter(data)) if data else None
 
     @staticmethod
-    def livestreams() -> Optional[VideoBulk]:
+    def livestreams() -> Optional[_VideoBulk]:
         """
         :return: list of < video object > of trending livestreams
         """
         data = rgx.video_id.findall(_get_trending_streams())
-        return VideoBulk(filter(data)) if data else None
+        return _VideoBulk(filter(data)) if data else None
 
     @staticmethod
-    def learning() -> Optional[VideoBulk]:
+    def learning() -> Optional[_VideoBulk]:
         """
         :return: list of < video object > of trending educational videos
         """
         data = rgx.video_id.findall(_get_trending_learning_videos())
-        return VideoBulk(filter(data)) if data else None
+        return _VideoBulk(filter(data)) if data else None
 
     @staticmethod
-    def sports() -> Optional[VideoBulk]:
+    def sports() -> Optional[_VideoBulk]:
         """
         :return: list of < video object > of trending sports videos
         """
         data = rgx.video_id.findall(_get_trending_sports_videos())
-        return VideoBulk(filter(data)) if data else None
+        return _VideoBulk(filter(data)) if data else None

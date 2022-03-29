@@ -28,6 +28,7 @@ class _ChannelPatterns:
 
 
 class _VideoPatterns:
+    video_id = re.compile('videoId\":\"(.*?)\"')
     title = re.compile("title\":\"(.*?)\"")
     duration = re.compile("approxDurationMs\":\"(.*?)\"")
     upload_date = re.compile("uploadDate\":\"(.*?)\"")
