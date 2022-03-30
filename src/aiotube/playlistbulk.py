@@ -9,11 +9,11 @@ class _PlaylistBulk:
 
     def __init__(self, iterable: list):
         self._playlist_ids = iterable
-        self.__bulk = self._sources
+        self.__bulk = self.__fetch_all
 
 
     @property
-    def _sources(self):
+    def __fetch_all(self):
 
         def fetch_bulk_source(playlist_id):
             return _get_playlist_data(playlist_id)
@@ -23,9 +23,6 @@ class _PlaylistBulk:
 
     @staticmethod
     def _get_info(source: str) -> Dict[str, Any]:
-        """
-        :return: a dict containing playlist info
-        """
 
         def _get_data(pattern):
             data = pattern.findall(source)

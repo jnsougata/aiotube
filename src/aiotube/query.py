@@ -1,5 +1,4 @@
 from .utils import filter
-from typing import Optional, Optional, Dict, Any
 from .video import Video
 from .channel import Channel
 from .playlist import Playlist
@@ -7,6 +6,7 @@ from .videobulk import _VideoBulk
 from .channelbulk import _ChannelBulk
 from .playlistbulk import _PlaylistBulk
 from ._rgxs import _QueryPatterns as rgx
+from typing import Optional, Optional, Dict, Any
 from ._http import _find_videos, _find_channels, _find_playlists
 
 

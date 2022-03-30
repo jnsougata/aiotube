@@ -8,18 +8,18 @@ class _VideoBulk:
 
     def __init__(self, iterable: list):
         self._video_ids = iterable
-        self.__source_data = self._sources
+        self.__source_data = self.__fetch_all
 
     @property
-    def _sources(self):
+    def __fetch_all(self):
 
         def fetch_bulk_source(video_id):
             return _get_video_data(video_id)
 
         return _Thread.run(fetch_bulk_source, self._video_ids)
 
-
-    def _get_info(self, source: str) -> Dict[str, Any]:
+    @staticmethod
+    def _get_info(source: str) -> Dict[str, Any]:
         """
         :return: dict containing the whole info of the video
         """
