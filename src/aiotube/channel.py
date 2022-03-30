@@ -114,22 +114,22 @@ class Channel:
             return filter(rgx.video_id.findall(raw))
 
     @property
-    def old_streams(self) -> Optional[_VideoBulk]:
+    def old_streams(self) -> Optional[Dict[str, Dict[str, Any]]]:
         """
         :return: channel's old livestream urls
         """
         raw = _get_old_streams(self._url)
         ids = filter(rgx.video_id.findall(raw))
-        return _VideoBulk(ids) if ids else None
+        return _VideoBulk(ids)._gen_bulk() if ids else None
 
-    def uploads(self, limit: int = 20) -> Optional[_VideoBulk]:
+    def uploads(self, limit: int = 20) -> Optional[Dict[str, Dict[str, Any]]]:
         """
         :param int limit: number of videos user wants from channel's latest upload
         :return: a < bulk video obj > of latest uploaded videos (consider limit)
         """
         raw = _get_uploads_data(self._url)
         videos = filter(rgx.uploads.findall(raw), limit)
-        return _VideoBulk(videos) if videos else None
+        return _VideoBulk(videos)._gen_bulk() if videos else None
 
     @property
     def latest(self) -> Optional[Video]:
