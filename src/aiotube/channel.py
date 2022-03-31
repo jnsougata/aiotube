@@ -206,13 +206,13 @@ class Channel:
         return banner[0] if banner else None
 
     @property
-    def playlists(self) -> Optional[_PlaylistBulk]:
+    def playlists(self) -> Optional[Dict[str, Dict[str, Any]]]:
         """
         :return: a list of < playlist object > for each public playlist the channel has
         """
         raw = _get_channel_playlists(self._url)
         playlists = rgx.playlists.findall(raw)
-        return _PlaylistBulk(filter(playlists)) if playlists else None
+        return _PlaylistBulk(filter(playlists))._gen_bulk() if playlists else None
 
     @property
     def info(self) -> Optional[Dict[str, any]]:

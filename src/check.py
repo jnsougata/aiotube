@@ -1,4 +1,4 @@
 from aiotube import Search, Channel
 
-s = Search.playlists('minecraft')
-print(s)
+ch = Channel('UCbWv3l-A2GlUBof0uskgUew')
+print(ch.playlists)
