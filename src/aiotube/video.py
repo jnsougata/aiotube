@@ -41,73 +41,55 @@ class Video:
 
     @property
     def title(self) -> Optional[str]:
-        """
-        :return: the title of the video
-        """
+
         data = rgx.title.findall(self.__video_data)
         return data[0] if data else None
 
     @property
     def views(self) -> Optional[str]:
-        """
-        :return: total views the video got so far
-        """
+
         data = rgx.views.findall(self.__video_data)
         return data[0][:-6] if data else None
 
     @property
     def likes(self) -> Optional[str]:
-        """
-        :return: total likes the video got so far
-        """
+
         data = rgx.likes.findall(self.__video_data)
         return data[0] if data else None
 
     @property
     def duration(self) -> Optional[float]:
-        """
-        :return: total duration of  the video in seconds
-        """
+
         data = rgx.duration.findall(self.__video_data)
         return int(data[0]) / 1000 if data else None
 
     @property
     def upload_date(self) -> Optional[str]:
-        """
-        :return: the date on which the video has been uploaded
-        """
+
         data = rgx.upload_date.findall(self.__video_data)
         return data[0] if data else None
 
     @property
     def author(self) -> Optional[str]:
-        """
-        :return: the id of the channel from which the video belongs
-        """
+
         data = rgx.author_id.findall(self.__video_data)
         return data[0] if data else None
 
     @property
     def description(self) -> Optional[str]:
-        """
-        :return: description provided with the video
-        """
+
         data = rgx.description.findall(self.__video_data)
         return data[0].replace('\\n', '\n') if data else None
 
     @property
     def thumbnail(self) -> Optional[str]:
-        """
-        :return: _url of the thumbnail of the video
-        """
+
         data = rgx.thumbnail.findall(self.__video_data)
         return data[0] if data else None
 
     @property
     def tags(self) -> Optional[List[str]]:
-        """
-        :return: list of tags used in video meta-data
-        """
+
         data = rgx.tags.findall(self.__video_data)
         return data[0].split(',') if data else None
 
@@ -125,13 +107,10 @@ class Video:
 
     @property
     def info(self) -> Dict[str, Any]:
-        """
-        :return: dict containing the whole info of the video
-        """
 
         def _get_data(pattern):
-            data = pattern.findall(self.__video_data)
-            return data[0] if data else None
+            value = pattern.findall(self.__video_data)
+            return value[0] if value else None
 
         patterns = [
             rgx.title, rgx.views, rgx.likes, rgx.duration, rgx.author_id,

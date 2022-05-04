@@ -25,9 +25,7 @@ class Channel:
     __CUSTOM = 'https://www.youtube.com/c/'
 
     def __init__(self, channel_id: str):
-        """
-        :param str channel_id: any of channel id, custom id, url , custom url
-        """
+
         if channel_id.startswith('UC'):
             self._url = self.__HEAD + channel_id
         elif channel_id.startswith('http'):
@@ -43,24 +41,18 @@ class Channel:
 
     @property
     def __raw_about(self) -> str:
-        """
-        :return: raw data of the channel
-        """
+
         return _get_channel_about(self._url)
 
     @property
     def name(self) -> Optional[str]:
-        """
-        :return: channel's name or None
-        """
+
         name = rgx.name.findall(self.__raw_about)
         return name[0] if name else None
 
     @property
     def valid(self) -> bool:
-        """
-        :return: bool i.e. True if channel is valid else False
-        """
+
         source = _src(self._url)
         return True if source else False
 
@@ -70,33 +62,25 @@ class Channel:
 
     @property
     def id(self) -> str:
-        """
-        :return: the id of the channel
-        """
+
         channel_id = rgx.id.findall(self.__raw_about)
         return channel_id[0] if channel_id else None
 
     @property
     def verified(self) -> bool:
-        """
-        :return: bool i.e. True if channel is verified else False
-        """
+
         is_verified = rgx.verified.search(self.__raw_about)
         return True if is_verified else False
 
     @property
     def live(self) -> bool:
-        """
-        :return: channel's Live Status
-        """
+
         check = rgx.live.findall(_get_channel_live_data(self._url))
         return True if rgx.check_live.search(check[0]) else False
 
     @property
     def livestream(self) -> Live:
-        """
-        :return: channel's ongoing  livestream url
-        """
+
         raw = _get_channel_live_data(self._url)
         check = rgx.live.findall(raw)
         if check and rgx.check_live.search(check[0]):
@@ -105,9 +89,7 @@ class Channel:
 
     @property
     def livestreams(self) -> Optional[List[str]]:
-        """
-        :return: channel's ongoing  livestream urls
-        """
+
         raw = _get_channel_live_data(self._url)
         check = rgx.live.findall(raw)
         if check and rgx.check_live.search(check[0]):
@@ -115,114 +97,86 @@ class Channel:
 
     @property
     def old_streams(self) -> Optional[Dict[str, Dict[str, Any]]]:
-        """
-        :return: channel's old livestream urls
-        """
+
         raw = _get_old_streams(self._url)
         ids = filter(rgx.video_id.findall(raw))
         return _VideoBulk(ids)._gen_bulk() if ids else None
 
     def uploads(self, limit: int = 20) -> Optional[Dict[str, Dict[str, Any]]]:
-        """
-        :param int limit: number of videos user wants from channel's latest upload
-        :return: a < bulk video obj > of latest uploaded videos (consider limit)
-        """
+
         raw = _get_uploads_data(self._url)
         videos = filter(rgx.uploads.findall(raw), limit)
         return _VideoBulk(videos)._gen_bulk() if videos else None
 
     @property
     def latest(self) -> Optional[Video]:
-        """
-        :return: Channel's most recent video in Video Object form
-        """
+
         raw = _get_uploads_data(self._url)
         any_video = rgx.video_id.findall(raw)
         return Video(any_video[0]) if any_video else None
 
     @property
     def subscribers(self) -> Optional[str]:
-        """
-        :return: total number of subscribers the channel has or None
-        """
+
         subs = rgx.subscribers.findall(self.__raw_about)
         return subs[0] if subs else None
 
     @property
     def views(self) -> Optional[str]:
-        """
-        :return: total number of views the channel got or None
-        """
+
         views = rgx.views.findall(self.__raw_about)
         return views[0].split(' ')[0] if views else None
 
     @property
     def created_at(self) -> Optional[str]:
-        """
-        :return: the channel creation date or None
-        """
+
         joined_on = rgx.creation.findall(self.__raw_about)
         return joined_on[0] if joined_on else None
 
     @property
     def country(self) -> Optional[str]:
-        """
-        :return: the name of the country from where the channel is or None
-        """
+
         country = rgx.country.findall(self.__raw_about)
         return country[0] if country else None
 
     @property
     def custom_url(self) -> Optional[str]:
-        """
-        :return: the custom _url of the channel or None
-        """
+
         custom_urls = rgx.custom_url.findall(self.__raw_about)
         if custom_urls and '/channel/' not in custom_urls[0]:
             return custom_urls[0]
 
     @property
     def description(self) -> Optional[str]:
-        """
-        :return: the existing description of the channel
-        """
+
         description = rgx.description.findall(self.__raw_about)
         return description[0].replace('\\n', '\n') if description else None
 
     @property
     def avatar(self) -> Optional[str]:
-        """
-        :return: logo / avatar url of the channel
-        """
+
         av = rgx.avatar.findall(self.__raw_about)
         return av[0] if av else None
 
     @property
     def banner(self) -> Optional[str]:
-        """
-        :return: banner url of the channel
-        """
+
         banner = rgx.banner.findall(self.__raw_about)
         return banner[0] if banner else None
 
     @property
     def playlists(self) -> Optional[Dict[str, Dict[str, Any]]]:
-        """
-        :return: a list of < playlist object > for each public playlist the channel has
-        """
+
         raw = _get_channel_playlists(self._url)
         playlists = rgx.playlists.findall(raw)
         return _PlaylistBulk(filter(playlists))._gen_bulk() if playlists else None
 
     @property
     def info(self) -> Optional[Dict[str, any]]:
-        """
-        :return: a dict containing channel info like subscribers, views, etc.
-        """
 
         def extract(pattern):
-            data = pattern.findall(self.__raw_about)
-            return data[0] if data else None
+            value = pattern.findall(self.__raw_about)
+            return value[0] if value else None
 
         patterns = [
             rgx.name, rgx.subscribers, rgx.views, rgx.creation,
@@ -256,9 +210,7 @@ class Channel:
 
     @property
     def video_count(self) -> Optional[str]:
-        """
-        :return: the number of videos in the channel
-        """
+
         if self.__given_id.startswith('UC'):
             q_term = self.__given_id
         else:
@@ -270,9 +222,7 @@ class Channel:
 
     @property
     def links(self) -> List[str]:
-        """
-        :return: a list of social media links added to the channel
-        """
+
         bad_links = rgx.links.findall(self.__raw_about)
         return ['https://' + unquote(link) for link in list(set(bad_links))] if bad_links else None
 
@@ -282,6 +232,7 @@ class Channel:
         chunk = rgx.upload_chunk.findall(raw)
         fl_1 = [data for data in chunk if not rgx.upload_chunk_fl_1.search(data)]
         fl_2 = [data for data in fl_1 if not rgx.upload_chunk_fl_2.search(data)]
+        fl_3 = [data for data in fl_2 if not rgx.upload_chunk_fl_3.search(data)]
         return Video(rgx.video_id.findall(fl_2[0])[0]) if fl_2 else None
 
     @property

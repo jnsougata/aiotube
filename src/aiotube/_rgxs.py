@@ -23,6 +23,7 @@ class _ChannelPatterns:
     upload_chunk = re.compile("gridVideoRenderer\":{(.*?)\"navigationEndpoint")
     upload_chunk_fl_1 = re.compile("simpleText\":\"Streamed")
     upload_chunk_fl_2 = re.compile("{\"text\":\" watching\"}]")
+    upload_chunk_fl_3 = re.compile("maxresdefault_live.")
     upcoming_check = re.compile("\"title\":\"Upcoming live streams\"")
     upcoming = re.compile("gridVideoRenderer\":{\"videoId\":\"(.*?)\"")
 
