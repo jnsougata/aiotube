@@ -26,6 +26,9 @@ class Channel:
 
     def __init__(self, channel_id: str):
 
+        if channel_id is None:
+            raise ValueError('channel id or url cannot be None')
+
         if channel_id.startswith('UC'):
             self._url = self.__HEAD + channel_id
         elif channel_id.startswith('http'):
@@ -41,7 +44,6 @@ class Channel:
 
     @property
     def __raw_about(self) -> str:
-
         return _get_channel_about(self._url)
 
     @property
@@ -232,7 +234,6 @@ class Channel:
         chunk = rgx.upload_chunk.findall(raw)
         fl_1 = [data for data in chunk if not rgx.upload_chunk_fl_1.search(data)]
         fl_2 = [data for data in fl_1 if not rgx.upload_chunk_fl_2.search(data)]
-        fl_3 = [data for data in fl_2 if not rgx.upload_chunk_fl_3.search(data)]
         return Video(rgx.video_id.findall(fl_2[0])[0]) if fl_2 else None
 
     @property
