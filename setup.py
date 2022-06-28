@@ -10,7 +10,7 @@ with open('README.rst') as f:
 
 setup(
     name='aiotube',
-    version='1.5.6',
+    version='1.5.7',
     description='Access YouTube Public Data without YouTube API',
     long_description=readme,
     long_description_content_type="text/x-rst",
