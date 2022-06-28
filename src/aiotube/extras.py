@@ -8,7 +8,7 @@ from ._http import (
     _get_trending_sports_videos
 )
 from .video import Video
-from .utils import filter
+from .utils import dup_filter
 from .videobulk import _VideoBulk
 from ._rgxs import _ExtraPatterns as rgx
 from typing import Optional, Dict, Any
@@ -32,7 +32,7 @@ class Extras:
         :return: list of < video object > of trending music videos
         """
         data = rgx.video_id.findall(_get_trending_songs())
-        return _VideoBulk(filter(data))._gen_bulk() if data else None
+        return _VideoBulk(dup_filter(data))._gen_bulk() if data else None
 
     @staticmethod
     def gaming() -> Optional[_VideoBulk]:
@@ -40,7 +40,7 @@ class Extras:
         :return: list of < video object > of trending gaming videos
         """
         data = rgx.video_id.findall(_get_trending_gaming_videos())
-        return _VideoBulk(filter(data)) if data else None
+        return _VideoBulk(dup_filter(data)) if data else None
 
     @staticmethod
     def news() -> Optional[_VideoBulk]:
@@ -48,7 +48,7 @@ class Extras:
         :return: list of < video object > of trending news videos
         """
         data = rgx.video_id.findall(_get_trending_news_feeds())
-        return _VideoBulk(filter(data)) if data else None
+        return _VideoBulk(dup_filter(data)) if data else None
 
     @staticmethod
     def livestreams() -> Optional[_VideoBulk]:
@@ -56,7 +56,7 @@ class Extras:
         :return: list of < video object > of trending livestreams
         """
         data = rgx.video_id.findall(_get_trending_streams())
-        return _VideoBulk(filter(data)) if data else None
+        return _VideoBulk(dup_filter(data)) if data else None
 
     @staticmethod
     def learning() -> Optional[_VideoBulk]:
@@ -64,7 +64,7 @@ class Extras:
         :return: list of < video object > of trending educational videos
         """
         data = rgx.video_id.findall(_get_trending_learning_videos())
-        return _VideoBulk(filter(data)) if data else None
+        return _VideoBulk(dup_filter(data)) if data else None
 
     @staticmethod
     def sports() -> Optional[_VideoBulk]:
@@ -72,4 +72,4 @@ class Extras:
         :return: list of < video object > of trending sports videos
         """
         data = rgx.video_id.findall(_get_trending_sports_videos())
-        return _VideoBulk(filter(data)) if data else None
+        return _VideoBulk(dup_filter(data)) if data else None

@@ -12,27 +12,22 @@ class _ChannelBulk:
         self._channel_ids = iterable
         self.__bulk_data = self.__fetch_all
 
-
     @property
     def __fetch_all(self):
         urls = [self.__HEAD + id for id in self._channel_ids]
         return _Thread.run(_get_channel_about, urls)
 
-
     def _gen_bulk(self):
-        bulk = {}
-        for src in self.__bulk_data:
-            __info__ = self._extract_info(src)
-            __id__ = __info__['id']
-            bulk[__id__] = self._extract_info(src)
-        return bulk
+        info_list = [self._gen_info(source) for source in self.__bulk_data]
+        return {info.pop('id'): info for info in info_list}
 
     @staticmethod
-    def _extract_info(source: str) -> Optional[Dict[str, Dict[str, Any]]]:
+    def _gen_info(source: str) -> Optional[Dict[str, Dict[str, Any]]]:
+        info = {}
 
         def extract(pattern):
-            data = pattern.findall(source)
-            return data[0] if data else None
+            d = pattern.findall(source)
+            return d[0] if d else None
 
         patterns = [
             rgx.name, rgx.subscribers, rgx.views, rgx.creation,
@@ -47,20 +42,24 @@ class _ChannelBulk:
         else:
             views = None
 
-        curl = data[5] if data[5] and '/channel/' not in data[5] else None
-        url = 'https://www.youtube.com/channel/' + data[8]
+        if data[10]:
+            description = data[10].replace('\\n', '\n')
+        else:
+            description = None
 
-        return {
-            'name': data[0],
-            'id': data[8],
-            'verified': True if data[9] else False,
-            'subscribers': data[1],
-            'views': views,
-            'created_at': data[3],
-            'country': data[4],
-            'url': url,
-            'custom_url': curl,
-            'avatar': data[6],
-            'banner': data[7],
-            'description': data[10].replace('\\n', '\n').replace('\n', ' ').replace('\\', ' ') if data[10] else None
-        }
+        curl = data[5] if data[5] and '/channel/' not in data[5] else None
+
+        info['id'] = data[8]
+        info['name'] = data[0]
+        info['subscribers'] = data[1]
+        info['views'] = views
+        info['created_at'] = data[3]
+        info['country'] = data[4]
+        info['custom_url'] = curl
+        info['avatar'] = data[6]
+        info['banner'] = data[7]
+        info['url'] = f'https://www.youtube.com/channel/{data[8]}'
+        info['description'] = description.replace('\\n', '\n') if description else None
+        info['verified'] = True if data[9] else False
+
+        return info

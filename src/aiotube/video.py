@@ -107,6 +107,7 @@ class Video:
 
     @property
     def info(self) -> Dict[str, Any]:
+        info = {}
 
         def _get_data(pattern):
             value = pattern.findall(self.__video_data)
@@ -120,18 +121,18 @@ class Video:
 
         data = _Thread.run(_get_data, patterns)
 
-        return {
-            'title': data[0],
-            'id': self._id,
-            'views': data[1][:-6] if data[1] else None,
-            'likes': data[2],
-            'duration': int(data[3]) / 1000 if data[3] else None,
-            'author': data[4],
-            'upload_date': data[5],
-            'url': self._url,
-            'thumbnail': data[6],
-            'tags': data[7].split(','),
-            'streamed': True if data[9] else False,
-            'premiered': True if data[10] else False,
-            'description': data[8].replace('\\n', '\n') if data[8] else None,
-        }
+        info['title'] = data[0]
+        info['id'] = self._id
+        info['views'] = data[1][:-6] if data[1] else None
+        info['likes'] = data[2]
+        info['streamed'] = data[9] if data[9] else None
+        info['premiered'] = data[10] if data[10] else None
+        info['duration'] = int(data[3]) / 1000 if data[3] else None
+        info['author'] = data[4]
+        info['upload_date'] = data[5]
+        info['url'] = self._url
+        info['thumbnail'] = data[6]
+        info['tags'] = data[7].split(',') if data[7] else None
+        info['description'] = data[8].replace('\\n', '\n') if data[8] else None
+
+        return info

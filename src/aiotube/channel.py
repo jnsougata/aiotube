@@ -13,7 +13,7 @@ from .video import Video
 from ._threads import _Thread
 from urllib.parse import unquote
 from .videobulk import _VideoBulk
-from .utils import filter
+from .utils import dup_filter
 from .upcoming import Upcoming
 from .playlistbulk import _PlaylistBulk
 from ._rgxs import _ChannelPatterns as rgx
@@ -86,7 +86,7 @@ class Channel:
         raw = _get_channel_live_data(self._url)
         check = rgx.live.findall(raw)
         if check and rgx.check_live.search(check[0]):
-            video_id = filter(rgx.video_id.findall(raw))[0]
+            video_id = dup_filter(rgx.video_id.findall(raw))[0]
             return Live(video_id)
 
     @property
@@ -95,19 +95,19 @@ class Channel:
         raw = _get_channel_live_data(self._url)
         check = rgx.live.findall(raw)
         if check and rgx.check_live.search(check[0]):
-            return filter(rgx.video_id.findall(raw))
+            return dup_filter(rgx.video_id.findall(raw))
 
     @property
     def old_streams(self) -> Optional[Dict[str, Dict[str, Any]]]:
 
         raw = _get_old_streams(self._url)
-        ids = filter(rgx.video_id.findall(raw))
+        ids = dup_filter(rgx.video_id.findall(raw))
         return _VideoBulk(ids)._gen_bulk() if ids else None
 
     def uploads(self, limit: int = 20) -> Optional[Dict[str, Dict[str, Any]]]:
 
         raw = _get_uploads_data(self._url)
-        videos = filter(rgx.uploads.findall(raw), limit)
+        videos = dup_filter(rgx.uploads.findall(raw), limit)
         return _VideoBulk(videos)._gen_bulk() if videos else None
 
     @property
@@ -171,10 +171,11 @@ class Channel:
 
         raw = _get_channel_playlists(self._url)
         playlists = rgx.playlists.findall(raw)
-        return _PlaylistBulk(filter(playlists))._gen_bulk() if playlists else None
+        return _PlaylistBulk(dup_filter(playlists))._gen_bulk() if playlists else None
 
     @property
     def info(self) -> Optional[Dict[str, any]]:
+        info = {}
 
         def extract(pattern):
             value = pattern.findall(self.__raw_about)
@@ -195,20 +196,20 @@ class Channel:
 
         curl = data[5] if data[5] and '/channel/' not in data[5] else None
 
-        return {
-            'name': data[0],
-            'id': data[8],
-            'subscribers': data[1],
-            'verified': True if data[9] else False,
-            'views': views,
-            'created_at': data[3],
-            'country': data[4],
-            'url': self._url,
-            'custom_url': curl,
-            'avatar': data[6],
-            'banner': data[7],
-            'description': data[10].replace('\\n', '\n').replace('\n', ' ').replace('\\', ' ') if data[10] else None
-        }
+        info['id'] = data[8]
+        info['name'] = data[0]
+        info['subscribers'] = data[1]
+        info['verified'] = True if data[9] else False
+        info['views'] = views
+        info['created_at'] = data[3]
+        info['country'] = data[4]
+        info['custom_url'] = curl
+        info['avatar'] = data[6]
+        info['banner'] = data[7]
+        info['url'] = self.url
+        info['description'] = data[10].replace('\\n', '\n')
+
+        return info
 
     @property
     def video_count(self) -> Optional[str]:

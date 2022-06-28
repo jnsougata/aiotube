@@ -1,4 +1,4 @@
-from .utils import filter
+from .utils import dup_filter
 from .video import Video
 from .channel import Channel
 from .playlist import Playlist
@@ -11,7 +11,6 @@ from ._http import _find_videos, _find_channels, _find_playlists
 
 
 class Search:
-
 
     @staticmethod
     def video(keywords: str) -> Optional[Video]:
@@ -31,17 +30,17 @@ class Search:
     @staticmethod
     def videos(keywords: str, limit: int = 20) -> Optional[Dict[str, Dict[str, Any]]]:
         video_ids = rgx.video_id.findall(_find_videos(keywords))
-        pure_list = filter(limit=limit, iterable=video_ids)
+        pure_list = dup_filter(limit=limit, iterable=video_ids)
         return _VideoBulk(pure_list)._gen_bulk() if pure_list else None
 
     @staticmethod
     def channels(keywords: str, limit: int = 20) -> Optional[Dict[str, Dict[str, Any]]]:
         channel_ids = rgx.channel_id.findall(_find_channels(keywords))
-        pure_list = filter(limit=limit, iterable=channel_ids)
+        pure_list = dup_filter(limit=limit, iterable=channel_ids)
         return _ChannelBulk(pure_list)._gen_bulk() if pure_list else None
 
     @staticmethod
     def playlists(keywords: str, limit: int = 20) -> Optional[Dict[str, Dict[str, Any]]]:
         playlist_ids = rgx.playlist_id.findall(_find_playlists(keywords))
-        pure_list = filter(limit=limit, iterable=playlist_ids)
+        pure_list = dup_filter(limit=limit, iterable=playlist_ids)
         return _PlaylistBulk(pure_list)._gen_bulk() if pure_list else None
