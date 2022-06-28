@@ -1,3 +1,9 @@
+
+|Release|
+
+.. |Release| image:: https://github.com/jnsougata/aiotube/actions/workflows/publish.yml/badge.svg
+   :target: https://github.com/jnsougata/aiotube/actions/workflows/publish.yml
+
 aiotube
 ==========
 
