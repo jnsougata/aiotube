@@ -207,8 +207,7 @@ class Channel:
         info['avatar'] = data[6]
         info['banner'] = data[7]
         info['url'] = self.url
-        info['description'] = data[10].replace('\\n', '\n')
-
+        info['description'] = str(data[10]).replace('\\n', '\n')
         return info
 
     @property
