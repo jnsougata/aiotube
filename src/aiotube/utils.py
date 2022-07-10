@@ -13,13 +13,11 @@ def _fetch_webpage(url: str):
         return urlopen(url).read().decode()
     except HTTPError as e:
         if e.code == 404:
-            raise InvalidURL('can not find anything with the requested url')
+            raise InvalidURL('can not find anything with the requested url') from None
         if e.code == 429:
-            raise TooManyRequests('you are being rate-limited for sending too many requests')
-    except URLError:
-        raise BadURL('url does not match any supported format')
+            raise TooManyRequests('you are being rate-limited for sending too many requests') from None
     except Exception as e:
-        raise AIOError(f'{e!r}')
+        raise AIOError(f'{e!r}') from None
 
 
 def dup_filter(iterable: list, limit: int = None) -> list:

@@ -14,14 +14,6 @@ class InvalidURL(Exception):
         self.message = message
 
 
-class BadURL(Exception):
-    """
-    Raised when the URL format is invalid.
-    """
-    def __init__(self, message):
-        self.message = message
-
-
 class AIOError(Exception):
     """
     Raised when the response is not what we expected.
