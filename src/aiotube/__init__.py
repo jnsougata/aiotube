@@ -24,8 +24,8 @@ SOFTWARE.
 
 
 from .errors import *
-from .channel import Channel
 from .video import Video
-from .playlist import Playlist
 from .query import Search
 from .extras import Extras
+from .channel import Channel
+from .playlist import Playlist
