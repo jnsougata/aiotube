@@ -23,6 +23,7 @@ SOFTWARE.
 """
 
 
+from .errors import *
 from .channel import Channel
 from .video import Video
 from .playlist import Playlist
