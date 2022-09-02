@@ -36,7 +36,7 @@ Installing
 .. code:: sh
 
     # Windows
-    py -3 -m pip install -U aiotube
+    python -m pip install -U aiotube
 
 Build from source
 -----------------
