@@ -46,21 +46,18 @@ class Playlist:
     @property
     def info(self) -> Dict[str, Any]:
         info = {}
-
+        
         def _get_data(pattern):
             d = pattern.findall(self.__playlist_data)
             return d[0] if d else None
 
         patterns = [rgx.name, rgx.video_count, rgx.thumbnail]
-
         data = _Thread.run(_get_data, patterns)
-
         info['id'] = self.id
         info['name'] = data[0]
         info['video_count'] = data[1]
         info['thumbnail'] = data[2]
         info['url'] = self.url
-        info['videos'] = dup_filter(rgx.video_id.findall(raw))
-
+        info['videos'] = dup_filter(rgx.video_id.findall(self.__playlist_data))
         return info
         
