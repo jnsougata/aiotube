@@ -25,7 +25,7 @@ class Search:
     @staticmethod
     def playlist(keywords: str) -> Optional[Playlist]:
         playlist_ids = rgx.playlist_id.findall(_find_playlists(keywords))
-        return Playlist(found[0]) if found else None
+        return Playlist(playlist_ids[0]) if playlist_ids else None
 
     @staticmethod
     def videos(keywords: str, limit: int = 20) -> Optional[Dict[str, Dict[str, Any]]]:
