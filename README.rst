@@ -97,8 +97,8 @@ Channel
    "upcomings()", "List[str]", "Returns a list of ids of upcoming videos"
    "playlists()", "List[str]", "Returns a Playlist object"
    "uploads(limit: int)", "List[str]", "Returns a list of video ids of the uploaded videos"
-   "last_uploaded", "Video", "Video object of the most recently uploaded video"
-   "last_streamed", "Video", "Video object of the most recently streamed video"
+   "last_uploaded()", "Video", "Video object of the most recently uploaded video"
+   "last_streamed()", "Video", "Video object of the most recently streamed video"
 
 .. csv-table::
    :header: "Properties", "Return Types", "Description"
