@@ -1,75 +1,46 @@
-from ._http import (
-    _get_trending_video,
-    _get_trending_songs,
-    _get_trending_gaming_videos,
-    _get_trending_news_feeds,
-    _get_trending_streams,
+from .https import (
+    trending_videos,
+    trending_songs,
+    trending_games,
+    trending_feeds,
+    trending_streams,
     _get_trending_learning_videos,
-    _get_trending_sports_videos
+    trending_sports
 )
 from .video import Video
 from .utils import dup_filter
-from .videobulk import _VideoBulk
-from ._rgxs import _ExtraPatterns as rgx
-from typing import Optional, Dict, Any
-
+from .patterns import _ExtraPatterns as Patterns
+from typing import Optional, Dict, Any, List
 
 
 class Extras:
 
+    @staticmethod
+    def trending_videos() -> Optional[List[str]]:
+        data = Patterns.video_id.findall(trending_videos())
+        return dup_filter(data) if data else None
 
     @staticmethod
-    def trending() -> Optional[Video]:
-        """
-        :return: < video object > of #1 on trending video
-        """
-        data = rgx.video_id.findall(_get_trending_video())
-        return Video(data[0]) if data else None
+    def music_videos() -> Optional[List[str]]:
+        data = Patterns.video_id.findall(trending_songs())
+        return dup_filter(data) if data else None
 
     @staticmethod
-    def music() -> Optional[Dict[str, Dict[str, Any]]]:
-        """
-        :return: list of < video object > of trending music videos
-        """
-        data = rgx.video_id.findall(_get_trending_songs())
-        return _VideoBulk(dup_filter(data))._gen_bulk() if data else None
+    def gaming_videos() -> Optional[List[str]]:
+        return dup_filter(Patterns.video_id.findall(trending_games()))
 
     @staticmethod
-    def gaming() -> Optional[_VideoBulk]:
-        """
-        :return: list of < video object > of trending gaming videos
-        """
-        data = rgx.video_id.findall(_get_trending_gaming_videos())
-        return _VideoBulk(dup_filter(data)) if data else None
+    def news_videos() -> Optional[List[str]]:
+        return dup_filter(Patterns.video_id.findall(trending_feeds()))
 
     @staticmethod
-    def news() -> Optional[_VideoBulk]:
-        """
-        :return: list of < video object > of trending news videos
-        """
-        data = rgx.video_id.findall(_get_trending_news_feeds())
-        return _VideoBulk(dup_filter(data)) if data else None
+    def live_videos() -> Optional[List[str]]:
+        return dup_filter(Patterns.video_id.findall(trending_streams()))
 
     @staticmethod
-    def livestreams() -> Optional[_VideoBulk]:
-        """
-        :return: list of < video object > of trending livestreams
-        """
-        data = rgx.video_id.findall(_get_trending_streams())
-        return _VideoBulk(dup_filter(data)) if data else None
+    def educational_videos() -> Optional[List[str]]:
+        return dup_filter(Patterns.video_id.findall(_get_trending_learning_videos()))
 
     @staticmethod
-    def learning() -> Optional[_VideoBulk]:
-        """
-        :return: list of < video object > of trending educational videos
-        """
-        data = rgx.video_id.findall(_get_trending_learning_videos())
-        return _VideoBulk(dup_filter(data)) if data else None
-
-    @staticmethod
-    def sports() -> Optional[_VideoBulk]:
-        """
-        :return: list of < video object > of trending sports videos
-        """
-        data = rgx.video_id.findall(_get_trending_sports_videos())
-        return _VideoBulk(dup_filter(data)) if data else None
+    def sport_videos() -> Optional[List[str]]:
+        return dup_filter(Patterns.video_id.findall(trending_sports()))

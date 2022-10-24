@@ -2,45 +2,36 @@ from .utils import dup_filter
 from .video import Video
 from .channel import Channel
 from .playlist import Playlist
-from .videobulk import _VideoBulk
-from .channelbulk import _ChannelBulk
-from .playlistbulk import _PlaylistBulk
-from ._rgxs import _QueryPatterns as rgx
-from typing import Optional, Optional, Dict, Any
-from ._http import _find_videos, _find_channels, _find_playlists
+from .patterns import _QueryPatterns as Patterns
+from typing import Optional, Dict, Any, List
+from .https import find_videos, find_channels, find_playlists
 
 
 class Search:
 
     @staticmethod
     def video(keywords: str) -> Optional[Video]:
-        video_ids = rgx.video_id.findall(_find_videos(keywords))
+        video_ids = Patterns.video_id.findall(find_videos(keywords))
         return Video(video_ids[0]) if video_ids else None
 
     @staticmethod
     def channel(keywords: str) -> Optional[Channel]:
-        channel_ids = rgx.channel_id.findall(_find_channels(keywords))
+        channel_ids = Patterns.channel_id.findall(find_channels(keywords))
         return Channel(channel_ids[0]) if channel_ids else None
 
     @staticmethod
     def playlist(keywords: str) -> Optional[Playlist]:
-        playlist_ids = rgx.playlist_id.findall(_find_playlists(keywords))
+        playlist_ids = Patterns.playlist_id.findall(find_playlists(keywords))
         return Playlist(playlist_ids[0]) if playlist_ids else None
 
     @staticmethod
-    def videos(keywords: str, limit: int = 20) -> Optional[Dict[str, Dict[str, Any]]]:
-        video_ids = rgx.video_id.findall(_find_videos(keywords))
-        pure_list = dup_filter(limit=limit, iterable=video_ids)
-        return _VideoBulk(pure_list)._gen_bulk() if pure_list else None
+    def videos(keywords: str, limit: int = 20) -> Optional[List[str]]:
+        return dup_filter(Patterns.video_id.findall(find_videos(keywords)), limit)
 
     @staticmethod
-    def channels(keywords: str, limit: int = 20) -> Optional[Dict[str, Dict[str, Any]]]:
-        channel_ids = rgx.channel_id.findall(_find_channels(keywords))
-        pure_list = dup_filter(limit=limit, iterable=channel_ids)
-        return _ChannelBulk(pure_list)._gen_bulk() if pure_list else None
+    def channels(keywords: str, limit: int = 20) -> Optional[List[str]]:
+        return dup_filter(Patterns.channel_id.findall(find_channels(keywords)), limit)
 
     @staticmethod
-    def playlists(keywords: str, limit: int = 20) -> Optional[Dict[str, Dict[str, Any]]]:
-        playlist_ids = rgx.playlist_id.findall(_find_playlists(keywords))
-        pure_list = dup_filter(limit=limit, iterable=playlist_ids)
-        return _PlaylistBulk(pure_list)._gen_bulk() if pure_list else None
+    def playlists(keywords: str, limit: int = 20) -> Optional[List[str]]:
+        return dup_filter(Patterns.playlist_id.findall(find_playlists(keywords)), limit)
