@@ -22,25 +22,18 @@ class Channel:
     _CUSTOM = 'https://www.youtube.com/c/'
 
     def __init__(self, channel_id: str):
-        pattern = re.compile("/channel/(.+)|/c/(.+)|/user/(.+)|^UC(.+?)$")
-        match = pattern.search(channel_id)
-        if not match:
-            raise ValueError(f'Invalid channel id: {channel_id}')
-        if match.group(1):
-            self._usable_id = match.group(1)
-            self._target_url = self._HEAD + self._usable_id
-        elif match.group(2):
-            self._usable_id = match.group(2)
-            self._target_url = self._CUSTOM + self._usable_id
-        elif match.group(3):
-            self._usable_id = 'UC' + match.group(3)
-            self._target_url = self._HEAD + self._usable_id
-        elif match.group(4):
-            self._usable_id = match.group(4)
-            self._target_url = self._CUSTOM + self._usable_id
+        if channel_id.startswith(self._HEAD):
+            self._target_url = channel_id
+            self._usable_id = channel_id.replace(self._HEAD, '')
+        elif channel_id.startswith(self._CUSTOM):
+            self._target_url = channel_id
+            self._usable_id = channel_id.replace(self._CUSTOM, '')
+        elif channel_id.startswith('UC'):
+            self._target_url = self._HEAD + channel_id
+            self._usable_id = channel_id
         else:
-            raise ValueError("Invalid channel id")
-
+            self._target_url = self._CUSTOM + channel_id
+            self._usable_id = channel_id
         self._about_page = channel_about(self._target_url)
 
     def __repr__(self):
@@ -79,7 +72,7 @@ class Channel:
             'banner': data[7],
             'url': "https://www.youtube.com/channel/" + data[8],
             'description': str(data[10]).replace('\\n', '\n'),
-            'socials': ['https://' + unquote(link) for link in list(set(data[11]))] if data[11] else None
+            'socials': ['https://' + unquote(link) for link in list(set(ext[11]))] if data[11] else None
         }
 
     def live(self) -> bool:
