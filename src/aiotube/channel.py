@@ -1,8 +1,7 @@
 import re
 from .https import (
     channel_about,
-    channel_live_data,
-    old_streams,
+    streams_data,
     uploads_data,
     channel_playlists,
     video_count,
@@ -76,55 +75,37 @@ class Channel:
         }
 
     def live(self) -> bool:
-        check = Patterns.live.findall(channel_live_data(self._target_url))
-        return True if Patterns.check_live.search(check[0]) else False
+        return bool(self.current_streams())
 
-    def streaming_now(self) -> Video:
-        raw = channel_live_data(self._target_url)
-        check = Patterns.live.findall(raw)
-        if check and Patterns.check_live.search(check[0]):
-            video_id = dup_filter(Patterns.video_id.findall(raw))[0]
-            return Video(video_id)
+    def streaming_now(self) -> Optional[str]:
+        streams = self.current_streams()
+        return streams[0] if streams else None
 
     def current_streams(self) -> Optional[List[str]]:
-        raw = channel_live_data(self._target_url)
-        check = Patterns.live.findall(raw)
-        if check and Patterns.check_live.search(check[0]):
-            return dup_filter(Patterns.video_id.findall(raw))
-
+        raw = streams_data(self._target_url)
+        filtered_ids = dup_filter(Patterns.stream_ids.findall(raw))
+        if not filtered_ids:
+            return None
+        return [id_ for id_ in filtered_ids if f"vi/{id_}/hqdefault_live.jpg" in raw]
+    
     def old_streams(self) -> Optional[List[str]]:
-        raw = old_streams(self._target_url)
-        return dup_filter(Patterns.video_id.findall(raw))
-
-    def uploads(self, limit: int = 20) -> Optional[List[Video]]:
-        return dup_filter(Patterns.uploads.findall(uploads_data(self._target_url)), limit)
-
-    def playlists(self) -> Optional[List[str]]:
-        raw = channel_playlists(self._target_url)
-        return dup_filter(Patterns.playlists.findall(raw))
-
-    def video_count(self) -> Optional[str]:
-        if self._usable_id.startswith('UC'):
-            q_term = self._usable_id
-        else:
-            q_term = self.id
-        count = Patterns.video_count.findall(video_count(q_term))
-        return count[0].replace(',', '').replace('"', '').split()[0] if count else None
-
-    def last_uploaded(self) -> Optional[Video]:
-        raw = uploads_data(self._target_url)
-        chunk = Patterns.upload_chunk.findall(raw)
-        fl_1 = [data for data in chunk if not Patterns.upload_chunk_fl_1.search(data)]
-        fl_2 = [data for data in fl_1 if not Patterns.upload_chunk_fl_2.search(data)]
-        return Video(Patterns.video_id.findall(fl_2[0])[0]) if fl_2 else None
-
-    def last_streamed(self) -> Optional[Video]:
-        raw = uploads_data(self._target_url)
-        chunk = Patterns.upload_chunk.findall(raw)
-        fl_1 = [data for data in chunk if Patterns.upload_chunk_fl_1.search(data)]
-        fl_2 = [data for data in fl_1 if not Patterns.upload_chunk_fl_2.search(data)]
-        return Video(Patterns.video_id.findall(fl_2[0])[0]) if fl_2 else None
-
+        raw = streams_data(self._target_url)
+        filtered_ids = dup_filter(Patterns.stream_ids.findall(raw))
+        if not filtered_ids:
+            return None
+        return [id_ for id_ in filtered_ids if f"vi/{id_}/hqdefault_live.jpg" not in raw]
+        
+    def last_streamed(self) -> Optional[str]:
+        ids = self.old_streams()
+        return ids[0] if ids else None
+    
+    def uploads(self, limit: int = 20) -> Optional[List[str]]:
+        return dup_filter(Patterns.upload_ids.findall(uploads_data(self._target_url)), limit)
+    
+    def last_uploaded(self) -> Optional[str]:
+        ids = self.uploads()
+        return ids[0] if ids else None
+    
     def upcoming(self) -> Optional[Video]:
         raw = upcoming_videos(self._target_url)
         if not Patterns.upcoming_check.search(raw):
@@ -138,3 +119,13 @@ class Channel:
             return None
         video_ids = Patterns.upcoming.findall(raw)
         return video_ids
+
+    def playlists(self) -> Optional[List[str]]:
+        return dup_filter(Patterns.playlists.findall(channel_playlists(self._target_url)))
+
+    def video_count(self) -> Optional[str]:
+        query_id = self._usable_id if self._usable_id.startswith('UC') else self.metadata['id']
+        count = Patterns.video_count.findall(video_count(query_id))
+        return count[0].replace(',', '').replace('"', '').split()[0] if count else None
+    
+    

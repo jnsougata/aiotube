@@ -20,6 +20,8 @@ class _ChannelPatterns:
     playlists = re.compile("{\"url\":\"/playlist\?list=(.*?)\"")
     video_count = re.compile("videoCountText\":{\"runs\":\[{\"text\":(.*?)}")
     links = re.compile("q=https%3A%2F%2F(.*?)\"")
+    upload_ids = re.compile("videoId\":\"(.*?)\"")
+    stream_ids = re.compile("videoId\":\"(.*?)\"")
     upload_chunk = re.compile("gridVideoRenderer\":{(.*?)\"navigationEndpoint")
     upload_chunk_fl_1 = re.compile("simpleText\":\"Streamed")
     upload_chunk_fl_2 = re.compile("default_live.")
