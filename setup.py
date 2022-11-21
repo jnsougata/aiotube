@@ -1,8 +1,5 @@
-import pathlib
-from setuptools import setup, find_packages
+from setuptools import setup
 
-
-here = pathlib.Path(__file__).parent.resolve()
 
 with open('README.rst') as f:
     readme = f.read()
@@ -10,7 +7,7 @@ with open('README.rst') as f:
 
 setup(
     name='aiotube',
-    version='1.7.0',
+    version='1.7.2',
     description='Access YouTube Public Data without YouTube API',
     long_description=readme,
     long_description_content_type="text/x-rst",
@@ -30,9 +27,8 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Utilities',
     ],
+    packages=['aiotube'],
     keywords='youtube, youtube-data, youtube-api, youtube-data-api-v3',
-    package_dir={'': 'src'},
-    packages=find_packages(where='src'),
     python_requires='>=3.8.0',
     install_requires=['urllib3'],
     project_urls={

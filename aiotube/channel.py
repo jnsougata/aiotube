@@ -11,7 +11,7 @@ from .video import Video
 from .pool import collect
 from .utils import dup_filter
 from urllib.parse import unquote
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict
 from .patterns import _ChannelPatterns as Patterns
 
 
