@@ -5,33 +5,38 @@ def channel_about(head: str) -> str:
     url = head + '/about'
     return request(url)
 
+
 def video_count(channel_id: str) -> str:
     head = 'https://www.youtube.com/results?search_query='
     tail = '&sp=EgIQAg%253D%253D'
     url = head + channel_id + tail
     return request(url)
 
+
 def uploads_data(head: str) -> str:
     url = head + '/videos'
     return request(url)
+
 
 def streams_data(head: str) -> str:
     url = head + '/streams'
     return request(url)
 
+
 def channel_playlists(head: str) -> str:
     url = head + '/playlists'
     return request(url)
 
-# might be broken
 
 def upcoming_videos(head: str) -> str:
     url = head + '/videos?view=2&live_view=502'
     return request(url)
 
+
 def video_data(video_id: str) -> str:
     url = f'https://www.youtube.com/watch?v={video_id}'
     return request(url)
+
 
 def playlist_data(playlist_id: str) -> str:
     url = 'https://www.youtube.com/playlist?list=' + playlist_id

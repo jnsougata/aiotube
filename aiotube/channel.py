@@ -19,20 +19,24 @@ class Channel:
 
     _HEAD = 'https://www.youtube.com/channel/'
     _CUSTOM = 'https://www.youtube.com/c/'
+    _USER = 'https://www.youtube.com/'
 
     def __init__(self, channel_id: str):
-        if channel_id.startswith(self._HEAD):
-            self._target_url = channel_id
-            self._usable_id = channel_id.replace(self._HEAD, '')
-        elif channel_id.startswith(self._CUSTOM):
-            self._target_url = channel_id
-            self._usable_id = channel_id.replace(self._CUSTOM, '')
-        elif channel_id.startswith('UC'):
-            self._target_url = self._HEAD + channel_id
+        pattern = re.compile("UC(.+)|c/(.+)|@(.+)")
+        results = pattern.findall(channel_id)
+        if not results:
             self._usable_id = channel_id
-        else:
             self._target_url = self._CUSTOM + channel_id
-            self._usable_id = channel_id
+        elif results[0][0]:
+            self._usable_id = results[0][0]
+            self._target_url = self._HEAD + 'UC' + results[0][0]
+        elif results[0][1]:
+            self._usable_id = results[0][1]
+            self._target_url = self._CUSTOM + results[0][1]
+        elif results[0][2]:
+            self._usable_id = results[0][2]
+            self._target_url = self._USER + '@' + results[0][2]
+
         self._about_page = channel_about(self._target_url)
 
     def __repr__(self):
