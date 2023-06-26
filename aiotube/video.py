@@ -39,7 +39,11 @@ class Video:
             'views': metadata.get('viewCount'),
             'streamed': metadata['isLiveContent'],
             'duration': metadata['lengthSeconds'],
-            'author_id': metadata['channelId'],
+            'author': {
+                'id': metadata['channelId'],
+                'name': metadata['author'],
+                'url': 'https://www.youtube.com/channel/' + metadata['channelId'],
+            },
             'upload_date': upload_date,
             'url': f"https://www.youtube.com/watch?v={metadata['videoId']}",
             'thumbnails': metadata.get('thumbnail', {}).get('thumbnails'),
