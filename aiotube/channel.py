@@ -28,7 +28,7 @@ class Channel:
         Parameters
         ----------
         channel_id : str
-            The id or url or custom url of the channel
+            The id or url or custom url or user id of the channel
         """
         pattern = re.compile("UC(.+)|c/(.+)|@(.+)")
         results = pattern.findall(channel_id)
