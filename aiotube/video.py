@@ -9,7 +9,15 @@ class Video:
     _HEAD = 'https://www.youtube.com/watch?v='
 
     def __init__(self, video_id: str):
-        pattern = re.compile('.be/(.*?)$|=(.*?)$|^(\w{11})$')
+        """
+        Represents a YouTube video
+
+        Parameters
+        ----------
+        video_id : str
+            The id or url of the video
+        """
+        pattern = re.compile('.be/(.*?)$|=(.*?)$|^(\w{11})$')  # noqa
         self._matched_id = (
                 pattern.search(video_id).group(1)
                 or pattern.search(video_id).group(2)
@@ -26,6 +34,15 @@ class Video:
 
     @property
     def metadata(self) -> Dict[str, Any]:
+        """
+        Fetches video metadata in a dict format
+
+        Returns
+        -------
+        Dict
+            Video metadata in a dict format containing keys: title, id, views, duration, author_id,
+            upload_date, url, thumbnails, tags, description
+        """
         details_pattern = re.compile('videoDetails\":(.*?)\"isLiveContent\":.*?}')
         upload_date_pattern = re.compile("<meta itemprop=\"uploadDate\" content=\"(.*?)\">")
         genre_pattern = re.compile("<meta itemprop=\"genre\" content=\"(.*?)\">")

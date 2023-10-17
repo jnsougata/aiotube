@@ -10,6 +10,14 @@ from .patterns import _PlaylistPatterns as Patterns
 class Playlist:
 
     def __init__(self, playlist_id: str):
+        """
+        Represents a YouTube Playlist
+
+        Parameters
+        ----------
+        playlist_id : str
+            The id or url of the playlist
+        """
         pattern = re.compile('=(.+?)$|^PL(.+?)$')
         match = pattern.search(playlist_id)
         if not match:
@@ -25,6 +33,14 @@ class Playlist:
 
     @property
     def metadata(self) -> Dict[str, Any]:
+        """
+        Fetches playlist metadata in a dict format
+
+        Returns
+        -------
+        Dict
+            Playlist metadata in a dict format containing keys: id, url, name, video_count, thumbnail,
+        """
         patterns = [
             Patterns.name,
             Patterns.video_count,
