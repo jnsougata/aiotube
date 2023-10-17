@@ -7,10 +7,9 @@ from .https import (
     _get_trending_learning_videos,
     trending_sports
 )
-from .video import Video
 from .utils import dup_filter
 from .patterns import _ExtraPatterns as Patterns
-from typing import Optional, Dict, Any, List
+from typing import Optional, List
 
 
 class Extras:

@@ -1,8 +1,9 @@
 import re
+from typing import Dict, Any
+
 from .pool import collect
 from .https import video_data
 from .patterns import _VideoPatterns as Patterns
-from typing import List, Optional, Dict, Any
 
 
 class Video:

@@ -1,8 +1,7 @@
 from urllib.request import Request, urlopen
 from collections import OrderedDict
-from urllib.error import HTTPError, URLError
+from urllib.error import HTTPError
 from .errors import TooManyRequests, InvalidURL, AIOError
-from .pool import collect
 
 
 __all__ = ['dup_filter', 'parser', 'request']

@@ -1,9 +1,10 @@
 import re
+from typing import Dict, Any
+
 from .pool import collect
 from .utils import dup_filter
 from .https import playlist_data
 from .patterns import _PlaylistPatterns as Patterns
-from typing import List, Optional, Dict, Any
 
 
 class Playlist:
@@ -17,11 +18,10 @@ class Playlist:
             self.id = match.group(1)
         elif match.group(2):
             self.id = 'PL' + match.group(2)
-
         self._playlist_data = playlist_data(self.id)
 
     def __repr__(self):
-        return f'<Playlist {self.url}>'
+        return f'<Playlist {self.id}>'
 
     @property
     def metadata(self) -> Dict[str, Any]:

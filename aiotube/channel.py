@@ -22,6 +22,14 @@ class Channel:
     _USER = 'https://www.youtube.com/'
 
     def __init__(self, channel_id: str):
+        """
+        Represents a YouTube channel
+
+        Parameters
+        ----------
+        channel_id : str
+            The id or url or custom url of the channel
+        """
         pattern = re.compile("UC(.+)|c/(.+)|@(.+)")
         results = pattern.findall(channel_id)
         if not results:
@@ -44,6 +52,15 @@ class Channel:
 
     @property
     def metadata(self) -> Optional[Dict[str, any]]:
+        """
+        Returns channel metadata in a dict format
+
+        Returns
+        -------
+        Dict
+            Channel metadata containing the following keys:
+            id, name, subscribers, views, country, custom_url, avatar, banner, url, description, socials
+        """
         patterns = [
             Patterns.name,
             Patterns.subscribers,
@@ -79,13 +96,37 @@ class Channel:
         }
 
     def live(self) -> bool:
+        """
+        Checks if the channel is live
+
+        Returns
+        -------
+        bool
+            True if the channel is live
+        """
         return bool(self.current_streams())
 
     def streaming_now(self) -> Optional[str]:
+        """
+        Fetches the id of currently streaming video
+
+        Returns
+        -------
+        str | None
+            The id of the currently streaming video or None
+        """
         streams = self.current_streams()
         return streams[0] if streams else None
 
     def current_streams(self) -> Optional[List[str]]:
+        """
+        Fetches the ids of all ongoing streams
+
+        Returns
+        -------
+        List[str] | None
+            The ids of all ongoing streams or None
+        """
         raw = streams_data(self._target_url)
         filtered_ids = dup_filter(Patterns.stream_ids.findall(raw))
         if not filtered_ids:
@@ -93,6 +134,14 @@ class Channel:
         return [id_ for id_ in filtered_ids if f"vi/{id_}/hqdefault_live.jpg" in raw]
     
     def old_streams(self) -> Optional[List[str]]:
+        """
+        Fetches the ids of all old or completed streams
+
+        Returns
+        -------
+        List[str] | None
+            The ids of all old or completed streams or None
+        """
         raw = streams_data(self._target_url)
         filtered_ids = dup_filter(Patterns.stream_ids.findall(raw))
         if not filtered_ids:
@@ -100,17 +149,54 @@ class Channel:
         return [id_ for id_ in filtered_ids if f"vi/{id_}/hqdefault_live.jpg" not in raw]
         
     def last_streamed(self) -> Optional[str]:
+        """
+        Fetches the id of the last completed livestream
+
+        Returns
+        -------
+        str | None
+            The id of the last livestreamed video or None
+        """
         ids = self.old_streams()
         return ids[0] if ids else None
     
     def uploads(self, limit: int = 20) -> Optional[List[str]]:
+        """
+        Fetches the ids of all uploaded videos
+
+        Parameters
+        ----------
+        limit : int
+            The number of videos to fetch, defaults to 20
+
+        Returns
+        -------
+        List[str] | None
+            The ids of uploaded videos or None
+        """
         return dup_filter(Patterns.upload_ids.findall(uploads_data(self._target_url)), limit)
     
     def last_uploaded(self) -> Optional[str]:
+        """
+        Fetches the id of the last uploaded video
+
+        Returns
+        -------
+        str | None
+            The id of the last uploaded video or None
+        """
         ids = self.uploads()
         return ids[0] if ids else None
     
     def upcoming(self) -> Optional[Video]:
+        """
+        Fetches the upcoming video
+
+        Returns
+        -------
+        Video | None
+            The upcoming video or None
+        """
         raw = upcoming_videos(self._target_url)
         if not Patterns.upcoming_check.search(raw):
             return None
@@ -118,6 +204,14 @@ class Channel:
         return Video(upcoming[0]) if upcoming else None
 
     def upcomings(self) -> Optional[List[str]]:
+        """
+        Fetches the upcoming videos
+
+        Returns
+        -------
+        List[str] | None
+            The ids of upcoming videos or None
+        """
         raw = upcoming_videos(self._target_url)
         if not Patterns.upcoming_check.search(raw):
             return None
@@ -125,9 +219,25 @@ class Channel:
         return video_ids
 
     def playlists(self) -> Optional[List[str]]:
+        """
+        Fetches the ids of all playlists
+
+        Returns
+        -------
+        List[str] | None
+            The ids of all playlists or None
+        """
         return dup_filter(Patterns.playlists.findall(channel_playlists(self._target_url)))
 
     def video_count(self) -> Optional[str]:
+        """
+        Fetches the number of videos the channel has
+
+        Returns
+        -------
+        str | None
+            The number of videos the channel has or None
+        """
         query_id = self._usable_id if self._usable_id.startswith('UC') else self.metadata['id']
         count = Patterns.video_count.findall(video_count(query_id))
         return count[0].replace(',', '').replace('"', '').split()[0] if count else None
