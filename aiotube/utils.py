@@ -39,4 +39,4 @@ def dup_filter(iterable: list, limit: int = None) -> list:
 
 
 def parser(kw: str):
-    return kw.replace(" ", '+')
+    return urllib.parse.quote(kw)
