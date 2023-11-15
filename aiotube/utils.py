@@ -1,3 +1,4 @@
+import urllib
 from urllib.request import Request, urlopen
 from collections import OrderedDict
 from urllib.error import HTTPError
@@ -39,4 +40,4 @@ def dup_filter(iterable: list, limit: int = None) -> list:
 
 
 def parser(kw: str):
-    return kw.replace(" ", '+')
+    return urllib.parse.quote(kw)
