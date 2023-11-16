@@ -68,7 +68,7 @@ class Video:
             data['likes'] = json.loads(likes_count + '}}}')[
                 'accessibility'
             ]['accessibilityData']['label'].split(' ')[0].replace(',', '')
-        except (AttributeError, KeyError):
+        except (AttributeError, KeyError, json.decoder.JSONDecodeError):
             data['likes'] = None
         try:
             data['genre'] = genre_pattern.search(self._video_data).group(1)
