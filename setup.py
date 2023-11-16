@@ -7,7 +7,7 @@ with open('README.md') as f:
 
 setup(
     name='aiotube',
-    version='1.7.2',
+    version='1.7.3',
     description='A library to access YouTube Public Data without YouTubeAPI',
     long_description=readme,
     long_description_content_type="text/markdown",
