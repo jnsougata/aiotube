@@ -8,6 +8,6 @@ class InvalidURL(Exception):
         self.message = message
 
 
-class AIOError(Exception):
+class RequestError(Exception):
     def __init__(self, message):
         self.message = message

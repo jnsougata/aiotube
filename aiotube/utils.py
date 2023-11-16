@@ -1,14 +1,13 @@
-import urllib
 from urllib.request import Request, urlopen
 from collections import OrderedDict
 from urllib.error import HTTPError
-from .errors import TooManyRequests, InvalidURL, AIOError
+from .errors import TooManyRequests, InvalidURL, RequestError
 
 
-__all__ = ['dup_filter', 'parser', 'request']
+__all__ = ['dup_filter', 'request']
 
 
-def request(url: str):
+def request(url: str) -> str:
     headers = {
         "User-Agent": (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " 
@@ -25,7 +24,7 @@ def request(url: str):
         if e.code == 429:
             raise TooManyRequests('you are being rate-limited for sending too many requests')
     except Exception as e:
-        raise AIOError(f'{e!r}') from None
+        raise RequestError(f'{e!r}') from None
 
 
 def dup_filter(iterable: list, limit: int = None) -> list:
@@ -37,7 +36,3 @@ def dup_filter(iterable: list, limit: int = None) -> list:
         return converted[:-len(converted) + lim]
     else:
         return converted
-
-
-def parser(kw: str):
-    return urllib.parse.quote(kw)

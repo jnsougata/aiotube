@@ -1,16 +1,15 @@
-from .utils import request, parser
+from urllib.parse import quote
+from .utils import request
 
 
 def channel_about(head: str) -> str:
-    url = head + '/about'
-    return request(url)
+    return request(head + '/about')
 
 
 def video_count(channel_id: str) -> str:
     head = 'https://www.youtube.com/results?search_query='
     tail = '&sp=EgIQAg%253D%253D'
-    url = head + channel_id + tail
-    return request(url)
+    return request(head + channel_id + tail)
 
 
 def uploads_data(head: str) -> str:
@@ -74,19 +73,16 @@ def trending_sports() -> str:
 def find_videos(query: str) -> str:
     head = 'https://www.youtube.com/results?search_query='
     tail = '&sp=EgIQAQ%253D%253D'
-    parsed_query = parser(query)
-    return request(head + parsed_query + tail)
+    return request(head + quote(query) + tail)
 
 
 def find_channels(query: str) -> str:
     head = 'https://www.youtube.com/results?search_query='
     tail = '&sp=EgIQAg%253D%253D'
-    parsed_query = parser(query)
-    return request(head + parsed_query + tail)
+    return request(head + quote(query) + tail)
 
 
 def find_playlists(query: str) -> str:
     head = 'https://www.youtube.com/results?search_query='
     tail = '&sp=EgIQAw%253D%253D'
-    parsed_query = parser(query)
-    return request(head + parsed_query + tail)
+    return request(head + quote(query) + tail)

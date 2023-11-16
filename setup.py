@@ -1,18 +1,18 @@
 from setuptools import setup
 
 
-with open('README.rst') as f:
+with open('README.md') as f:
     readme = f.read()
 
 
 setup(
     name='aiotube',
     version='1.7.2',
-    description='Access YouTube Public Data without YouTube API',
+    description='A library to access YouTube Public Data without YouTubeAPI',
     long_description=readme,
-    long_description_content_type="text/x-rst",
+    long_description_content_type="text/markdown",
     url='https://github.com/jnsougata/aiotube',
-    author='jnsougata',
+    author='Sougata Jana',
     author_email='jnsougata@gmail.com',
     classifiers=[
         'License :: OSI Approved :: MIT License',

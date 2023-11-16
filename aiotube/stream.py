@@ -11,7 +11,7 @@ class Video:
     _HEAD = 'https://www.youtube.com/watch?v='
 
     def __init__(self, video_id: str):
-        pattern = re.compile('.be/(.*?)$|=(.*?)$|^(\w{11})$')
+        pattern = re.compile('.be/(.*?)$|=(.*?)$|^(\w{11})$')  # noqa
         self._matched_id = (
                 pattern.search(video_id).group(1)
                 or pattern.search(video_id).group(2)
