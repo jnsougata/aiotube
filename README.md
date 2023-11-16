@@ -72,23 +72,23 @@ print(search.metadata)
 
 ### Channel
 
-| Method                        | Return Type | Description                                            |
-|-------------------------------|-------------|--------------------------------------------------------|
-| `live()`                      | `bool`      | Returns True if the channel is live                    |
-| `streaming_now()`             | `str`       | Returns the video id of the ongoing livestream         |
-| `current_streams()`           | `List[str]` | Returns a list of ids of ongoing livestreams           |
-| `old_streams()`               | `List[str]` | Returns a list of ids of old livestreams               |
-| `video_count()`               | `int`       | Returns total number of videos uploaded by the channel |
-| `upcoming()`                  | `Video`     | Returns a video object of the upcoming video           |
-| `upcomings()`                 | `List[str]` | Returns a list of ids of upcoming videos               |
-| `playlists()`                 | `List[str]` | Returns a list of playlist ids                         |
-| `uploads(limit: int \| None)` | `List[str]` | Returns a list of video ids of the uploaded videos     |
-| `last_uploaded()`             | `Video`     | Most recently uploaded video of the channel            |
-| `last_streamed()`             | `Video`     | Most recently completed livestream of the channel      |
+| Property          | Return Type      | Description                                            |
+|-------------------|------------------|--------------------------------------------------------|
+| `live`            | `bool`           | Returns True if the channel is live                    |
+| `streaming_now`   | `str`            | Returns the video id of the ongoing livestream         |
+| `current_streams` | `List[str]`      | Returns a list of ids of ongoing livestreams           |
+| `old_streams`     | `List[str]`      | Returns a list of ids of old livestreams               |
+| `video_count`     | `int`            | Returns total number of videos uploaded by the channel |
+| `upcoming`        | `Video`          | Returns a video object of the upcoming video           |
+| `upcomings`       | `List[str]`      | Returns a list of ids of upcoming videos               |
+| `playlists`       | `List[str]`      | Returns a list of playlist ids                         |
+| `metadata`        | `Dict[str, Any]` | Returns the metadata of the channel in dict format     |
+| `last_uploaded`   | `Video`          | Most recently uploaded video of the channel            |
+| `last_streamed`   | `Video`          | Most recently completed livestream of the channel      |
 
-| Properties | Return Types     | Description                                        |
-|------------|------------------|----------------------------------------------------|
-| `metadata` | `Dict[str, Any]` | Returns the metadata of the channel in dict format |
+| Method                        | Return Types | Description                                        |
+|-------------------------------|--------------|----------------------------------------------------|
+| `uploads(limit: int \| None)` | `List[str]`  | Returns a list of video ids of the uploaded videos |
 
 ### Video
 
