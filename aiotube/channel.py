@@ -87,14 +87,14 @@ class Channel:
         ]
         extracted = collect(lambda x: x.findall(self._about_page) or None, patterns)
         name, avatar, banner, verified, socials = [e[0] if e else None for e in extracted]
-        info = re.compile("\\[{\"aboutChannelRenderer\":(.*?)],").search(self._about_page).group(1) + "]}}}}"
+        info = re.compile("\[{\"aboutChannelRenderer\":(.*?)}\],\"trackingParams").search(self._about_page).group(1)
         info = json.loads(info)["metadata"]["aboutChannelViewModel"]
         return {
             "id": info["channelId"],
             "name": name,
             "url": "https://www.youtube.com/channel/" + info["channelId"],
-            "description": info["description"],
-            "country": info["country"],
+            "description": info["description"] if "description" in info else None,
+            "country": info["country"] if "country" in info else None,
             "custom_url": info["canonicalChannelUrl"],
             "subscribers": info["subscriberCountText"].split(' ')[0],
             "views": info["viewCountText"].replace(' views', ''),
