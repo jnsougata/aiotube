@@ -189,6 +189,36 @@ class Channel:
         ids = self.old_streams
         return ids[0] if ids else None
     
+    @property
+    def upcoming_streams(self) -> Optional[List[str]]:
+        """
+        Fetches the ids of all upcoming streams
+
+        Returns
+        -------
+        List[str] | None
+            The ids of all upcoming streams or None
+        """
+        raw = streams_data(self._target_url)
+        upcoming_stream_ids = Patterns.upcoming_stream_ids.findall(raw)
+        if not upcoming_stream_ids:
+            return None
+        return upcoming_stream_ids
+
+    @property
+    def upcoming_stream(self) -> Optional[Video]:
+        """
+        Fetches the upcoming stream
+
+        Returns
+        -------
+        Video | None
+            The upcoming stream or None
+        """
+        raw = streams_data(self._target_url)
+        upcoming_stream_ids = Patterns.upcoming_stream_ids.findall(raw)
+        return Video(upcoming_stream_ids[0]) if upcoming_stream_ids else None
+    
     def uploads(self, limit: int = 20) -> Optional[List[str]]:
         """
         Fetches the ids of all uploaded videos
