@@ -27,6 +27,7 @@ class _ChannelPatterns:
     upload_chunk_fl_2 = re.compile("default_live.")
     upcoming_check = re.compile("\"title\":\"Upcoming live streams\"")
     upcoming = re.compile("gridVideoRenderer\":{\"videoId\":\"(.*?)\"")
+    upcoming_stream_ids = re.compile("UPCOMING.*?addedVideoId\":\"(.*?)\"")
 
 
 class _VideoPatterns:
