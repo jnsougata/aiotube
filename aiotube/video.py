@@ -1,3 +1,4 @@
+from datetime import datetime
 import re
 import json
 from .https import video_data
@@ -40,24 +41,42 @@ class Video:
         Returns
         -------
         Dict
-            Video metadata in a dict format containing keys: title, id, views, duration, author_id,
-            upload_date, url, thumbnails, tags, description
+            Video metadata in a dict format containing keys: title, id, views, streamed, live_now, duration, author_id,
+            upload_date, scheduled_starttime, url, thumbnails, tags, description
         """
         details_pattern = re.compile('videoDetails\":(.*?)\"isLiveContent\":.*?}')
         upload_date_pattern = re.compile("<meta itemprop=\"uploadDate\" content=\"(.*?)\">")
         genre_pattern = re.compile("<meta itemprop=\"genre\" content=\"(.*?)\">")
         like_count_pattern = re.compile("iconType\":\"LIKE\"},\"defaultText\":(.*?)}}")
+        live_boardcast_detials_pattern =  re.compile("liveBroadcastDetails\":\{(.*?)\}")
+        scheduled_starttime_pattern = re.compile("scheduledStartTime\":\"(.*?)\"")
         raw_details = details_pattern.search(self._video_data).group(0)
         upload_date = upload_date_pattern.search(self._video_data).group(1)
         metadata = json.loads(raw_details.replace('videoDetails\":', ''))
+        live_boardcast_detials = (
+            json.loads(
+                f"{{{live_boardcast_detials_pattern.search(self._video_data).group(1)}}}"
+            )
+            if metadata["isLiveContent"]
+            else None
+        )
+        scheduled_starttime = (
+            datetime.utcfromtimestamp(
+                int(scheduled_starttime_pattern.search(self._video_data).group(1))
+            ).isoformat()
+            if metadata["isLiveContent"] and not live_boardcast_detials["isLiveNow"]
+            else None
+        )
         data = {
             'title': metadata['title'],
             'id': metadata['videoId'],
             'views': metadata.get('viewCount'),
             'streamed': metadata['isLiveContent'],
+            'live_now': live_boardcast_detials["isLiveNow"] if metadata["isLiveContent"] else None,
             'duration': metadata['lengthSeconds'],
             'author_id': metadata['channelId'],
             'upload_date': upload_date,
+            "scheduled_starttime": scheduled_starttime,
             'url': f"https://www.youtube.com/watch?v={metadata['videoId']}",
             'thumbnails': metadata.get('thumbnail', {}).get('thumbnails'),
             'tags': metadata.get('keywords'),
