@@ -1,0 +1,315 @@
+[
+    {
+        "clickTrackingParams": "CAAQhGciEwj35oTjyaiHAxXAumMGHTe3C7k=",
+        "showEngagementPanelEndpoint": {
+            "engagementPanel": {
+                "engagementPanelSectionListRenderer": {
+                    "header": {
+                        "engagementPanelTitleHeaderRenderer": {
+                            "title": {
+                                "simpleText": "About"
+                            },
+                            "visibilityButton": {
+                                "buttonRenderer": {
+                                    "style": "STYLE_DEFAULT",
+                                    "size": "SIZE_DEFAULT",
+                                    "isDisabled": false,
+                                    "icon": {
+                                        "iconType": "CLOSE"
+                                    },
+                                    "accessibility": {
+                                        "label": "Close"
+                                    },
+                                    "trackingParams": "CAkQ8FsiEwj35oTjyaiHAxXAumMGHTe3C7k=",
+                                    "accessibilityData": {
+                                        "accessibilityData": {
+                                            "label": "Close"
+                                        }
+                                    },
+                                    "command": {
+                                        "clickTrackingParams": "CAkQ8FsiEwj35oTjyaiHAxXAumMGHTe3C7k=",
+                                        "changeEngagementPanelVisibilityAction": {
+                                            "targetId": "682de6a9-0000-2737-ad61-14c14ef6b35c",
+                                            "visibility": "ENGAGEMENT_PANEL_VISIBILITY_HIDDEN"
+                                        }
+                                    }
+                                }
+                            },
+                            "trackingParams": "CAEQ040EIhMI9-aE48mohwMVwLpjBh03twu5"
+                        }
+                    },
+                    "content": {
+                        "sectionListRenderer": {
+                            "contents": [
+                                {
+                                    "itemSectionRenderer": {
+                                        "contents": [
+                                            {
+                                                "aboutChannelRenderer": {
+                                                    "metadata": {
+                                                        "aboutChannelViewModel": {
+                                                            "description": "BRB",
+                                                            "descriptionLabel": {
+                                                                "content": "Description",
+                                                                "styleRuns": [
+                                                                    {
+                                                                        "startIndex": 0,
+                                                                        "length": 11
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "country": "India",
+                                                            "subscriberCountText": "14.5K subscribers",
+                                                            "viewCountText": "4,504,594 views",
+                                                            "joinedDateText": {
+                                                                "content": "Joined 16 Jun 2018",
+                                                                "styleRuns": [
+                                                                    {
+                                                                        "startIndex": 0,
+                                                                        "length": 18
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "canonicalChannelUrl": "http://www.youtube.com/@GYROOO",
+                                                            "channelId": "UCU9FEimjiOV3zN_5kujbCMQ",
+                                                            "additionalInfoLabel": {
+                                                                "content": "Channel details",
+                                                                "styleRuns": [
+                                                                    {
+                                                                        "startIndex": 0,
+                                                                        "length": 15
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "customUrlOnTap": {
+                                                                "innertubeCommand": {
+                                                                    "clickTrackingParams": "CAMQuy8YACITCPfmhOPJqIcDFcC6YwYdN7cLuQ==",
+                                                                    "commandMetadata": {
+                                                                        "webCommandMetadata": {
+                                                                            "ignoreNavigation": true
+                                                                        }
+                                                                    },
+                                                                    "shareEntityEndpoint": {
+                                                                        "serializedShareEntity": "GhhVQ1U5RkVpbWppT1Yzek5fNWt1amJDTVE%3D",
+                                                                        "sharePanelType": "SHARE_PANEL_TYPE_UNIFIED_SHARE_PANEL"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "videoCountText": "46 videos",
+                                                            "signInForBusinessEmail": {
+                                                                "content": "Sign in to see email address",
+                                                                "commandRuns": [
+                                                                    {
+                                                                        "startIndex": 0,
+                                                                        "length": 7,
+                                                                        "onTap": {
+                                                                            "innertubeCommand": {
+                                                                                "clickTrackingParams": "CAMQuy8YACITCPfmhOPJqIcDFcC6YwYdN7cLuQ==",
+                                                                                "commandMetadata": {
+                                                                                    "webCommandMetadata": {
+                                                                                        "url": "https://accounts.google.com/ServiceLogin?service=youtube&uilel=3&passive=true&continue=https%3A%2F%2Fwww.youtube.com%2Fsignin%3Faction_handle_signin%3Dtrue%26app%3Ddesktop%26hl%3Den-GB%26next%3D%252F%2540GYROOO&hl=en-GB",
+                                                                                        "webPageType": "WEB_PAGE_TYPE_UNKNOWN",
+                                                                                        "rootVe": 83769
+                                                                                    }
+                                                                                },
+                                                                                "signInEndpoint": {
+                                                                                    "nextEndpoint": {
+                                                                                        "clickTrackingParams": "CAMQuy8YACITCPfmhOPJqIcDFcC6YwYdN7cLuQ==",
+                                                                                        "commandMetadata": {
+                                                                                            "webCommandMetadata": {
+                                                                                                "url": "/@GYROOO",
+                                                                                                "webPageType": "WEB_PAGE_TYPE_CHANNEL",
+                                                                                                "rootVe": 3611,
+                                                                                                "apiUrl": "/youtubei/v1/browse"
+                                                                                            }
+                                                                                        },
+                                                                                        "browseEndpoint": {
+                                                                                            "browseId": "UCU9FEimjiOV3zN_5kujbCMQ",
+                                                                                            "params": "8gYECgIyAA%3D%3D",
+                                                                                            "canonicalBaseUrl": "/@GYROOO"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ],
+                                                                "styleRuns": [
+                                                                    {
+                                                                        "startIndex": 0,
+                                                                        "length": 28
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "displayCanonicalChannelUrl": "www.youtube.com/@GYROOO"
+                                                        }
+                                                    },
+                                                    "shareChannel": {
+                                                        "buttonRenderer": {
+                                                            "style": "STYLE_DEFAULT",
+                                                            "size": "SIZE_DEFAULT",
+                                                            "text": {
+                                                                "runs": [
+                                                                    {
+                                                                        "text": "Share channel"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "icon": {
+                                                                "iconType": "SHARE"
+                                                            },
+                                                            "trackingParams": "CAQQ8FsiEwj35oTjyaiHAxXAumMGHTe3C7k=",
+                                                            "accessibilityData": {
+                                                                "accessibilityData": {
+                                                                    "label": "Share"
+                                                                }
+                                                            },
+                                                            "command": {
+                                                                "clickTrackingParams": "CAQQ8FsiEwj35oTjyaiHAxXAumMGHTe3C7k=",
+                                                                "commandMetadata": {
+                                                                    "webCommandMetadata": {
+                                                                        "sendPost": true
+                                                                    }
+                                                                },
+                                                                "signalServiceEndpoint": {
+                                                                    "signal": "CLIENT_SIGNAL",
+                                                                    "actions": [
+                                                                        {
+                                                                            "clickTrackingParams": "CAQQ8FsiEwj35oTjyaiHAxXAumMGHTe3C7k=",
+                                                                            "openPopupAction": {
+                                                                                "popup": {
+                                                                                    "menuPopupRenderer": {
+                                                                                        "items": [
+                                                                                            {
+                                                                                                "menuServiceItemRenderer": {
+                                                                                                    "text": {
+                                                                                                        "runs": [
+                                                                                                            {
+                                                                                                                "text": "Share channel"
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    },
+                                                                                                    "trackingParams": "CAcQ0rYLGAEiEwj35oTjyaiHAxXAumMGHTe3C7k=",
+                                                                                                    "command": {
+                                                                                                        "clickTrackingParams": "CAcQ0rYLGAEiEwj35oTjyaiHAxXAumMGHTe3C7k=",
+                                                                                                        "commandMetadata": {
+                                                                                                            "webCommandMetadata": {
+                                                                                                                "sendPost": true,
+                                                                                                                "apiUrl": "/youtubei/v1/share/get_share_panel"
+                                                                                                            }
+                                                                                                        },
+                                                                                                        "shareEntityServiceEndpoint": {
+                                                                                                            "serializedShareEntity": "GhhVQ1U5RkVpbWppT1Yzek5fNWt1amJDTVE%3D",
+                                                                                                            "commands": [
+                                                                                                                {
+                                                                                                                    "clickTrackingParams": "CAcQ0rYLGAEiEwj35oTjyaiHAxXAumMGHTe3C7k=",
+                                                                                                                    "openPopupAction": {
+                                                                                                                        "popup": {
+                                                                                                                            "unifiedSharePanelRenderer": {
+                                                                                                                                "trackingParams": "CAgQjmIiEwj35oTjyaiHAxXAumMGHTe3C7k=",
+                                                                                                                                "showLoadingSpinner": true
+                                                                                                                            }
+                                                                                                                        },
+                                                                                                                        "popupType": "DIALOG",
+                                                                                                                        "beReused": true
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            ]
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            },
+                                                                                            {
+                                                                                                "menuServiceItemRenderer": {
+                                                                                                    "text": {
+                                                                                                        "runs": [
+                                                                                                            {
+                                                                                                                "text": "Copy channel ID"
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    },
+                                                                                                    "trackingParams": "CAUQ07YLGAIiEwj35oTjyaiHAxXAumMGHTe3C7k=",
+                                                                                                    "command": {
+                                                                                                        "clickTrackingParams": "CAUQ07YLGAIiEwj35oTjyaiHAxXAumMGHTe3C7k=",
+                                                                                                        "copyTextEndpoint": {
+                                                                                                            "text": "UCU9FEimjiOV3zN_5kujbCMQ",
+                                                                                                            "successActions": [
+                                                                                                                {
+                                                                                                                    "clickTrackingParams": "CAUQ07YLGAIiEwj35oTjyaiHAxXAumMGHTe3C7k=",
+                                                                                                                    "commandMetadata": {
+                                                                                                                        "webCommandMetadata": {
+                                                                                                                            "sendPost": true
+                                                                                                                        }
+                                                                                                                    },
+                                                                                                                    "signalServiceEndpoint": {
+                                                                                                                        "signal": "CLIENT_SIGNAL",
+                                                                                                                        "actions": [
+                                                                                                                            {
+                                                                                                                                "clickTrackingParams": "CAUQ07YLGAIiEwj35oTjyaiHAxXAumMGHTe3C7k=",
+                                                                                                                                "openPopupAction": {
+                                                                                                                                    "popup": {
+                                                                                                                                        "notificationActionRenderer": {
+                                                                                                                                            "responseText": {
+                                                                                                                                                "runs": [
+                                                                                                                                                    {
+                                                                                                                                                        "text": "Channel\u00a0ID copied to clipboard"
+                                                                                                                                                    }
+                                                                                                                                                ]
+                                                                                                                                            },
+                                                                                                                                            "trackingParams": "CAYQuWoiEwj35oTjyaiHAxXAumMGHTe3C7k="
+                                                                                                                                        }
+                                                                                                                                    },
+                                                                                                                                    "popupType": "TOAST"
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            ]
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    }
+                                                                                },
+                                                                                "popupType": "RESPONSIVE_DROPDOWN"
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ],
+                                        "trackingParams": "CAMQuy8YACITCPfmhOPJqIcDFcC6YwYdN7cLuQ=="
+                                    }
+                                }
+                            ],
+                            "trackingParams": "CAIQui8iEwj35oTjyaiHAxXAumMGHTe3C7k=",
+                            "scrollPaneStyle": {
+                                "scrollable": true
+                            }
+                        }
+                    },
+                    "targetId": "682de6a9-0000-2737-ad61-14c14ef6b35c",
+                    "identifier": {
+                        "surface": "ENGAGEMENT_PANEL_SURFACE_BROWSE",
+                        "tag": "682de6a9-0000-2737-ad61-14c14ef6b35c"
+                    }
+                }
+            },
+            "identifier": {
+                "surface": "ENGAGEMENT_PANEL_SURFACE_BROWSE",
+                "tag": "682de6a9-0000-2737-ad61-14c14ef6b35c"
+            },
+            "engagementPanelPresentationConfigs": {
+                "engagementPanelPopupPresentationConfig": {
+                    "popupType": "PANEL_POPUP_TYPE_DIALOG"
+                }
+            }
+        }
+    }
+]
