@@ -9,9 +9,7 @@ from .https import (
     upcoming_videos
 )
 from .video import Video
-from .pool import collect
 from .utils import dup_filter
-from urllib.parse import unquote
 from typing import List, Optional, Dict
 from .patterns import _ChannelPatterns as Patterns
 
@@ -48,10 +46,21 @@ class Channel:
         self.__html = channel_about(self._target_url)
 
     @property
-    def _data(self):
+    def metadata(self) -> Dict[str, any]:
+        """
+        Returns channel metadata in a dict format
+
+        Returns
+        -------
+        Dict
+            Channel metadata containing the following keys:
+            id, name, subscribers, views, country, custom_url, avatar, banner, url, description, socials etc.
+        """
         pattern = re.compile("ytInitialData = (.+?);")
         results = pattern.finditer(self.__html)
         for result in results:
+            with open("channel.json", "w") as f:
+                f.write(json.dumps(json.loads(result.group(1)), indent=4))
             obj = json.loads(result.group(1))
             extras = obj["metadata"]["channelMetadataRenderer"]
             meta = (
@@ -72,54 +81,25 @@ class Channel:
                 ["metadata"]
                 ["aboutChannelViewModel"]
             )
-            meta["rss_url"] = extras.pop("rssUrl")
-            meta["video_count"] = int(meta.pop("videoCountText").split(' ')[0])
-            meta["channelId"] = extras["externalId"]
-            meta["keywords"] = extras["keywords"].split(' ')
-            meta["avatar"] = extras.get("avatar", {}).get("thumbnails", [{"url": None}])[0].get("url")
-            meta["banner"] = extras.get("banner", {}).get("thumbnails", [{"url": None}])[0].get("url")
-
-            meta["id"] = extras["externalId"],
-            meta["name"] = extras["title"],
-            meta["subscribers"] = meta["subscriberCountText"],
-            meta["views"] = meta["viewCountText"].replace(' views', ''),
-            meta["country"] = meta["country"],
-            meta["custom_url"] = meta["canonicalChannelUrl"],
-            meta["description"] = meta["description"],
-            meta["joined_date"] = meta["joinedDateText"]["content"].replace('Joined ', ''),
+            data = {
+                "id": extras["externalId"],
+                "name": extras["title"],
+                "description": meta["description"],
+                "subscribers": meta["subscriberCountText"].split(' ')[0],
+                "views": meta["viewCountText"].replace(' views', ''),
+                "country": meta["country"],
+                "url": "https://www.youtube.com/channel/" + extras["externalId"],
+                "avatar": extras.get("avatar", {}).get("thumbnails", [{"url": None}])[0].get("url"),
+                "banner": extras.get("banner", {}).get("thumbnails", [{"url": None}])[0].get("url"),
+                "rss_url": extras.pop("rssUrl"),
+                "video_count": int(meta.pop("videoCountText").replace(",", "").split(' ')[0]),
+                "custom_url": meta["canonicalChannelUrl"],
+                "joined_date": meta["joinedDateText"]["content"].replace('Joined ', ''),
+                "socials": {},
+                "keywords": [w.replace('"', "") for w in extras["keywords"].split(' "')],
+            }
             # meta["verified"] = meta["isVerified"],
-            meta["socials"] = {}
-            return meta
-
-    @property
-    def metadata(self) -> Optional[Dict[str, any]]:
-        """
-        Returns channel metadata in a dict format
-
-        Returns
-        -------
-        Dict
-            Channel metadata containing the following keys:
-            id, name, subscribers, views, country, custom_url, avatar, banner, url, description, socials etc.
-        """
-        # info = self._data
-        # return {
-        #     "id": info["channelId"],
-        #     "name": None,
-        #     "url": "https://www.youtube.com/channel/" + info["channelId"],
-        #     "description": info["description"],
-        #     "country": info["country"],
-        #     "custom_url": info["canonicalChannelUrl"],
-        #     "subscribers": info["subscriberCountText"].split(' ')[0],
-        #     "views": info["viewCountText"].replace(' views', ''),
-        #     "created_at": info["joinedDateText"]["content"].replace('Joined ', ''),
-        #     "video_count": info["videoCountText"].split(' ')[0],
-        #     "avatar": info["avatar"],
-        #     "banner": info["banner"],
-        #     "verified": None,
-        #     "socials": None
-        # }
-        return self._data
+            return data
 
     @property
     def live(self) -> bool:
