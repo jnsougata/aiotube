@@ -1,2 +1,3 @@
 .space
 *.json
+__pycache__/
