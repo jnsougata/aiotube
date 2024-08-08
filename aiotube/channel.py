@@ -59,11 +59,9 @@ class Channel:
         pattern = re.compile("ytInitialData = (.+?);")
         results = pattern.finditer(self.__html)
         for result in results:
-            with open("channel.json", "w") as f:
-                f.write(json.dumps(json.loads(result.group(1)), indent=4))
             obj = json.loads(result.group(1))
-            extras = obj["metadata"]["channelMetadataRenderer"]
-            meta = (
+            meta = obj["metadata"]["channelMetadataRenderer"]
+            detailed_meta = (
                 obj
                 ["onResponseReceivedEndpoints"]
                 [0]
@@ -82,23 +80,40 @@ class Channel:
                 ["aboutChannelViewModel"]
             )
             data = {
-                "id": extras["externalId"],
-                "name": extras["title"],
-                "description": meta["description"],
-                "subscribers": meta["subscriberCountText"].split(' ')[0],
-                "views": meta["viewCountText"].replace(' views', ''),
-                "country": meta["country"],
-                "url": "https://www.youtube.com/channel/" + extras["externalId"],
-                "avatar": extras.get("avatar", {}).get("thumbnails", [{"url": None}])[0].get("url"),
-                "banner": extras.get("banner", {}).get("thumbnails", [{"url": None}])[0].get("url"),
-                "rss_url": extras.pop("rssUrl"),
-                "video_count": int(meta.pop("videoCountText").replace(",", "").split(' ')[0]),
-                "custom_url": meta["canonicalChannelUrl"],
-                "joined_date": meta["joinedDateText"]["content"].replace('Joined ', ''),
-                "socials": {},
-                "keywords": [w.replace('"', "") for w in extras["keywords"].split(' "')],
+                "id": meta["externalId"],
+                "name": meta["title"],
+                "description": detailed_meta["description"],
+                "subscribers": detailed_meta["subscriberCountText"].split(' ')[0],
+                "views": detailed_meta["viewCountText"].replace(' views', '').replace(',', ''),
+                "country": detailed_meta["country"],
+                "url": "https://www.youtube.com/channel/" + meta["externalId"],
+                "avatars": obj['header']['pageHeaderRenderer']['content']['pageHeaderViewModel'].get('image', {
+                    'decoratedAvatarViewModel': {'avatar': {'avatarViewModel': {'image': {'sources': []}}}}
+                })
+                ['decoratedAvatarViewModel']['avatar']['avatarViewModel']['image']['sources'],
+                "banners": obj['header']['pageHeaderRenderer']['content']['pageHeaderViewModel'].get('banner', {
+                    'imageBannerViewModel': {'image': {'sources': []}}
+                })
+                ['imageBannerViewModel']['image']['sources'],
+                "rss_url": meta.pop("rssUrl"),
+                "video_count": int(detailed_meta.pop("videoCountText").replace(",", "").split(' ')[0]),
+                "custom_url": detailed_meta["canonicalChannelUrl"],
+                "joined_date": detailed_meta["joinedDateText"]["content"].replace('Joined ', ''),
+                "socials": [link['channelExternalLinkViewModel']['link']['content'] for link in detailed_meta.get("links", [])],
+                "keywords": meta["keywords"].split(' '),
+                "verified": bool(
+                    obj
+                    ['header']
+                    ['pageHeaderRenderer']
+                    ['content']
+                    ['pageHeaderViewModel']
+                    ['title']
+                    ['dynamicTextViewModel']
+                    ['text'].get('attachmentRuns')
+                ),
+                "is_family_safe": meta["isFamilySafe"],
+                "available_country_codes": meta['availableCountryCodes']
             }
-            # meta["verified"] = meta["isVerified"],
             return data
 
     @property

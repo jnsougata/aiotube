@@ -131,4 +131,4 @@ dmypy.json
 src/testing/
 src/aiotube.egg-info/
 main.py
-channel.json
+*.json
