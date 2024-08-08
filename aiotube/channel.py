@@ -99,7 +99,9 @@ class Channel:
                 "video_count": int(detailed_meta.pop("videoCountText").replace(",", "").split(' ')[0]),
                 "custom_url": detailed_meta["canonicalChannelUrl"],
                 "joined_date": detailed_meta["joinedDateText"]["content"].replace('Joined ', ''),
-                "socials": [link['channelExternalLinkViewModel']['link']['content'] for link in detailed_meta.get("links", [])],
+                "socials": [
+                    link['channelExternalLinkViewModel']['link']['content'] for link in detailed_meta.get("links", [])
+                ],
                 "keywords": meta["keywords"].split(' '),
                 "verified": bool(
                     obj
