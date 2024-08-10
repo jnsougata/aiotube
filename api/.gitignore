@@ -1,3 +1,4 @@
 .space
 *.json
+*.html
 __pycache__/
