@@ -1,3 +1,4 @@
+import json
 import re
 from typing import List, Optional, Dict
 
@@ -57,27 +58,84 @@ class Channel:
         """
         obj = extract_initial_data(self.__html)
         meta = obj["metadata"]["channelMetadataRenderer"]
-        detailed_meta = obj["onResponseReceivedEndpoints"][0][
-            "showEngagementPanelEndpoint"
-        ]["engagementPanel"]["engagementPanelSectionListRenderer"]["content"][
-            "sectionListRenderer"
-        ][
-            "contents"
-        ][
-            0
-        ][
-            "itemSectionRenderer"
-        ][
-            "contents"
-        ][
-            0
-        ][
-            "aboutChannelRenderer"
-        ][
-            "metadata"
-        ][
-            "aboutChannelViewModel"
-        ]
+        detailed_meta = (
+            obj
+            ["onResponseReceivedEndpoints"]
+            [0]
+            ["showEngagementPanelEndpoint"]
+            ["engagementPanel"]
+            ["engagementPanelSectionListRenderer"]
+            ["content"]
+            ["sectionListRenderer"]
+            ["contents"]
+            [0]
+            ["itemSectionRenderer"]
+            ["contents"]
+            [0]
+            ["aboutChannelRenderer"]
+            ["metadata"]
+            ["aboutChannelViewModel"]
+        )
+        # is_verified = (
+        #     self.__obj
+        #     ["header"]
+        #     ["pageHeaderRenderer"]
+        #     ["content"]
+        #     ["pageHeaderViewModel"]
+        #     ["title"]
+        #     ["dynamicTextViewModel"]
+        #     ["text"].get(
+        #         "attachmentRuns",
+        #         [
+        #             {
+        #                 "element": {
+        #                     "type": {
+        #                         "imageType": {
+        #                             "image": {
+        #                                 "sources": [
+        #                                     {"clientResource": {"imageName": "_"}}
+        #                                 ]
+        #                             }
+        #                         }
+        #                     }
+        #                 }
+        #             }
+        #         ],
+        #     )
+        #     [0]
+        #     ["element"]
+        #     ["type"]
+        #     ["imageType"]
+        #     ["image"]
+        #     ["sources"]
+        #     [0]
+        #     ["clientResource"]
+        #     ["imageName"]
+        # ) == "CHECK_CIRCLE_FILLED"
+        is_verified = "'metadataBadgeRenderer': {'icon': {'iconType': 'CHECK_CIRCLE_THICK'}" in str(obj)
+        # is_live = (
+        #     self.__obj
+        #     ["contents"]
+        #     ["twoColumnBrowseResultsRenderer"]
+        #     ["tabs"]
+        #     [0]
+        #     ["tabRenderer"]
+        #     ["content"]
+        #     ["sectionListRenderer"]
+        #     ["contents"]
+        #     [0]
+        #     ["channelFeaturedContentRenderer"]
+        #     ["items"]
+        #     [0]
+        #     ["thumbnailOverlays"]
+        #     [0]
+        #     ["thumbnailOverlayTimeStatusRenderer"]
+        #     ["text"]
+        #     ["runs"]
+        #     [0]
+        #     ["text"]
+        # ) == "LIVE"
+        is_live = "'text': {'runs': [{'text': 'LIVE'}]" in str(obj)
         data = {
             "id": meta["externalId"],
             "name": meta["title"],
@@ -97,26 +155,21 @@ class Channel:
                         "avatar": {"avatarViewModel": {"image": {"sources": []}}}
                     }
                 },
-            )[
-                "decoratedAvatarViewModel"
-            ][
-                "avatar"
-            ][
-                "avatarViewModel"
-            ][
-                "image"
-            ][
-                "sources"
-            ],
+            )["decoratedAvatarViewModel"]
+            ["avatar"]
+            ["avatarViewModel"]
+            ["image"]
+            ["sources"],
             "banners": obj["header"]["pageHeaderRenderer"]["content"][
                 "pageHeaderViewModel"
-            ].get("banner", {"imageBannerViewModel": {"image": {"sources": []}}})[
-                "imageBannerViewModel"
-            ][
-                "image"
-            ][
-                "sources"
-            ],
+            ].get(
+                "banner", 
+                {
+                    "imageBannerViewModel": {
+                        "image": {"sources": []}
+                    }
+                }
+            )["imageBannerViewModel"]["image"]["sources"],
             "rss_url": meta.pop("rssUrl"),
             "video_count": int(
                 detailed_meta.pop("videoCountText").replace(",", "").split(" ")[0]
@@ -130,27 +183,12 @@ class Channel:
                 for link in detailed_meta.get("links", [])
             ],
             "keywords": obj["microformat"]["microformatDataRenderer"]["tags"],
-            "verified": bool(
-                obj["header"]["pageHeaderRenderer"]["content"]["pageHeaderViewModel"][
-                    "title"
-                ]["dynamicTextViewModel"]["text"].get("attachmentRuns")
-            ),
             "is_family_safe": meta["isFamilySafe"],
             "available_country_codes": meta["availableCountryCodes"],
+            "verified": is_verified,
+            "live": is_live,
         }
         return data
-
-    @property
-    def live(self) -> bool:
-        """
-        Checks if the channel is live
-
-        Returns
-        -------
-        bool
-            True if the channel is live
-        """
-        return bool(self.current_streams)
 
     @property
     def streaming_now(self) -> Optional[str]:

@@ -5,7 +5,7 @@ from .https import (
     trending_feeds,
     trending_streams,
     _get_trending_learning_videos,
-    trending_sports
+    trending_sports,
 )
 from .utils import dup_filter
 from .patterns import _ExtraPatterns as Patterns

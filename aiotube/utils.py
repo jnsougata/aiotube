@@ -43,7 +43,7 @@ def dup_filter(iterable: list, limit: int = None) -> list:
         return converted
 
 
-def extract_initial_data(html: str) -> Dict[str, Any]:
+def extract_initial_data(html: str) -> Any:
     pattern = re.compile("ytInitialData = {(.+?)};")
     results = pattern.finditer(html)
     return json.loads("{" + results.__next__().group(1) + "}")
