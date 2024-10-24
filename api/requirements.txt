@@ -1,2 +1,0 @@
-fastapi
-git+https://github.com/jnsougata/aiotube

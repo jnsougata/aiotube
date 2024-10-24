@@ -143,7 +143,7 @@ class Channel:
             "views": detailed_meta["viewCountText"]
             .replace(" views", "")
             .replace(",", ""),
-            "country": detailed_meta["country"],
+            "country": detailed_meta.get("country", ""),
             "url": "https://www.youtube.com/channel/" + meta["externalId"],
             "avatars": obj["header"]["pageHeaderRenderer"]["content"][
                 "pageHeaderViewModel"
