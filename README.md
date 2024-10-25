@@ -1,5 +1,3 @@
-[![Release](https://github.com/jnsougata/aiotube/actions/workflows/publish.yml/badge.svg)](https://github.com/jnsougata/aiotube/actions/workflows/publish.yml)
-
 # aiotube
 
 A library to access YouTube Public Data without YouTubeAPI
