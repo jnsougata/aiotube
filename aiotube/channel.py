@@ -1,5 +1,5 @@
 import re
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Any
 
 from .https import (
     channel_about,
@@ -316,16 +316,38 @@ class Channel:
         video_ids = Patterns.upcoming.findall(raw)
         return video_ids
 
-    @property
-    def playlists(self) -> Optional[List[str]]:
+    @staticmethod
+    def __format_playlist_data(raw: Dict[str, Any]):
+        return {
+            "id": raw["playlistId"],
+            "title": raw["title"]["runs"][0]["text"],
+            "video_count": raw["videoCountText"]["runs"][0]["text"],
+            "thumbnail": raw["thumbnail"]["thumbnails"][0]["url"],
+            "url": "https://www.youtube.com/playlist?list=" + raw["playlistId"],
+        }
+
+    def playlists(self) -> Optional[List[Dict[str, Any]]]:
         """
-        Fetches the ids of all playlists
+        Fetches the basic metadata of all public playlists
 
         Returns
         -------
-        List[str] | None
-            The ids of all playlists or None
+        List[Dict[str, Any]] | None
+            The basic metadata of all playlists or None
         """
-        return dup_filter(
-            Patterns.playlists.findall(channel_playlists(self._target_url))
+        obj = extract_initial_data(
+            channel_playlists(self._target_url))["contents"]["twoColumnBrowseResultsRenderer"]["tabs"]
+        index = next(
+            (index for (index, o) in enumerate(obj)
+             if o.get("tabRenderer", {"title": ""})["title"] == "Playlists"), None
         )
+        if not index:
+            return None
+        raw_playlists = (
+            obj[index]
+            ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][0]
+            ["itemSectionRenderer"]["contents"][0]["gridRenderer"]["items"]
+        )
+        filtered = [item for item in raw_playlists if item.get("gridPlaylistRenderer")]
+        # TODO: handle scroll continuation using retrieved continuation token
+        return [self.__format_playlist_data(item["gridPlaylistRenderer"]) for item in filtered]
