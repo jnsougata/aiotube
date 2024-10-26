@@ -328,7 +328,7 @@ class Channel:
 
     def playlists(self) -> Optional[List[Dict[str, Any]]]:
         """
-        Fetches the basic metadata of all public playlists
+        Fetches the basic metadata of some public playlists.
 
         Returns
         -------
@@ -349,5 +349,4 @@ class Channel:
             ["itemSectionRenderer"]["contents"][0]["gridRenderer"]["items"]
         )
         filtered = [item for item in raw_playlists if item.get("gridPlaylistRenderer")]
-        # TODO: handle scroll continuation using retrieved continuation token
         return [self.__format_playlist_data(item["gridPlaylistRenderer"]) for item in filtered]
