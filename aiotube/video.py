@@ -17,7 +17,11 @@ class Video:
         video_id : str
             The id or url of the video
         """
-        pattern = re.compile('.be/(.*?)$|=(.*?)$|^(\w{11})$')  # noqa
+
+        # pattern = re.compile('.be/(.*?)$|=(.*?)$|^(\w{11})$')  # noqa
+        pattern: re.Pattern[str] = re.compile(r'.be/(.*?)$|=(.*?)$|^([\w\-]{11})$') # New fixed pattern
+
+        
         self._matched_id = (
                 pattern.search(video_id).group(1)
                 or pattern.search(video_id).group(2)
