@@ -6,7 +6,7 @@ from .https import (
     streams_data,
     uploads_data,
     channel_playlists,
-    upcoming_videos,
+    upcoming_videos, shorts_data,
 )
 from .patterns import _ChannelPatterns as Patterns
 from .utils import dup_filter, extract_initial_data
@@ -253,23 +253,84 @@ class Channel:
         ids = self.old_streams
         return ids[0] if ids else None
 
-    def uploads(self, limit: int = 20) -> Optional[List[str]]:
+    def shorts(self) -> Optional[Dict[str, Any]]:
         """
-        Fetches the ids of all uploaded videos
-
-        Parameters
-        ----------
-        limit : int
-            The number of videos to fetch, defaults to 20
+        Fetches uploaded shorts and their basic metadata
 
         Returns
         -------
-        List[str] | None
-            The ids of uploaded videos or None
+        Dict[str, Any] | None
+            A dict containing basic metadata of uploaded shorts or None
         """
-        return dup_filter(
-            Patterns.upload_ids.findall(uploads_data(self._target_url)), limit
-        )
+        import json
+        try:
+            initial_data = extract_initial_data(shorts_data(self._target_url))
+            shorts = (
+                initial_data
+                ["contents"]
+                ["twoColumnBrowseResultsRenderer"]
+                ["tabs"][2]["tabRenderer"]["content"]
+                ["richGridRenderer"]["contents"]
+            )
+
+            with open("shorts.json", "w") as f:
+                json.dump(shorts, f, indent=4)
+        except KeyError:
+            return None
+        data = {}
+        for raw_short in shorts:
+            if not raw_short.get("richItemRenderer"):
+                continue
+            s = raw_short["richItemRenderer"]["content"]["shortsLockupViewModel"]
+            thumbnail = s["thumbnail"]["sources"][0]
+            video_id = thumbnail["url"].split("/vi/")[1].split("/")[0]
+            data[video_id] = {
+                "id": video_id,
+                "url": "https://www.youtube.com/shorts/" + video_id,
+                "title": s["overlayMetadata"]["primaryText"]["content"],
+                "views": s["overlayMetadata"]["secondaryText"]["content"].replace(" views", "").replace(",", ""),
+                "thumbnail": thumbnail,
+            }
+        return data
+
+    def videos(self) -> Optional[Dict[str, Any]]:
+        """
+        Fetches upto 30 uploaded videos and their basic metadata
+
+        Returns
+        -------
+        Dict[str, Any] | None
+            A dict containing basic metadata of uploaded videos or None
+        """
+        try:
+            initial_data = extract_initial_data(uploads_data(self._target_url))
+            videos = (
+                initial_data
+                ["contents"]
+                ["twoColumnBrowseResultsRenderer"]
+                ["tabs"][1]["tabRenderer"]["content"]
+                ["richGridRenderer"]["contents"]
+            )
+        except KeyError:
+            return None
+        data = {}
+        for raw_video in videos:
+            if not raw_video.get("richItemRenderer"):
+                continue
+            v = raw_video["richItemRenderer"]["content"]["videoRenderer"]
+            video_id = v["videoId"]
+            data[video_id] = {
+                "title": v["title"]["runs"][0]["text"],
+                "id": video_id,
+                "url": "https://www.youtube.com/watch?v=" + video_id,
+                "description": v.get("descriptionSnippet", {}).get("runs", [{}])[0].get("text", ""),
+                "views": v.get("viewCountText", {}).get("simpleText", "0").replace(" views", "").replace(",", ""),
+                "published": v.get("publishedTimeText", {}).get("simpleText", ""),
+                "duration": v.get("lengthText", {}).get("simpleText", ""),
+                "thumbnails": v["thumbnail"]["thumbnails"],
+            }
+
+        return data
 
     @property
     def last_uploaded(self) -> Optional[str]:
@@ -281,7 +342,7 @@ class Channel:
         str | None
             The id of the last uploaded video or None
         """
-        ids = self.uploads()
+        ids = self.videos()
         return ids[0] if ids else None
 
     @property

@@ -6,14 +6,12 @@ def channel_about(head: str) -> str:
     return request(head + "/about")
 
 
-def video_count(channel_id: str) -> str:
-    head = "https://www.youtube.com/results?search_query="
-    tail = "&sp=EgIQAg%253D%253D"
-    return request(head + channel_id + tail)
-
-
 def uploads_data(head: str) -> str:
     url = head + "/videos"
+    return request(url)
+
+def shorts_data(head: str) -> str:
+    url = head + "/shorts"
     return request(url)
 
 
