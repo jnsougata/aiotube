@@ -1,9 +1,9 @@
-# aiotube
+# OpenTube
 
-A library to access YouTube Public Data without YouTubeAPI
+Access YouTube Public Data without YouTubeAPI
 
 -   [Discord](https://discord.gg/Amx7z4EjuA)
--   [GitHub](https://github.com/jnsougata/aiotube)
+-   [GitHub](https://github.com/jnsougata/opentube)
 
 # Table of Contents
 
@@ -21,47 +21,47 @@ A library to access YouTube Public Data without YouTubeAPI
 
 ``` sh
 # Linux/macOS
-python3 -m pip install -U aiotube
+python3 -m pip install -U opentube
 ```
 
 ``` sh
 # Windows
-python -m pip install -U aiotube
+python -m pip install -U opentube
 ```
 
 ## Build from source
 
 ``` sh
-pip install git+https://github.com/jnsougata/aiotube
+pip install git+https://github.com/jnsougata/opentube
 ```
 
 ## Quick Start
 
 ``` py
-import aiotube
+import opentube
 
 
-channel = aiotube.Channel('@GYROOO')
+channel = opentube.Channel('@GYROOO')
 print(channel.metadata)
 
 
-video = aiotube.Video('WVDT4lSozHk')
+video = opentube.Video('WVDT4lSozHk')
 print(video.metadata)
 
 
-playlist = aiotube.Playlist('PL-xXQjd8X_Q-xXQjd8X_Q-xXQjd8X_Q-')
+playlist = opentube.Playlist('PL-xXQjd8X_Q-xXQjd8X_Q-xXQjd8X_Q-')
 print(playlist.metadata)
 
 
-search = aiotube.Search.video('YouTube Rewind 2018')
+search = opentube.Search.video('YouTube Rewind 2018')
 print(search.metadata)
 
 
-search = aiotube.Search.channel('PewDiePie')
+search = opentube.Search.channel('PewDiePie')
 print(search.metadata)
 
 
-search = aiotube.Search.playlist('Unlock Your Third Eye')
+search = opentube.Search.playlist('Unlock Your Third Eye')
 print(search.metadata)
 ```
 

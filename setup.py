@@ -6,12 +6,12 @@ with open('README.md') as f:
 
 
 setup(
-    name='aiotube',
+    name='opentube',
     version='1.7.3',
-    description='A library to access YouTube Public Data without YouTubeAPI',
+    description='Access YouTube Public Data without YouTubeAPI',
     long_description=readme,
     long_description_content_type="text/markdown",
-    url='https://github.com/jnsougata/aiotube',
+    url='https://github.com/jnsougata/opentube',
     author='Sougata Jana',
     author_email='jnsougata@gmail.com',
     classifiers=[
@@ -27,12 +27,12 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Utilities',
     ],
-    packages=['aiotube'],
+    packages=['opentube'],
     keywords='youtube, youtube-data, youtube-api, youtube-data-api-v3',
     python_requires='>=3.8.0',
     install_requires=['urllib3'],
     project_urls={
-        'Documentation': 'https://aiotube.readthedocs.io/en/latest/',
-        'Source': 'https://github.com/jnsougata/aiotube'
+        'Documentation': 'https://opentube.readthedocs.io/en/latest/',
+        'Source': 'https://github.com/jnsougata/opentube'
     },
 )
