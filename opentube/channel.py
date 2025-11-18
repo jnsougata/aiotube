@@ -262,7 +262,6 @@ class Channel:
         Dict[str, Any] | None
             A dict containing basic metadata of uploaded shorts or None
         """
-        import json
         try:
             initial_data = extract_initial_data(shorts_data(self._target_url))
             shorts = (
@@ -272,9 +271,6 @@ class Channel:
                 ["tabs"][2]["tabRenderer"]["content"]
                 ["richGridRenderer"]["contents"]
             )
-
-            with open("shorts.json", "w") as f:
-                json.dump(shorts, f, indent=4)
         except KeyError:
             return None
         data = {}

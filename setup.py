@@ -7,7 +7,7 @@ with open('README.md') as f:
 
 setup(
     name='opentube',
-    version='1.7.3',
+    version='1.7.4',
     description='Access YouTube Public Data without YouTubeAPI',
     long_description=readme,
     long_description_content_type="text/markdown",
