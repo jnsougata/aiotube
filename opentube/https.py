@@ -3,36 +3,30 @@ from .utils import request
 
 
 def channel_about(head: str) -> str:
-    return request(head + "/about")
+    return request(f"{head}/about")
 
 
 def uploads_data(head: str) -> str:
-    url = head + "/videos"
-    return request(url)
+    return request(f"{head}/videos")
 
 def shorts_data(head: str) -> str:
-    url = head + "/shorts"
-    return request(url)
+    return request(f"{head}/shorts")
 
 
 def streams_data(head: str) -> str:
-    url = head + "/streams"
-    return request(url)
+    return request(f"{head}/streams")
 
 
 def channel_playlists(head: str) -> str:
-    url = head + "/playlists"
-    return request(url)
+    return request(f"{head}/playlists")
 
 
 def upcoming_videos(head: str) -> str:
-    url = head + "/videos?view=2&live_view=502"
-    return request(url)
+    return request(f"{head}/videos?view=2&live_view=502")
 
 
 def video_data(video_id: str) -> str:
-    url = f"https://www.youtube.com/watch?v={video_id}"
-    return request(url)
+    return request(f"https://www.youtube.com/watch?v={video_id}")
 
 
 def playlist_data(playlist_id: str) -> str:

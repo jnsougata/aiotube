@@ -44,7 +44,8 @@ class Video:
             )
             import json
 
-            print(json.dumps(self._video_data, indent=4))
+            with open("video_data.json", "w") as f:
+                f.write(json.dumps(self._video_data, indent=4))
         else:
             raise ValueError("invalid video id or url")
 
@@ -63,8 +64,13 @@ class Video:
             upload_date, url, thumbnails, tags, description
         """
         info_section = self._video_data["contents"]["twoColumnWatchNextResults"]["results"]["results"]["contents"]
-        primary_info = info_section[0]["videoPrimaryInfoRenderer"]
-        secondary_info = info_section[1]["videoSecondaryInfoRenderer"]
+        primary_info = {}
+        secondary_info = {}
+        for section in info_section:
+            if section.get("videoPrimaryInfoRenderer"):
+                primary_info = section["videoPrimaryInfoRenderer"]
+            elif section.get("videoSecondaryInfoRenderer"):
+                secondary_info = section["videoSecondaryInfoRenderer"]
         comments_section = find_engagement_panel(self._video_data, _EngagementPanelType.comments.value)
         data = {
             "title": primary_info["title"]["runs"][0]["text"],

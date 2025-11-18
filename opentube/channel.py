@@ -219,7 +219,7 @@ class Channel:
         return [
             id_
             for id_ in filtered_ids
-            if f"vi/{id_}/hqdefault_live.jpg" in streams_data(raw)
+            if f'vi/{id_}/hqdefault_live.jpg' in streams_data(raw)
         ]
 
     @property
@@ -329,17 +329,17 @@ class Channel:
         return data
 
     @property
-    def last_uploaded(self) -> Optional[str]:
+    def last_uploaded(self) -> Optional[Dict[str, Any]]:
         """
         Fetches the id of the last uploaded video
 
         Returns
         -------
-        str | None
+        Dict[str, Any] | None
             The id of the last uploaded video or None
         """
-        ids = self.videos()
-        return ids[0] if ids else None
+        videos = self.videos()
+        return list(videos.values())[0] if videos else None
 
     @property
     def upcoming(self) -> Optional[Video]:
